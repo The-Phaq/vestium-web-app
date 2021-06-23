@@ -2,6 +2,7 @@
   "extends": ["next", "airbnb", "prettier"],
   "plugins": ["react", "prettier"],
   "rules": {
+    "import/no-unresolved": 1,
     "import/prefer-default-export": 0,
     "comma-dangle": [1, "always-multiline"],
     "no-use-before-define": 0,

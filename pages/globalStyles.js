@@ -15,4 +15,52 @@ export default createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+
+  .container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: 'Livvic', serif;
+  }
+
+  @media (min-width: 576px) {
+    .container {
+      max-width: 540px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      max-width: 720px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .container {
+      max-width: 960px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .container {
+      max-width: 1140px;
+    }
+  }
+  @media (min-width: 1201px) {
+    .container {
+      max-width: 1140px;
+    }
+  }
+  @media (min-width: 1441px) {
+    .container {
+      max-width: 1240px;
+    }
+  }
+  @media (min-width: 2000px) {
+    .container {
+      max-width: calc(100vw - 200px);
+    }
+  }
 `;
