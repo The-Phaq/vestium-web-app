@@ -36,7 +36,9 @@ export default styled(Sider)`
     }
 
     .filter-section {
-      padding: 10px;
+      .ant-collapse-borderless > .ant-collapse-item {
+        border: none;
+      }
 
       .ant-collapse {
         .filter-panel {
