@@ -14,6 +14,11 @@ export default createGlobalStyle`
 
   * {
     box-sizing: border-box;
+    font-family: 'Livvic', serif;
+  }
+
+  p, h3, h4, h1, h2 {
+    margin-bottom: 0;
   }
 
   .container {

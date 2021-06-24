@@ -6,7 +6,7 @@ const SecurityLayout = ({ children }) => {
   return (
     <SecurityLayoutWrapper>
       <Header />
-      <div className="container">
+      <div className="container content-wrapper">
         {children}
       </div>
     </SecurityLayoutWrapper>
