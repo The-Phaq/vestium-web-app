@@ -12,6 +12,10 @@ const MyApp = ({ Component, pageProps }) => {
         <title>Vestium</title>
         <meta name="description" content="Vestium web" />
         <link rel="icon" href="/favicon.ico" />
+        <link
+          href="https://fonts.googleapis.com/css?family=Livvic&display=optional"
+          rel="stylesheet"
+        />
       </Head>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
