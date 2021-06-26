@@ -44,7 +44,7 @@ const Header = ({ image, fullName }) => {
         onPressEnter={handleSearch}
       />
       <div className="right-header">
-        {actionButtons.map(({ isPrimary, Icon }) => (
+        {actionButtons.map(({ isPrimary, Icon }, index) => (
           <Button
             {...isPrimary && {
               type: 'primary',
@@ -52,6 +52,7 @@ const Header = ({ image, fullName }) => {
             className="nav-icon-button"
             shape="circle"
             icon={<Icon />}
+            key={`button-${String(index)}`}
           />
         ))}
         <div className="user-section">

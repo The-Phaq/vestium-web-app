@@ -20,7 +20,6 @@ export default styled(Header)`
 
     input {
       background: transparent;
-      color: white;
     }
 
     
