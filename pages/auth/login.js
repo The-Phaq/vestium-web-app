@@ -1,6 +1,12 @@
 import React from 'react';
-import AuthenLayout from '../../layouts/Authentication';
-import LoginConTainer from '../../containers/Login';
+import dynamic from 'next/dynamic';
+
+const AuthenLayout = dynamic(() => import('layouts/Authentication'), {
+    ssr: false,
+});
+const LoginConTainer = dynamic(() => import('containers/Login'), {
+    ssr: false,
+});
 
 const login = () => {
     return (
