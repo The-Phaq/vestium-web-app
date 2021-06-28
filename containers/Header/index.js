@@ -1,34 +1,46 @@
 import React from 'react';
 import { Button, Input, Dropdown, Avatar, Menu } from 'antd';
 import {
-  HomeIcon,
   HeartIcon,
   VestIcon,
   CalendarIcon,
 } from 'components/SVGIcon';
+import { useRouter } from 'next/router';
+import { getCurrentTab } from 'utils/tools';
+import Link from 'next/link';
 import {
   SearchOutlined,
   UserOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import HeaderWrapper from './styles';
 
-const Header = ({ image, fullName }) => {
+const actionButtons = [
+  {
+    Icon: HomeOutlined,
+    url: '/',
+    key: 'home',
+  },
+  {
+    Icon: HeartIcon,
+    url: '/favorites',
+    key: 'favorites',
+  },
+  {
+    Icon: VestIcon,
+    url: '/vestiums',
+    key: 'vestiums',
+  },
+  {
+    Icon: CalendarIcon,
+    url: '/calendar',
+    key: 'calendar',
+  },
+]
 
-  const actionButtons = [
-    {
-      Icon: HomeIcon,
-      isPrimary: true,
-    },
-    {
-      Icon: HeartIcon,
-    },
-    {
-      Icon: VestIcon,
-    },
-    {
-      Icon: CalendarIcon,
-    },
-  ]
+const Header = ({ image, fullName }) => {
+  const { pathname } = useRouter();
+  const url = getCurrentTab(pathname, 1);
 
   const handleSearch = () => {}
 
@@ -44,16 +56,17 @@ const Header = ({ image, fullName }) => {
         onPressEnter={handleSearch}
       />
       <div className="right-header">
-        {actionButtons.map(({ isPrimary, Icon }, index) => (
-          <Button
-            {...isPrimary && {
-              type: 'primary',
-            }}
-            className="nav-icon-button"
-            shape="circle"
-            icon={<Icon />}
-            key={`button-${String(index)}`}
-          />
+        {actionButtons.map(({ key, Icon, url: btnUrl }, index) => (
+          <Link href={btnUrl} key={`button-${String(index)}`}>
+            <Button
+              {...(url || 'home') === key && {
+                type: 'primary',
+              }}
+              className="nav-icon-button"
+              shape="circle"
+              icon={<Icon size={22} />}
+            />
+          </Link>
         ))}
         <div className="user-section">
           <div className="name">

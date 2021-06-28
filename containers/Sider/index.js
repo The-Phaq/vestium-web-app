@@ -1,6 +1,9 @@
 import React from 'react';
 import Divider from 'components/Divider';
 import { Button, Collapse, Row, Col } from 'antd';
+import { useRouter } from 'next/router';
+import { getCurrentTab } from 'utils/tools';
+import Link from 'next/link';
 import { PlusCircleFilled, CaretRightOutlined } from '@ant-design/icons';
 import SiderWrapper from './styles';
 
@@ -10,14 +13,20 @@ const buttons = [
   {
     text: 'NEW LOOK',
     isPrimary: true,
+    url: '/',
+    key: 'new-look',
   },
   {
     text: 'BOUTIQUE',
+    url: '/boutique',
+    key: 'boutique',
   },
   {
     text: 'CREATE NEW LOOK',
     isHighlight: true,
     Icon: PlusCircleFilled,
+    url: '/create-new-look',
+    key: 'create-new-look',
   },
 ]
 
@@ -64,6 +73,8 @@ const filters = [
 ]
 
 const Sider = () => {
+  const { pathname } = useRouter();
+  const url = getCurrentTab(pathname, 1);
   return (
     <SiderWrapper width={255}>
       <div className="sider-content">
@@ -77,21 +88,22 @@ const Sider = () => {
           VESTIUMS
         </div>
         <div className="actions-section">
-          {buttons.map(({ Icon, text, isPrimary, isHighlight }, index) => (
-            <Button
-              key={`button-${String(index)}`}
-              {...isPrimary && {
-                type: 'primary',
-              }}
-              {...Icon && {
-                icon: <Icon />,
-              }}
-              {...isHighlight && {
-                className: 'highlight-btn',
-              }}
-            >
-              {text}
-            </Button>
+          {buttons.map(({ Icon, text, key, isHighlight, url: btnUrl }, index) => (
+            <Link href={btnUrl} key={`button-${String(index)}`}>
+              <Button
+                {...(url || 'new-look') === key && {
+                  type: 'primary',
+                }}
+                {...Icon && {
+                  icon: <Icon />,
+                }}
+                {...isHighlight && {
+                  className: 'highlight-btn',
+                }}
+              >
+                {text}
+              </Button>
+            </Link>
           ))}
         </div>
         <Divider className="divider" />

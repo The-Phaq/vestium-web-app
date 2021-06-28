@@ -29,9 +29,34 @@ export default styled(Header)`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    .ant-btn-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 22px;
+        min-width: 22px;
+        height: 22px;
+      }
+
+      span {
+        color: ${({ theme }) => theme.palette.primary};
+      }
+    }
 
     .ant-btn-primary {
       background: ${({ theme }) => theme.palette.primary};
+
+      .img-icon {
+        img {
+          filter: brightness(0) invert(1);
+        }
+      }
+
+      span {
+        color: #fff;
+      }
     }
     .nav-icon-button {
       padding: 20px;
