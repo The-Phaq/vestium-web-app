@@ -17,6 +17,10 @@ export default createGlobalStyle`
     font-family: 'Livvic', serif;
   }
 
+  img {
+    object-fit: contain;
+  }
+
   p, h3, h4, h1, h2 {
     margin-bottom: 0;
   }

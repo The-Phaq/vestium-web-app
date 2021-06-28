@@ -18,9 +18,57 @@ export const NewLookItemWrapper = styled(Row)`
     border-radius: 8px;
     border: 1px solid #888181;
     width: 100%;
+    height: 100%;
     min-height: 300px;
     overflow: hidden;
     position: relative;
+  }
+
+  .item-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .item-title {
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .tags {
+      width: 80%;
+      font-size: 14px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .items {
+      margin-top: 20px;
+      width: 100%;
+
+      .item-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .item-image {
+          width: 100%;
+          height: 140px;
+          position: relative;
+        }
+        
+        .item-name {
+          font-weight: bold;
+        }
+
+        .price {
+          font-weight: 500;
+        }
+      }
+    }
   }
 
   .info-section {

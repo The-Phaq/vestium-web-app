@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Col, Button, Divider } from 'antd';
+import { Avatar, Col, Button, Divider, Row } from 'antd';
 import Image from 'next/image';
 import {
   HeartIcon,
@@ -36,7 +36,7 @@ const infos = [
 ]
 
 const NewLookItem = ({ newLook }) => {
-  const { img, user, name, tags } = newLook || {};
+  const { img, user, name, tags, items } = newLook || {};
   return (
     <NewLookItemWrapper gutter={[20, 20]}>
       <Col md={11} sm={24} xs={24}>
@@ -75,7 +75,36 @@ const NewLookItem = ({ newLook }) => {
             </div>
           </div>
           <Divider />
-          <div className="item-section">item</div>
+          <div className="item-section">
+            <div className="item-title">
+              {name}
+            </div>
+            <div className="tags">
+              {tags?.toString()?.replaceAll(',', '  ·  ')}
+            </div>
+            {items?.length > 0 && (
+              <Row gutter={[20, 20]} className="items">
+                {items.map(({ id, name: itemName, brandName, price, img: itemImg }) => (
+                  <Col span={8} key={id}>
+                    <div className="item-wrapper">
+                      <div className="item-image">
+                        <Image layout="fill" src={itemImg} />
+                      </div>
+                      <div className="item-name">
+                        {itemName}
+                      </div>
+                      <div className="item-name">
+                        {brandName}
+                      </div>
+                      <div className="price">
+                        {`$${price?.toFixed(2)}`}
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            )}
+          </div>
         </div>
       </Col>
     </NewLookItemWrapper>

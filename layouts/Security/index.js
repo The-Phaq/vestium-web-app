@@ -7,14 +7,18 @@ import SecurityLayoutWrapper from './styles';
 const SecurityLayout = ({ children }) => {
   return (
     <SecurityLayoutWrapper>
-      <Layout className="container">
-        <Header />
-        <Layout className="layout-content">
-          <Sider />
-          <div className="content-wrapper">
-            {children}
-          </div>
-        </Layout>
+      <Layout>
+        <div className="header-wrapper">
+          <Header className="container" />
+        </div>
+        <div className="container layout-content-wrapper">
+          <Layout className="layout-content">
+            <Sider />
+            <div className="content-wrapper">
+              {children}
+            </div>
+          </Layout>
+        </div>
       </Layout>
     </SecurityLayoutWrapper>
   )
