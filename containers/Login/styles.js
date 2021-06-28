@@ -57,4 +57,15 @@ export default styled.div`
         font-size: 10px;
         line-height: 12px;
     }
+    .text {
+        color: #f8a71b;
+        font-family: 'Rubik', normal;
+    }
+    .text-signin {
+        color: #8b8181;
+        font-family: 'Rubik', normal;
+        font-size: 14px;
+        line-height: 17px;
+        text-align: center;
+    }
 `;
