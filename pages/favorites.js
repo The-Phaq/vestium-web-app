@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
 
-const HomePage = dynamic(() => import('containers/HomePage'), { ssr: false });
+const Favorites = dynamic(() => import('containers/Favorites'), { ssr: false });
 
 export default function Home() {
   return (
-    <HomePage />
+    <Favorites />
   );
 }

@@ -88,7 +88,7 @@ const NewLookItem = ({ newLook }) => {
                   <Col span={8} key={id}>
                     <div className="item-wrapper">
                       <div className="item-image">
-                        <Image layout="fill" src={itemImg} />
+                        <Image objectFit="contain" layout="fill" src={itemImg} />
                       </div>
                       <div className="item-name">
                         {itemName}
