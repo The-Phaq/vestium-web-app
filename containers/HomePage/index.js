@@ -1,6 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Skeleton } from 'antd';
+import { Waypoint } from 'react-waypoint';
 import SecurityLayout from 'layouts/Security';
 import Divider from 'components/Divider';
+import { newlooksSelectors } from 'store/newlooks/selectors';
+import { getAllNewlooks } from 'store/newlooks/actions';
 import NewLookItem from './NewLookItem';
 import HomeWrapper from './styles';
 
@@ -71,6 +76,38 @@ const newLooks = [
 ]
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+
+  const newlookItems = useSelector(newlooksSelectors.getDataArr);
+  const loading = useSelector(newlooksSelectors.getLoading);
+  const enabledLoadMore = useSelector(newlooksSelectors.enabledLoadMore);
+  console.log('asdasd test', newlookItems)
+
+  const retrieveList = (filterData, isRefresh) => {
+    dispatch(getAllNewlooks({
+      data: {
+        ...filterData,
+        includes: 'styles,items',
+      },
+      options: {
+        isRefresh,
+      },
+    }))
+  }
+
+  const handleEnterWaypoint = () => {
+    if (enabledLoadMore && !loading) {
+      retrieveList({}, false);
+    }
+  }
+
+  useEffect(() => {
+    retrieveList({
+      limit: 10,
+      offset: 0,
+    }, true);
+  }, [])
+
   return (
     <SecurityLayout>
       <HomeWrapper>
@@ -80,6 +117,12 @@ const HomePage = () => {
             {index + 1 < newLooks.length && <Divider className="divider" />}
           </Fragment>
         ))}
+        {loading && (
+          <Skeleton loading />
+        )}
+        {enabledLoadMore && (
+          <Waypoint onEnter={handleEnterWaypoint} />
+        )}
       </HomeWrapper>
     </SecurityLayout>
   )

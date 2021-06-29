@@ -12,10 +12,11 @@ export const convertRequestParams = (
   const { q, ...rest } = params.filter || { q: undefined };
   const formatedParams = {
     // ...params,
-    ...omit(params, ['offset']),
+    ...omit(params, ['offset', 'limit']),
     filter: rest,
     // pageSize: params.limit,
     page: params.offset / params.limit + 1,
+    perPage: params.limit,
     q,
     count: undefined,
   };

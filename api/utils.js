@@ -73,7 +73,8 @@ function requestWrapper(method) {
     url,
     data = null,
     params = {},
-    prefixHost = '/client',
+    // prefixHost = '/client',
+    prefixHost = '',
   ) => {
     let convertUrl = `${prefixHost}${url}`;
     let convertParams = params;
