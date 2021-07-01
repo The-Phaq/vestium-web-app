@@ -1,4 +1,4 @@
-import requestUtils from 'utils/request';
+import requestUtils, { setInitHeader } from 'utils/request';
 
 async function customFetch(path, headerOptions) {
   const res = await requestUtils(path, headerOptions);
@@ -66,9 +66,9 @@ export const timeoutPromise = (ms, promise) =>
 export default customFetch;
 
 function requestWrapper(method) {
-  // if (process.browser) {
-  //   setInitHeader();
-  // }
+  if (process.browser) {
+    setInitHeader();
+  }
   const request = async (
     url,
     data = null,

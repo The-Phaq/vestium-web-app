@@ -1,5 +1,7 @@
 import React from 'react';
 import Divider from 'components/Divider';
+import { useSelector } from 'react-redux';
+import { getFiguresSelectors } from 'store/figures/selectors';
 import { Button, Collapse, Row, Col } from 'antd';
 import { useRouter } from 'next/router';
 import { getCurrentTab } from 'utils/tools';
@@ -28,52 +30,12 @@ const buttons = [
     url: '/create-new-look',
     key: 'create-new-look',
   },
-]
-
-const filters = [
-  {
-    text: 'OCCASION',
-    items: [
-      {
-        id: '1',
-        text: 'office',
-        isPrimary: true,
-      },
-      {
-        id: '2',
-        text: 'evening',
-      },
-      {
-        id: '3',
-        text: 'every day',
-      },
-      {
-        id: '4',
-        text: 'cocktail',
-      },
-      {
-        id: '5',
-        text: 'sport',
-      },
-      {
-        id: '6',
-        text: 'beach',
-      },
-    ],
-  },
-  {
-    text: 'STYLE',
-  },
-  {
-    text: 'COLOR',
-  },
-  {
-    text: 'BUDGET',
-  },
-]
+];
 
 const Sider = () => {
   const { pathname } = useRouter();
+  const figures = useSelector(getFiguresSelectors);
+
   const url = getCurrentTab(pathname, 1);
   return (
     <SiderWrapper width={255}>
@@ -118,14 +80,14 @@ const Sider = () => {
             expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
             className="filter-content"
           >
-            {filters.map((filter, index) => (
+            {figures.map((figure, index) => (
               <Panel
-                header={filter.text}
+                header={figure.text}
                 key={`button-${String(index)}`}
                 className="filter-panel"
               >
                 <Row gutter={[8, 8]}>
-                  {filter?.items?.map(item => (
+                  {figure?.items?.map(item => (
                     <Col span={12} key={item.id}>
                       <Button
                         shape="round"

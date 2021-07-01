@@ -16,7 +16,7 @@ export const NewLookItemWrapper = styled(Row)`
 
   .img-wrapper {
     border-radius: 8px;
-    border: 1px solid #888181;
+    border: 1px solid #ddd;
     width: 100%;
     height: 100%;
     min-height: 300px;
@@ -62,6 +62,7 @@ export const NewLookItemWrapper = styled(Row)`
         
         .item-name {
           font-weight: bold;
+          text-align: center;
         }
 
         .price {

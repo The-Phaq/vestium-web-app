@@ -43,10 +43,12 @@ export default styled(Sider)`
       .ant-collapse {
         .filter-panel {
           background: #fff;
+          text-transform: uppercase;
 
           .ant-btn {
             width: 100%;
-            padding: 4px 0;
+            white-space: break-spaces;
+            padding: 4px 7px;
             text-align: center;
             line-height: 14px;
             height: auto;

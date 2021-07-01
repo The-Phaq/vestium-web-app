@@ -97,7 +97,7 @@ const NewLookItem = ({ newLook }) => {
                         {brandName}
                       </div>
                       <div className="price">
-                        {`$${price?.toFixed(2)}`}
+                        {price}
                       </div>
                     </div>
                   </Col>

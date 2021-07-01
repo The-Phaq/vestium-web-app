@@ -1,7 +1,7 @@
 import { keyBy, omit } from 'lodash';
 import { getValidData } from 'utils/tools';
 
-export const PRIMARY_KEY = 'id';
+export const PRIMARY_KEY = '_id';
 
 export const convertRequestParams = (
   type,
@@ -58,18 +58,18 @@ export const convertResponseData = (
     case 'GET_ALL':
       return {
         data: keyBy(
-          response?.items.map((data) => ({
+          response?.data.map((data) => ({
             ...data,
             id: data[options.primaryKey || PRIMARY_KEY],
             backupId: data[PRIMARY_KEY],
           })),
           options.primaryKey || PRIMARY_KEY,
         ),
-        ids: response?.items.map(
+        ids: response?.data.map(
           (data) => data[options.primaryKey || PRIMARY_KEY],
         ),
-        total: response?.meta?.totalItems,
-        numberOfPages: response?.meta?.totalPages,
+        total: response?.total,
+        numberOfPages: (response?.total / response?.perPage) + 1,
       };
     case 'GET_BY_ID':
     case 'CREATE':
