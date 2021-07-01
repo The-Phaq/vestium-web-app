@@ -37,6 +37,7 @@ const infos = [
 
 const NewLookItem = ({ newLook }) => {
   const { img, user, name, tags, items } = newLook || {};
+
   return (
     <NewLookItemWrapper gutter={[20, 20]}>
       <Col md={11} sm={24} xs={24}>

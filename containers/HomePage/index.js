@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Skeleton } from 'antd';
+import { Skeleton, Empty } from 'antd';
 import { Waypoint } from 'react-waypoint';
 import SecurityLayout from 'layouts/Security';
 import Divider from 'components/Divider';
@@ -20,7 +20,6 @@ const HomePage = () => {
     dispatch(getAllNewlooks({
       data: {
         ...filterData,
-        includes: 'user',
       },
       options: {
         isRefresh,
@@ -38,6 +37,9 @@ const HomePage = () => {
     retrieveList({
       limit: 10,
       offset: 0,
+      // filter: {
+      //   stylesIds: ['607c2a173f0a867f636f9ab2'],
+      // },
     }, true);
   }, [])
 
@@ -51,7 +53,10 @@ const HomePage = () => {
           </Fragment>
         ))}
         {loading && (
-          <Skeleton loading />
+          <Skeleton active />
+        )}
+        {!loading && !newLooks?.length && (
+          <Empty description="No items" />
         )}
         {enabledLoadMore && (
           <Waypoint onEnter={handleEnterWaypoint} />

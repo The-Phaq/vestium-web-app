@@ -29,7 +29,7 @@ export const getNewLooksSelectors = createSelector(
         name: item?.itemId?.name,
         brandName: 'Gucci',
         price: item?.itemId?.price,
-        img: item?.url,
+        img: item?.url || item?.itemId?.image?.url,
       })),
     }));
   },

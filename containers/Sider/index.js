@@ -1,7 +1,10 @@
 import React from 'react';
 import Divider from 'components/Divider';
-import { useSelector } from 'react-redux';
+import xor from 'lodash/xor';
+import { useSelector, useDispatch } from 'react-redux';
 import { getFiguresSelectors } from 'store/figures/selectors';
+import { newlooksSelectors } from 'store/newlooks/selectors';
+import { getAllNewlooks } from 'store/newlooks/actions';
 import { Button, Collapse, Row, Col } from 'antd';
 import { useRouter } from 'next/router';
 import { getCurrentTab } from 'utils/tools';
@@ -33,10 +36,34 @@ const buttons = [
 ];
 
 const Sider = () => {
+  const dispatch = useDispatch();
   const { pathname } = useRouter();
   const figures = useSelector(getFiguresSelectors);
-
+  const { filter } = useSelector(newlooksSelectors.getFilters);
+  const currentFigureIds = filter?.stylesIds || [];
   const url = getCurrentTab(pathname, 1);
+
+  const retrieveList = (filterData, isRefresh) => {
+    dispatch(getAllNewlooks({
+      data: {
+        ...filterData,
+      },
+      options: {
+        isRefresh,
+      },
+    }))
+  }
+
+  const handleFilterNewLooks = id => () => {
+    retrieveList({
+      limit: 10,
+      offset: 0,
+      filter: {
+        stylesIds: xor(currentFigureIds, [id]),
+      },
+    }, true)
+  }
+
   return (
     <SiderWrapper width={255}>
       <div className="sider-content">
@@ -91,9 +118,10 @@ const Sider = () => {
                     <Col span={12} key={item.id}>
                       <Button
                         shape="round"
-                        {...item.isPrimary && {
+                        {...currentFigureIds.includes(item.id) && {
                           type: 'primary',
                         }}
+                        onClick={handleFilterNewLooks(item.id)}
                       >
                         {item.text}
                       </Button>
