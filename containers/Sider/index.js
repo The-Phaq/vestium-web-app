@@ -37,11 +37,13 @@ const buttons = [
 
 const Sider = () => {
   const dispatch = useDispatch();
-  const { pathname } = useRouter();
+  const { pathname, query } = useRouter();
   const figures = useSelector(getFiguresSelectors);
   const { filter } = useSelector(newlooksSelectors.getFilters);
   const currentFigureIds = filter?.stylesIds || [];
   const url = getCurrentTab(pathname, 1);
+
+  const { q } = query;
 
   const retrieveList = (filterData, isRefresh) => {
     dispatch(getAllNewlooks({
@@ -59,6 +61,9 @@ const Sider = () => {
       limit: 10,
       offset: 0,
       filter: {
+        ...q && {
+          q,
+        },
         stylesIds: xor(currentFigureIds, [id]),
       },
     }, true)

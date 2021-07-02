@@ -39,10 +39,21 @@ const actionButtons = [
 ]
 
 const Header = ({ image, fullName }) => {
-  const { pathname } = useRouter();
+  const { pathname, push, query } = useRouter();
+
+  const { q } = query;
   const url = getCurrentTab(pathname, 1);
 
-  const handleSearch = () => {}
+  const handleSearch = e => {
+    push({
+      pathname: '/',
+      ...e.target.value ? {
+        query: {
+          q: e.target.value,
+        },
+      } : {},
+    })
+  }
 
   const handleLogout = () => {}
 
@@ -52,6 +63,9 @@ const Header = ({ image, fullName }) => {
       <Input
         className="search-input"
         size="large"
+        {...q && {
+          defaultValue: q,
+        }}
         suffix={<SearchOutlined />}
         onPressEnter={handleSearch}
       />

@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton, Empty } from 'antd';
+import { useRouter } from 'next/router';
 import { Waypoint } from 'react-waypoint';
 import SecurityLayout from 'layouts/Security';
 import Divider from 'components/Divider';
@@ -11,10 +12,12 @@ import HomeWrapper from './styles';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-
+  const { query } = useRouter();
   const newLooks = useSelector(getNewLooksSelectors);
   const loading = useSelector(newlooksSelectors.getLoading);
   const enabledLoadMore = useSelector(newlooksSelectors.enabledLoadMore);
+
+  const { q } = query;
 
   const retrieveList = (filterData, isRefresh) => {
     dispatch(getAllNewlooks({
@@ -37,11 +40,16 @@ const HomePage = () => {
     retrieveList({
       limit: 10,
       offset: 0,
+      ...q && {
+        filter: {
+          q,
+        },
+      },
       // filter: {
       //   stylesIds: ['607c2a173f0a867f636f9ab2'],
       // },
     }, true);
-  }, [])
+  }, [q])
 
   return (
     <SecurityLayout>
