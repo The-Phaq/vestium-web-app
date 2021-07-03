@@ -58,7 +58,7 @@ const Sider = () => {
 
   const handleFilterNewLooks = id => () => {
     retrieveList({
-      limit: 10,
+      pageSize: 10,
       offset: 0,
       filter: {
         ...q && {

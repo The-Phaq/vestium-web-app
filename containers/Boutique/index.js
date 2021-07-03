@@ -33,7 +33,7 @@ const Boutique = () => {
 
   useEffect(() => {
     retrieveList({
-      limit: 12,
+      pageSize: 12,
       offset: 0,
       // include: 'brand',
     }, true);
