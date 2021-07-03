@@ -1,7 +1,12 @@
 import React from "react";
+import dynamic from "next/dynamic";
 
-const CreateNewLook = () => {
-  return <div></div>;
+const CreateNewLook = dynamic(() => import("containers/CreateNewLook"), {
+  ssr: false,
+});
+
+const index = () => {
+  return <CreateNewLook />;
 };
 
-export default CreateNewLook;
+export default index;
