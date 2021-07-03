@@ -90,7 +90,9 @@ export default styled(Sider)`
       .highlight-btn {
         border: 1px solid ${({ theme }) => theme.palette.primary};
         color: ${({ theme }) => theme.palette.primary};
-        
+        &.ant-btn-primary {
+          color: #fff;
+        } 
       }
     }
 

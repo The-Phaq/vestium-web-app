@@ -17,7 +17,9 @@ export default styled.div`
   }
 
   .item-title {
+    margin-top: 10px;
     font-weight: bold;
+    text-align: center;
   }
 
   .price {

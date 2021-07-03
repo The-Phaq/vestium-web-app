@@ -3,11 +3,11 @@ import Image from 'next/image';
 import ItemCardWrapper from './styles';
 
 const ItemCard = ({ data }) => {
-  const { name, brandName, price, img } = data || {};
+  const { name, brandName, price, image } = data || {};
   return (
     <ItemCardWrapper>
       <div className="image-wrapper">
-        <Image objectFit="contain" layout="fill" src={img} />
+        <Image objectFit="contain" layout="fill" src={image?.url} />
       </div>
       <div className="item-title">
         {name}
@@ -16,7 +16,7 @@ const ItemCard = ({ data }) => {
         {brandName}
       </div>
       <div className="price">
-        {`$${price?.toFixed(2)}`}
+        {price}
       </div>
     </ItemCardWrapper>
   )
