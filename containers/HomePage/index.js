@@ -38,7 +38,7 @@ const HomePage = () => {
 
   useEffect(() => {
     retrieveList({
-      limit: 10,
+      pageSize: 10,
       offset: 0,
       ...q && {
         filter: {
