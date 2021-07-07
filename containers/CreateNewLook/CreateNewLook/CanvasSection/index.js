@@ -81,13 +81,17 @@ class CanvasSection extends Component {
               </Group>
             )}
             {this.props?.listItems?.map((item) => (
-              <Group name="group" x={20} y={20}>
+              <Group name="group" draggable>
                 <ItemImage url={item?.image?.url} name={`${item._id}`} />
               </Group>
             ))}
             {this.props?.listEmoji?.map((item) => (
               <Group name="group" x={400} y={200}>
-                <ItemImage url={item?.image?.url} name={`${item._id}`} />
+                <ItemImage
+                  url={item?.image?.url}
+                  name={`${item._id}`}
+                  draggable
+                />
               </Group>
             ))}
             <TransformerComponent
@@ -95,9 +99,11 @@ class CanvasSection extends Component {
             />
           </Layer>
         </Stage>
-        <Button type="primary" onClick={this.onNext}>
-          Create
-        </Button>
+        <div className="action-section">
+          <Button size="large" type="primary" onClick={this.onNext}>
+            CREATE
+          </Button>
+        </div>
       </CanvasSectionStyles>
     );
   }

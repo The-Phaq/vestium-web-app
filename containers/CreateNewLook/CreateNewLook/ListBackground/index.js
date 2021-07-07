@@ -17,7 +17,7 @@ const ListBackground = ({ setBackground }) => {
 
   const onSelectBg = (url) => () => {
     if (!url) return;
-    setBackground(url);
+    setBackground(`${url}?exp=${new Date().getTime()}`);
   };
 
   return (
