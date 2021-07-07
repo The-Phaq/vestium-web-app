@@ -20,7 +20,13 @@ const ListEmoji = ({ setEmoji }) => {
     if (!id) return;
     const emoji = find(listEmojis, (bg) => bg._id === id);
     if (!emoji?.image?.url) return;
-    setEmoji(emoji);
+    setEmoji({
+      ...emoji,
+      image: {
+        ...emoji.iamge,
+        url: `${emoji.image.url}?exp=${new Date().getTime()}`,
+      },
+    });
   };
 
   return (

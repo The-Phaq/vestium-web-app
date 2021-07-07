@@ -1,61 +1,63 @@
-import React from 'react';
-import { Button, Input, Dropdown, Avatar, Menu } from 'antd';
-import {
-  HeartIcon,
-  VestIcon,
-  CalendarIcon,
-} from 'components/SVGIcon';
-import { useRouter } from 'next/router';
-import { getCurrentTab } from 'utils/tools';
-import Link from 'next/link';
-import {
-  SearchOutlined,
-  UserOutlined,
-  HomeOutlined,
-} from '@ant-design/icons';
-import HeaderWrapper from './styles';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { Button, Input, Dropdown, Avatar, Menu } from "antd";
+import { HeartIcon, VestIcon, CalendarIcon } from "components/SVGIcon";
+import { useRouter } from "next/router";
+import { getCurrentTab } from "utils/tools";
+import Link from "next/link";
+import { SearchOutlined, UserOutlined, HomeOutlined } from "@ant-design/icons";
+import { logout } from "../../store/auth/actions";
+import HeaderWrapper from "./styles";
 
 const actionButtons = [
   {
     Icon: HomeOutlined,
-    url: '/',
-    key: 'home',
+    url: "/",
+    key: "home",
   },
   {
     Icon: HeartIcon,
-    url: '/favorites',
-    key: 'favorites',
+    url: "/favorites",
+    key: "favorites",
   },
   {
     Icon: VestIcon,
-    url: '/vestiums',
-    key: 'vestiums',
+    url: "/vestiums",
+    key: "vestiums",
   },
   {
     Icon: CalendarIcon,
-    url: '/calendar',
-    key: 'calendar',
+    url: "/calendar",
+    key: "calendar",
   },
-]
+];
 
 const Header = ({ image, fullName }) => {
+  const dispatch = useDispatch();
   const { pathname, push, query } = useRouter();
 
   const { q } = query;
   const url = getCurrentTab(pathname, 1);
 
-  const handleSearch = e => {
+  const handleSearch = (e) => {
     push({
-      pathname: '/',
-      ...e.target.value ? {
-        query: {
-          q: e.target.value,
-        },
-      } : {},
-    })
-  }
+      pathname: "/",
+      ...(e.target.value
+        ? {
+            query: {
+              q: e.target.value,
+            },
+          }
+        : {}),
+    });
+  };
 
-  const handleLogout = () => {}
+  const handleLogout = () => {
+    dispatch(logout());
+    push({
+      pathname: "/auth/login",
+    });
+  };
 
   return (
     <HeaderWrapper className="container">
@@ -63,9 +65,9 @@ const Header = ({ image, fullName }) => {
       <Input
         className="search-input"
         size="large"
-        {...q && {
+        {...(q && {
           defaultValue: q,
-        }}
+        })}
         suffix={<SearchOutlined />}
         onPressEnter={handleSearch}
       />
@@ -73,9 +75,9 @@ const Header = ({ image, fullName }) => {
         {actionButtons.map(({ key, Icon, url: btnUrl }, index) => (
           <Link href={btnUrl} key={`button-${String(index)}`}>
             <Button
-              {...(url || 'home') === key && {
-                type: 'primary',
-              }}
+              {...((url || "home") === key && {
+                type: "primary",
+              })}
               className="nav-icon-button"
               shape="circle"
               icon={<Icon size={22} />}
@@ -89,30 +91,26 @@ const Header = ({ image, fullName }) => {
           <div className="avatar">
             <Dropdown
               overlay={() => (
-                <Menu style={{ minWidth: '120px' }}>
+                <Menu style={{ minWidth: "120px" }}>
                   <Menu.Divider />
                   <Menu.Item onClick={handleLogout} key="logout">
                     Logout
                   </Menu.Item>
                 </Menu>
               )}
-              trigger={['click']}
+              trigger={["click"]}
             >
-              <Avatar
-                src={image}
-                icon={<UserOutlined />}
-              />
+              <Avatar size={50} src={image} icon={<UserOutlined />} />
             </Dropdown>
           </div>
         </div>
       </div>
     </HeaderWrapper>
-  )
-}
+  );
+};
 
 Header.defaultProps = {
-  fullName: 'Anne Giao',
-  // image: '/images/avatar.png',
-}
+  fullName: "",
+};
 
 export default Header;

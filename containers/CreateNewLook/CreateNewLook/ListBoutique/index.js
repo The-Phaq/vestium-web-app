@@ -23,8 +23,13 @@ const ListBoutique = ({ setBoutique }) => {
     if (!id) return;
     const boutique = find(listItems, (bg) => bg._id === id);
     if (!boutique?.image?.url) return;
-    console.log("boutique", boutique);
-    setBoutique(boutique);
+    setBoutique({
+      ...boutique,
+      image: {
+        ...boutique.image,
+        url: `${boutique.image.url}?exp=${new Date().getTime()}`,
+      },
+    });
   };
 
   return (

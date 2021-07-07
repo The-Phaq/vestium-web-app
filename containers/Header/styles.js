@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Layout } from 'antd';
+import styled from "styled-components";
+import { Layout } from "antd";
 
 const { Header } = Layout;
 
@@ -21,8 +21,6 @@ export default styled(Header)`
     input {
       background: transparent;
     }
-
-    
   }
 
   .right-header {
@@ -74,7 +72,7 @@ export default styled(Header)`
 
     .user-section {
       display: flex;
-      ${'' /* width: 50%; */}
+      ${"" /* width: 50%; */}
       justify-content: flex-end;
       align-items: center;
       margin-right: 0;
@@ -91,7 +89,6 @@ export default styled(Header)`
           font-weight: 700;
           font-size: 16px;
           line-height: 19.36px;
-          padding-bottom: 5px;
         }
         p {
           font-weight: 400;

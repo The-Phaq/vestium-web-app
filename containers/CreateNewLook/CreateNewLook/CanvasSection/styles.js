@@ -10,4 +10,10 @@ export default styled.div`
     border-radius: 15px;
     border: 1px solid #8b8181;
   }
+
+  .action-section {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
 `;

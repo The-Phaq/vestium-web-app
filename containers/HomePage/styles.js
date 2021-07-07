@@ -135,7 +135,7 @@ export const NewLookItemWrapper = styled(Row)`
       .user {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
 
         .name {
           font-weight: bold;

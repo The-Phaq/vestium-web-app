@@ -38,8 +38,8 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
   const [loading, setLoading] = useState(false);
   const colors = useSelector(colorsSelectors.getDataArr);
   const figures = useSelector(getAllFiguresSelectors);
-  const user = useSelector(state => state.user.user);
-  console.log('asdasd listBoutique', listBoutique)
+  const user = useSelector(state => state.user?.user);
+  
   const features = useMemo(() => {
     return flatten([newLookData?.colorIds.map(colorId => colors.find(color => color?._id === colorId)?.name), newLookData?.figureIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)])
   }, [newLookData])
