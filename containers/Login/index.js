@@ -11,8 +11,7 @@ import { login } from '../../store/auth/actions';
 const LoginForm = () => {
     const dispatch = useDispatch();
     const router = useRouter();
-    const { user, token, loading } = useSelector((state) => state.user);
-    console.log('user', user);
+    const { token, loading } = useSelector((state) => state.user);
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
         dispatch(login(values));
