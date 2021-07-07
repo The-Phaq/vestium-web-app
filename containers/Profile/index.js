@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SecurityLayout from 'layouts/Security';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, Col, Row, Avatar, Tabs, Empty, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import ItemInfo from './ItemInfo';
 import ProfileWrapper from './styles';
+import { getProfile } from '../../store/auth/actions';
 
 const { TabPane } = Tabs;
 const Profile = () => {
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+    useEffect(() => {
+        dispatch(getProfile());
+    }, []);
     const arrInfo = [
         {
             key: 'ID',

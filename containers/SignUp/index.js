@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import { Form, Checkbox } from 'antd';
 import { MailFilled, LockFilled, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from '../Login/styles';
+import { register } from '../../store/auth/actions';
 
 const SignUpForm = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const { token, loading } = useSelector((state) => state.user);
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
+        dispatch(register(values));
     };
+    useEffect(() => {
+        if (token) {
+            router.push('/');
+        }
+    }, [token]);
     return (
         <LoginWrapper>
             <div className="main">
@@ -102,6 +114,7 @@ const SignUpForm = () => {
                                 htmlType="submit"
                                 className="login-form-button"
                                 block
+                                loading={loading}
                             >
                                 CREAT ACCOUNT
                             </ButtonC>
