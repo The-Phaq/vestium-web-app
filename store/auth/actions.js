@@ -7,7 +7,8 @@ import {
 } from '../../api/user';
 import slice from './index';
 
-const { loginSuccess, logoutSuccess, loginFetch, loginFailed } = slice.actions;
+const { loginSuccess, logoutSuccess, loginFetch, loginFailed, profileSuccess } =
+    slice.actions;
 export const login =
     ({ username, password }) =>
     async (dispatch) => {
@@ -42,7 +43,7 @@ export const logout = () => async (dispatch) => {
 };
 
 export const register =
-    ({ name, email, password }) =>
+    ({ name, email, password, ...query }) =>
     async (dispatch) => {
         dispatch(loginFetch());
         try {
@@ -51,8 +52,8 @@ export const register =
                 lastName: name,
                 email,
                 password,
+                ...query,
             });
-            console.log('res', res);
             message.success('Your account have bên create successfully!');
             dispatch(loginSuccess(res));
         } catch (e) {
@@ -67,10 +68,10 @@ export const getProfile = () => async (dispatch) => {
     try {
         const res = await fetchProfile();
         console.log('resProfile', res);
-        // dispatch(loginSuccess(res));
+        dispatch(profileSuccess(res));
     } catch (e) {
-        message.error(e.message);
-        // dispatch(loginFailed());
+        // message.error(e.message);
+        dispatch(loginFailed());
         return console.error(e.message);
     }
 };

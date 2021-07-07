@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Form, Checkbox } from 'antd';
@@ -10,17 +10,13 @@ import { register } from '../../store/auth/actions';
 
 const SignUpForm = () => {
     const dispatch = useDispatch();
-    const router = useRouter();
-    const { token, loading } = useSelector((state) => state.user);
+    const { query } = useRouter();
+    const { loading } = useSelector((state) => state.user);
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
-        dispatch(register(values));
+        dispatch(register({ ...values, ...query }));
     };
-    useEffect(() => {
-        if (token) {
-            router.push('/');
-        }
-    }, [token]);
+
     return (
         <LoginWrapper>
             <div className="main">
@@ -61,6 +57,10 @@ const SignUpForm = () => {
                                 {
                                     required: true,
                                     message: 'Please input your Email!',
+                                },
+                                {
+                                    type: 'email',
+                                    message: 'The input is not valid E-mail!',
                                 },
                             ]}
                         >

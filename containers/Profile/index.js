@@ -18,35 +18,35 @@ const Profile = () => {
         {
             key: 'ID',
             label: 'ID',
-            content: '123948504920',
+            content: user?._id,
             labelAction: 'Share ID',
             action: () => {},
         },
         {
             key: 'RANK',
             label: 'Rank',
-            content: 'Vestiumer',
+            content: user?.rank,
             labelAction: '',
             action: () => {},
         },
         {
             key: 'BONUS',
             label: 'Bonus Point',
-            content: '4.530',
+            content: user?.pointCount,
             labelAction: '',
             action: () => {},
         },
         {
             key: 'FOLLOWER',
             label: 'Followers',
-            content: '319',
+            content: user?.followerCount,
             labelAction: 'Follower list',
             action: () => {},
         },
         {
             key: 'FRIEND',
             label: 'Friends',
-            content: '50',
+            content: user?.friendCount,
             labelAction: 'Friends list',
             action: () => {},
         },
@@ -61,7 +61,7 @@ const Profile = () => {
                     }}
                 >
                     <Row gutter={[48]}>
-                        <Col lg={10} md={24}>
+                        <Col lg={12} md={24}>
                             <div className="avatarHolder">
                                 <Avatar
                                     style={{
@@ -74,7 +74,7 @@ const Profile = () => {
                                     }
                                     size={100}
                                 />
-                                <div className="name">Anna Giao</div>
+                                <div className="name">{`${user?.firstName} ${user?.lastName}`}</div>
                                 <Button type="link">Edit Profile</Button>
                             </div>
                             <div className="detail">
@@ -83,7 +83,7 @@ const Profile = () => {
                                 ))}
                             </div>
                         </Col>
-                        <Col lg={14} md={24} className="title">
+                        <Col lg={12} md={24} className="title">
                             Inbox
                             <Tabs defaultActiveKey="1">
                                 <TabPane tab="Messenge" key="1">

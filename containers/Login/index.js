@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 import { Form, Checkbox } from 'antd';
 import { MailFilled, LockFilled } from '@ant-design/icons';
+import Link from 'next/link';
 import Image from 'next/image';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from './styles';
@@ -10,18 +10,11 @@ import { login } from '../../store/auth/actions';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
-    const router = useRouter();
-    const { token, loading } = useSelector((state) => state.user);
+    const { loading } = useSelector((state) => state.user);
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
         dispatch(login(values));
     };
-    useEffect(() => {
-        if (token) {
-            router.push('/');
-        }
-    }, [token]);
-
     return (
         <LoginWrapper>
             <div className="main">
@@ -43,6 +36,10 @@ const LoginForm = () => {
                                 {
                                     required: true,
                                     message: 'Please input your Email!',
+                                },
+                                {
+                                    type: 'email',
+                                    message: 'The input is not valid E-mail!',
                                 },
                             ]}
                         >
@@ -102,6 +99,12 @@ const LoginForm = () => {
                                 LOG IN
                             </ButtonC>
                         </Form.Item>
+                        <div className="text-signin">
+                            Already have not an account?{' '}
+                            <Link href="/auth/signup">
+                                <a className="text">Sign up</a>
+                            </Link>
+                        </div>
                         <div className="social">
                             <Image
                                 src="/images/fb.png"
