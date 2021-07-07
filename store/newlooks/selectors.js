@@ -6,21 +6,22 @@ export const newlooksSelectors = new CRUDSelectors(MODEL_NAME);
 
 const getNewLooks = state => state.newlooks.data;
 const getNewLookIds = state => state.newlooks.ids;
+const getUser = state => state.user.user;
 
 export const getNewLooksSelectors = createSelector(
-  [getNewLooks, getNewLookIds],
-  (newLookData, newLookIds) => {
+  [getNewLooks, getNewLookIds, getUser],
+  (newLookData, newLookIds, user) => {
     return newLookIds.map(id => ({
       ...newLookData[id],
       id: newLookData[id]?._id,
-      img: newLookData[id]?.image?.url || '/images/newLook.png',
+      img: newLookData[id]?.image?.url || newLookData[id]?.url || '/images/newLook.png',
       user: {
-        name: 'Anne Giao',
-        avatar: '/images/avatar.png',
+        name: `${user?.firstName || ''} ${user?.lastName || ''}`,
+        avatar: user?.avatar,
       },
-      votes: 214,
+      votes: user?.pointCount || 0,
       shares: 46,
-      followers: 132,
+      followers: user?.followerCount || 0,
       tags: ['office', 'everyDay', 'casual', 'sporty', 'black', 'spring', 'summer', 'medium'],
       items: newLookData[id]?.items?.map(item => ({
         ...item,

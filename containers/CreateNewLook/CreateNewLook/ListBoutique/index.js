@@ -8,7 +8,10 @@ const ListBoutique = ({ setBoutique }) => {
   const [listItems, setListItems] = useState([]);
   useEffect(() => {
     const getListBg = async () => {
-      const response = await getAllApi("items");
+      const response = await getAllApi("items", {
+        perPage: 50,
+        page: 1,
+      });
       if (response?.data) setListItems(response.data);
       else setListItems([]);
     };

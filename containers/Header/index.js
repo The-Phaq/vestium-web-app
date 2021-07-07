@@ -112,7 +112,7 @@ const Header = ({ image, fullName }) => {
 
 Header.defaultProps = {
   fullName: 'Anne Giao',
-  image: '/images/avatar.png',
+  // image: '/images/avatar.png',
 }
 
 export default Header;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Tabs, Steps } from "antd";
+import xorBy from 'lodash/xorBy';
 // import components
 import CanvasSection from "./CanvasSection";
 import ListBackground from "./ListBackground";
@@ -8,13 +9,12 @@ import ListEmoji from "./ListEmoji";
 
 const { TabPane } = Tabs;
 
-const CreateNewLook = ({ setCurrentStep, setNewLookImg }) => {
+const CreateNewLook = ({ listBoutique, setListBoutique, setCurrentStep, setNewLookImg }) => {
   const [background, setBackground] = useState(null);
-  const [listBoutique, setListBoutique] = useState([]);
   const [listEmoji, setListEmoji] = useState([]);
 
   const setBoutique = (item) => {
-    setListBoutique([...listBoutique, item]);
+    setListBoutique(boutiques => xorBy(boutiques, [item], '_id'));
   };
 
   const setEmoji = (url) => {

@@ -3,6 +3,7 @@ import counterReducer from './counter';
 import newlooks from './newlooks/slice';
 import figures from './figures/slice';
 import items from './items/slice';
+import colors from './colors/slice';
 import user from './auth';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
         newlooks,
         figures,
         items,
+        colors,
         user: user.reducer,
     },
 });

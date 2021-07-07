@@ -7,7 +7,7 @@ const request = axios.create({
   // withCredentials: true,
 });
 
-const getAuthToken = () => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRkMWQ4NWNjYzBjYzAwMWI0NWY5OWUiLCJlbWFpbCI6ImFyaWdhdG8xNTA5OThAZ21haWwuY29tIiwicm9sZSI6ImN1c3RvbWVyIiwiZmlyc3ROYW1lIjoiUGh1YyIsImxhc3ROYW1lIjoiTGUiLCJpZCI6IjYwZGQxZDg1Y2NjMGNjMDAxYjQ1Zjk5ZSIsImlhdCI6MTYyNTExMjM0MywiZXhwIjoxNjI1MTE1OTQzfQ.xSnjtZSa_6f-5zsdl-oGDQCdzuQz4LLHrhKQGNZMa0s'
+const getAuthToken = () => localStorage.getItem('token')
 
 export const setInitHeader = (ctx) => {
   if (!ctx) {

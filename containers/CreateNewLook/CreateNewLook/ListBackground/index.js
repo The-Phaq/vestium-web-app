@@ -7,7 +7,10 @@ const ListBackground = ({ setBackground }) => {
   const [listBackgrounds, setListBackgrounds] = useState([]);
   useEffect(() => {
     const getListBg = async () => {
-      const response = await getAllApi("backgrounds");
+      const response = await getAllApi("backgrounds", {
+        perPage: 50,
+        page: 1,
+      });
       if (response?.data) setListBackgrounds(response.data);
       else setListBackgrounds([]);
     };

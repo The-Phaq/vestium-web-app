@@ -40,7 +40,7 @@ const Sider = () => {
   const { pathname, query } = useRouter();
   const figures = useSelector(getFiguresSelectors);
   const { filter } = useSelector(newlooksSelectors.getFilters);
-  const currentFigureIds = filter?.figureIds || [];
+  const currentFigureIds = filter?.stylesIds || [];
   const url = getCurrentTab(pathname, 1);
 
   const { q } = query;
@@ -64,7 +64,7 @@ const Sider = () => {
         ...q && {
           q,
         },
-        figureIds: xor(currentFigureIds, [id]),
+        stylesIds: xor(currentFigureIds, [id]),
       },
     }, true)
   }

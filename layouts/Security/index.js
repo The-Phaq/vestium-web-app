@@ -10,6 +10,7 @@ import SecurityLayoutWrapper from './styles';
 const SecurityLayout = ({ children }) => {
   const dispatch = useDispatch();
   const figures = useSelector(state => state.figures.data)
+  const user = useSelector(state => state.user.user);
   useEffect(() => {
     if (isEmpty(figures)) {
       dispatch(getFigures());
@@ -19,7 +20,7 @@ const SecurityLayout = ({ children }) => {
     <SecurityLayoutWrapper>
       <Layout>
         <div className="header-wrapper">
-          <Header className="container" />
+          <Header fullName={`${user?.firstName || ''} ${user?.lastName || ''}`} image={user?.avatar} className="container" />
         </div>
         <div className="container layout-content-wrapper">
           <Layout className="layout-content">

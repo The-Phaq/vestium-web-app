@@ -40,6 +40,7 @@ const HomePage = () => {
     retrieveList({
       pageSize: 10,
       offset: 0,
+      order: '-createdAt',
       ...q && {
         filter: {
           q,

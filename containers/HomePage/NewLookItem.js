@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Avatar, Col, Button, Divider, Row } from 'antd';
 import Image from 'next/image';
+import { getAllFiguresSelectors } from 'store/figures/selectors';
 import {
   HeartIcon,
 } from 'components/SVGIcon';
@@ -36,7 +38,11 @@ const infos = [
 ]
 
 const NewLookItem = ({ newLook }) => {
-  const { img, user, name, tags, items } = newLook || {};
+  const { img, user, name, items, stylesIds } = newLook || {};
+  const figures = useSelector(getAllFiguresSelectors);
+  const features = useMemo(() => {
+    return stylesIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)
+  }, [stylesIds])
 
   return (
     <NewLookItemWrapper gutter={[20, 20]}>
@@ -81,7 +87,7 @@ const NewLookItem = ({ newLook }) => {
               {name}
             </div>
             <div className="tags">
-              {tags?.toString()?.replaceAll(',', '  ·  ')}
+              {features?.toString()?.replaceAll(',', '  ·  ')}
             </div>
             {items?.length > 0 && (
               <Row gutter={[20, 20]} className="items">

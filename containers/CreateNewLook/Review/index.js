@@ -1,44 +1,86 @@
-import React, { useState } from "react";
-import { Row, Col, Image, Form, Input, Button, Divider } from "antd";
-import { useSelector } from 'react-redux';
-import { getFiguresSelectors } from 'store/figures/selectors';
-import xor from 'lodash/xor';
+import React, { useMemo, useState } from 'react'
+import { Row, Col, Image, Button } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUrl, uploadMedia } from 'api/uploadMedia';
+import flatten from 'lodash/flatten';
+import { useRouter } from 'next/router';
+import { createNewlooks, getAllNewlooks } from 'store/newlooks/actions';
+import { colorsSelectors } from 'store/colors/selectors';
+import { getAllFiguresSelectors } from 'store/figures/selectors';
 import styled from 'styled-components';
-import AttributeSelector from './AttributeSelector';
 
-const ButtonWrapper = styled(Button)`
-  display: inline-flex;
-  padding: 5px 7px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 120px;
-  min-width: 120px;
-  justify-content: center;
+const InfoWrapper = styled.div`
   text-align: center;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  line-height: 16px;
-  margin-right: 8px !important;
+  justify-content: center;
 
-  &.ant-button-primary {
-    border-color: ${({ theme }) => theme.palette.primary};
-    background: ${({ theme }) => theme.palette.primary};
-    color: #fff;
+  h1 {
+    text-transform: uppercase;
   }
 `;
 
-const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
-  const [form] = Form.useForm();
-  const figures = useSelector(getFiguresSelectors);
-  const [figureIds, setFigureIds] = useState([]);
-  
-  const onFinish = values => {
-    setNewLookData({
-      ...values,
-      colorIds: values.colorIds || [],
-      figureIds,
-    });
-    setCurrentStep(2);
+const b64toBlob = (base64String) => fetch(base64String).then(res => res.blob())
+
+const guid = () => {
+  const s4 = () => {
+      return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+  }
+  return `${s4() + s4()  }-${  s4()  }-${  s4()  }-${  s4()  }-${  s4()  }${s4()  }${s4()}`;
+}
+
+const Review = ({ listBoutique, newLookImg, newLookData }) => {
+  const { push } = useRouter();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const colors = useSelector(colorsSelectors.getDataArr);
+  const figures = useSelector(getAllFiguresSelectors);
+  const user = useSelector(state => state.user.user);
+  console.log('asdasd listBoutique', listBoutique)
+  const features = useMemo(() => {
+    return flatten([newLookData?.colorIds.map(colorId => colors.find(color => color?._id === colorId)?.name), newLookData?.figureIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)])
+  }, [newLookData])
+
+  const onClick = async () => {
+    try {
+      setLoading(true);
+      const file = await (b64toBlob(newLookImg));
+      file.name = `new-look-${guid()}`;
+      const responseS3 = await getUrl(file.name, file.type);
+      const response = await uploadMedia(responseS3.uploadUrl, file);
+      if (response) dispatch(createNewlooks({
+        data: {
+          name: newLookData?.name,
+          stylesIds: newLookData?.figureIds,
+          colorIds: newLookData?.colorIds,
+          url: responseS3.url,
+          image: {
+            url: responseS3.url,
+            name: file.name,
+          },
+          items: listBoutique?.map(boutique => ({
+            itemId: boutique?._id,
+          })),
+          userId: user?._id,
+        },
+        options: {
+          customApiResource: 'newlooks/me',
+        },
+      })).then(() => {
+        dispatch(getAllNewlooks({
+          data: {
+            pageSize: 10,
+            offset: 0,
+          },
+        })).then(() => push('/'))
+      })
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   }
 
   return (
@@ -50,44 +92,23 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
         />
       </Col>
       <Col span={12}>
-        <Form form={form} onFinish={onFinish}>
-          <Form.Item name="name" label="NAME">
-            <Input />
-          </Form.Item>
-          {figures.map(figure => (
-            <>
-              <label style={{ textTransform: 'uppercase '}}>{figure.text}</label>
-              <br />
-              <div style={{ minHeight: '40px',display: 'flex', width: '100%', overflowX: 'auto'}}>
-                {figure?.items?.length ? (
-                  figure?.items?.map(item => (
-                    <ButtonWrapper
-                      {...figureIds.includes(item.id) && {
-                        type: 'primary',
-                      }}
-                      onClick={() => setFigureIds(currentFigureIds => xor(currentFigureIds, [item.id]))}
-                    >
-                      {item.text}
-                    </ButtonWrapper>
-                  ))
-                ) : <div>No data</div>}
-              </div>
-              <Divider />
-            </>
-          ))}
-          <AttributeSelector source="colorIds" label="COLOR" type="colors" />
-          
+        <InfoWrapper>
+          <h1>
+            {newLookData?.name}
+          </h1>
+          <div className="features">
+            {features?.toString()?.replaceAll(',', '  ·  ')}
+          </div>
           <div style={{ width: '100%'}}>
           <br />
-          <br />
-            <Button style={{width: '100%'}} type="primary" size="large" htmlType="submit">
-              Create
+            <Button loading={loading} style={{width: '100%'}} type="primary" size="large" onClick={onClick}>
+              Send
             </Button>
           </div>
-        </Form>
+        </InfoWrapper>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default AddInfomation;
+export default Review;

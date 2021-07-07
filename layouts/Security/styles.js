@@ -28,5 +28,6 @@ export default styled.div`
   .content-wrapper {
     min-height: calc(100vh - 104px);
     width: 100%;
+    max-width: calc(100% - 255px);
   }
 `;
