@@ -8,7 +8,10 @@ const ListEmoji = ({ setEmoji }) => {
   const [listEmojis, setListEmojis] = useState([]);
   useEffect(() => {
     const getListBg = async () => {
-      const response = await getAllApi("emojis");
+      const response = await getAllApi("emojis", {
+        perPage: 50,
+        page: 1,
+      });
       if (response?.data) setListEmojis(response.data);
       else setListEmojis([]);
     };

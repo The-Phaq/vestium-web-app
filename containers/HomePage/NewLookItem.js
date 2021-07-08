@@ -88,7 +88,7 @@ const NewLookItem = ({ newLook }) => {
             {items?.length > 0 && (
               <Row gutter={[20, 20]} className="items">
                 {items.map(
-                  ({ id, name: itemName, brandName, price, img: itemImg }) => (
+                  ({ id, name: itemName, brand, price, img: itemImg }) => (
                     <Col span={8} key={id}>
                       <div className="item-wrapper">
                         <div className="item-image">
@@ -99,8 +99,8 @@ const NewLookItem = ({ newLook }) => {
                           />
                         </div>
                         <div className="item-name">{itemName}</div>
-                        <div className="item-name">{brandName}</div>
-                        <div className="price">{price}</div>
+                        <div className="item-name">{brand}</div>
+                        <div className="price">{`$${price}`}</div>
                       </div>
                     </Col>
                   ),

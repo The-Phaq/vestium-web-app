@@ -1,27 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Image, Empty } from "antd";
-import { find } from "lodash";
+import { useDispatch, useSelector } from 'react-redux';
+import { Row, Col, Image, Empty, Skeleton, Button } from "antd";
+import { getAllItems } from 'store/items/actions';
+import { itemsSelectors } from 'store/items/selectors';
+import find from "lodash/find";
+import xor from "lodash/xor";
+import { Waypoint } from 'react-waypoint';
 import { getAllApi } from "api/crud";
 import ListBoutiqueStyles from "./styles";
 
 const ListBoutique = ({ setBoutique }) => {
-  const [listItems, setListItems] = useState([]);
+  const dispatch = useDispatch();
+  const [listCategories, setListCategories] = useState([]);
+  const [currentCategoryIds, setCurrentCategoryIds] = useState([]);
+  const items = useSelector(itemsSelectors.getDataArr);
+  const loading = useSelector(itemsSelectors.getLoading);
+  const enabledLoadMore = useSelector(itemsSelectors.enabledLoadMore);
+
+  const retrieveList = (filterData, isRefresh) => {
+    dispatch(getAllItems({
+      data: {
+        ...filterData,
+      },
+      options: {
+        isRefresh,
+      },
+    }))
+  }
+
+  const handleEnterWaypoint = () => {
+    if (enabledLoadMore && !loading) {
+      retrieveList({}, false);
+    }
+  }
+
   useEffect(() => {
-    const getListBg = async () => {
-      const response = await getAllApi("items", {
-        perPage: 50,
-        page: 1,
-      });
-      if (response?.data) setListItems(response.data);
-      else setListItems([]);
+    retrieveList({
+      perPage: 10,
+      offset: 0,
+    }, true);
+    const getListCategories = async () => {
+      const response = await getAllApi("categories");
+      if (response) setListCategories(response);
     };
 
-    getListBg();
-  }, []);
+    getListCategories();
+  }, [])
 
   const onSelectBg = (id) => () => {
     if (!id) return;
-    const boutique = find(listItems, (bg) => bg._id === id);
+    const boutique = find(items, (bg) => bg._id === id);
     if (!boutique?.image?.url) return;
     setBoutique({
       ...boutique,
@@ -32,11 +60,37 @@ const ListBoutique = ({ setBoutique }) => {
     });
   };
 
+  const handleFilterBoutique = id => () => {
+    setCurrentCategoryIds(xor(currentCategoryIds, [id]));
+    retrieveList({
+      perPage: 10,
+      offset: 0,
+      filter: {
+        categoryId_$in: xor(currentCategoryIds, [id]),
+      },
+    }, true)
+  }
+
   return (
     <ListBoutiqueStyles>
       <Row gutter={[8, 8]}>
-        {listItems?.length > 0 &&
-          listItems.map((boutique) => (
+        <Col span={24}>
+          <div className="filter-boutique">
+            {listCategories.map(category => (
+              <Button
+                shape="round"
+                {...currentCategoryIds.includes(category._id) && {
+                  type: 'primary',
+                }}
+                onClick={handleFilterBoutique(category._id)}
+              >
+                {category.name}
+              </Button>
+            ))}
+          </div>
+        </Col>
+        {items?.length > 0 &&
+          items.map((boutique) => (
             <Col span={8} key={boutique._id}>
               <Image
                 src={boutique?.image?.url}
@@ -46,8 +100,14 @@ const ListBoutique = ({ setBoutique }) => {
               />
             </Col>
           ))}
+          {loading && (
+            <Col span={24}>
+              <Skeleton active />
+            </Col>
+          )}
+          {enabledLoadMore && <Waypoint onEnter={handleEnterWaypoint} />}
       </Row>
-      {listItems?.length === 0 && <Empty />}
+      {items?.length === 0 && !loading && <Empty />}
     </ListBoutiqueStyles>
   );
 };

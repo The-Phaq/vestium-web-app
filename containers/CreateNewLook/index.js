@@ -15,8 +15,6 @@ const CreateNewLook = () => {
   const [newLookData, setNewLookData] = useState({});
   const [listBoutique, setListBoutique] = useState([]);
 
-  console.log('asdasd newLookImg', listBoutique, newLookData)
-
   return (
     <SecurityLayout>
       <CreateNewLookStyles>

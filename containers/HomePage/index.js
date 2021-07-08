@@ -14,6 +14,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const { query } = useRouter();
   const newLooks = useSelector(getNewLooksSelectors);
+  
   const loading = useSelector(newlooksSelectors.getLoading);
   const enabledLoadMore = useSelector(newlooksSelectors.enabledLoadMore);
 

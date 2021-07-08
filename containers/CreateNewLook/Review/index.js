@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from 'react'
-import { Row, Col, Image, Button } from 'antd';
+import { Row, Col, Image } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUrl, uploadMedia } from 'api/uploadMedia';
+import SharpEdgeButton from 'components/SharpEdgeButton';
 import flatten from 'lodash/flatten';
+import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 import { createNewlooks, getAllNewlooks } from 'store/newlooks/actions';
 import { colorsSelectors } from 'store/colors/selectors';
@@ -19,6 +21,38 @@ const InfoWrapper = styled.div`
   h1 {
     text-transform: uppercase;
   }
+
+  .features {
+    width: 70%;
+  }
+
+  .items {
+      margin-top: 20px;
+      width: 100%;
+
+      .item-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .item-image {
+          width: 100%;
+          height: 140px;
+          position: relative;
+        }
+        
+        .item-name {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .price {
+          font-weight: 500;
+        }
+      }
+    }
 `;
 
 const b64toBlob = (base64String) => fetch(base64String).then(res => res.blob())
@@ -99,11 +133,38 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
           <div className="features">
             {features?.toString()?.replaceAll(',', '  ·  ')}
           </div>
+          {listBoutique?.length > 0 && (
+            <Row gutter={[20, 20]} className="items">
+              {listBoutique.map(
+                ({ _id: id, name: itemName, brand, price, image }) => (
+                  <Col span={8} key={id}>
+                    <div className="item-wrapper">
+                      <div className="item-image">
+                        <NextImage
+                          objectFit="contain"
+                          layout="fill"
+                          src={image?.url}
+                        />
+                      </div>
+                      <div className="item-name">{itemName}</div>
+                      <div className="item-name">{brand}</div>
+                      <div className="price">{`$${price}`}</div>
+                    </div>
+                  </Col>
+                ),
+              )}
+            </Row>
+          )}
           <div style={{ width: '100%'}}>
-          <br />
-            <Button loading={loading} style={{width: '100%'}} type="primary" size="large" onClick={onClick}>
-              Send
-            </Button>
+            <br />
+            <SharpEdgeButton loading={loading}  type="primary" size="large" onClick={onClick}>
+              SEND MY NEW LOOK
+            </SharpEdgeButton>
+            <br />
+            <br />
+            <SharpEdgeButton  size="large">
+              ADD TO FAVORITE
+            </SharpEdgeButton>
           </div>
         </InfoWrapper>
       </Col>

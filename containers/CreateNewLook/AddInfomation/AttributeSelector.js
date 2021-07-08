@@ -7,13 +7,18 @@ import { Waypoint } from 'react-waypoint';
 import styled from 'styled-components';
 
 export const CheckBoxWrapper = styled(Checkbox)`
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+
+
+
   span {
     display: inline-flex;
     padding: 5px 7px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    border: none;
     background: #fff;
-    color: ${({ color }) => color || '#000'};
+    color: #000;
     width: 120px;
     justify-content: center;
     text-align: center;
@@ -23,13 +28,36 @@ export const CheckBoxWrapper = styled(Checkbox)`
   }
 
   .ant-checkbox {
-    display: none;
+    display: none !important;
   }
 
+  &:after {
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    background: ${({ color }) => color};
+    color: ${({ color }) => color};
+    border-radius: 50%;
+    justify-content: center;
+    content: '✓';
+    font-size: 24px;
+    font-weight: 800;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  &.ant-checkbox-wrapper-checked:after {
+    background: #fff;
+  }
+
+
   .ant-checkbox-checked + span {
-    border-color: ${({ theme, color }) => color || theme.palette.primary};
+    ${'' /* border-color: ${({ theme, color }) => color || theme.palette.primary};
     background: ${({ theme, color }) => color || theme.palette.primary};
-    color: #fff;
+    color: #fff; */}
   }
 `;
 

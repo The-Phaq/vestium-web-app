@@ -22,6 +22,7 @@ export const getNewLooksSelectors = createSelector(
         id: item?.itemId?._id,
         _id: item?.itemId?._id,
         name: item?.itemId?.name,
+        brand: item?.itemId?.brand,
         price: item?.itemId?.price,
         img: item?.url || item?.itemId?.image?.url,
       })),

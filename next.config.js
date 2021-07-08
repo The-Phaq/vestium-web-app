@@ -5,6 +5,7 @@ const nextConfig = {
   images: {
     domains: [
       'vestiums-uploaded-images-staging.s3.amazonaws.com',
+      'vestiums-uploaded-images-staging.s3.eu-west-3.amazonaws.com',
     ],
   },
 };

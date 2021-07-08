@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import useImage from "use-image";
-import { Button } from "antd";
+import SharpEdgeButton from 'components/SharpEdgeButton';
 import { Stage, Layer, Group, Text, Image } from "react-konva";
 import TransformerComponent from "../Transformer";
 import CanvasSectionStyles from "./styles";
@@ -100,9 +100,9 @@ class CanvasSection extends Component {
           </Layer>
         </Stage>
         <div className="action-section">
-          <Button size="large" type="primary" onClick={this.onNext}>
+          <SharpEdgeButton size="large" type="primary" onClick={this.onNext}>
             CREATE
-          </Button>
+          </SharpEdgeButton>
         </div>
       </CanvasSectionStyles>
     );

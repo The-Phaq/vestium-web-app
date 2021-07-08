@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { Row, Col, Image, Form, Input, Button, Divider } from "antd";
 import { useSelector } from 'react-redux';
 import { getFiguresSelectors } from 'store/figures/selectors';
+import SharpEdgeButton from 'components/SharpEdgeButton';
 import xor from 'lodash/xor';
 import styled from 'styled-components';
 import AttributeSelector from './AttributeSelector';
+
+const FormWrapper = styled(Form)`
+  height: 450px;
+  overflow: auto;
+`;
 
 const ButtonWrapper = styled(Button)`
   display: inline-flex;
@@ -19,6 +25,7 @@ const ButtonWrapper = styled(Button)`
   align-items: center;
   line-height: 16px;
   margin-right: 8px !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   &.ant-button-primary {
     border-color: ${({ theme }) => theme.palette.primary};
@@ -50,7 +57,7 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
         />
       </Col>
       <Col span={12}>
-        <Form form={form} onFinish={onFinish}>
+        <FormWrapper form={form} onFinish={onFinish}>
           <Form.Item name="name" label="NAME">
             <Input />
           </Form.Item>
@@ -77,14 +84,14 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
           ))}
           <AttributeSelector source="colorIds" label="COLOR" type="colors" />
           
-          <div style={{ width: '100%'}}>
+          <div style={{ width: '100%', textAlign: 'center'}}>
           <br />
           <br />
-            <Button style={{width: '100%'}} type="primary" size="large" htmlType="submit">
-              Create
-            </Button>
+            <SharpEdgeButton  type="primary" size="large" htmlType="submit">
+              CREATE
+            </SharpEdgeButton>
           </div>
-        </Form>
+        </FormWrapper>
       </Col>
     </Row>
   );
