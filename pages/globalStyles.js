@@ -1,10 +1,11 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   html,body {
     padding: 0;
     margin: 0;
     font-family: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif';
+    overflow: hidden;
   }
 
   a {
@@ -32,6 +33,8 @@ export default createGlobalStyle`
     margin-right: auto;
     margin-left: auto;
     font-family: 'Livvic', serif;
+    max-height: calc(100vh);
+    max-width: calc(100vw - 40px);
   }
 
   @media (min-width: 576px) {
@@ -42,29 +45,29 @@ export default createGlobalStyle`
 
   @media (max-width: 768px) {
     .container {
-      max-width: 720px;
+      max-width: calc(100vw - 40px);
     }
   }
 
   @media (max-width: 992px) {
     .container {
-      max-width: 960px;
+      max-width: calc(100vw - 40px);
     }
   }
 
   @media (max-width: 1200px) {
     .container {
-      max-width: 1140px;
+      max-width: calc(100vw - 40px);
     }
   }
   @media (min-width: 1201px) {
     .container {
-      max-width: 1140px;
+      max-width: calc(100vw - 40px);
     }
   }
   @media (min-width: 1441px) {
     .container {
-      max-width: 1240px;
+      max-width: calc(100vw - 40px);
     }
   }
   @media (min-width: 2000px) {
