@@ -37,7 +37,11 @@ const Header = ({ image, fullName }) => {
     const { pathname, push, query } = useRouter();
 
     const { q } = query;
-    const url = getCurrentTab(pathname, 1);
+    let url = getCurrentTab(pathname, 1);
+
+    if (['home', 'boutique', 'create-new-look'].includes(url)) {
+        url = 'home';
+    }
 
     const handleSearch = (e) => {
         push({
