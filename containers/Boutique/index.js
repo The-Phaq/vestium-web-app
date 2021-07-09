@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllItems } from 'store/items/actions';
 import { itemsSelectors } from 'store/items/selectors';
-import { Row, Col, Skeleton } from 'antd';
+import { Row, Col, Skeleton, Empty } from 'antd';
 import { Waypoint } from 'react-waypoint';
 import SecurityLayout from 'layouts/Security';
 import ItemCard from 'components/ItemCard';
@@ -50,6 +50,11 @@ const Boutique = () => {
           {loading && (
             <Col span={24}>
               <Skeleton active />
+            </Col>
+          )}
+          {!loading && !items?.length && (
+            <Col span={24}>
+              <Empty description="No items" />
             </Col>
           )}
           {enabledLoadMore && (

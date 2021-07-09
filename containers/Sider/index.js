@@ -3,8 +3,8 @@ import Divider from 'components/Divider';
 import xor from 'lodash/xor';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFiguresSelectors } from 'store/figures/selectors';
-import { newlooksSelectors } from 'store/newlooks/selectors';
-import { getAllNewlooks } from 'store/newlooks/actions';
+import crudActions from 'store/crudActions';
+import crudSelectors from 'store/crudSelectors';
 import { Button, Collapse, Row, Col } from 'antd';
 import { useRouter } from 'next/router';
 import { getCurrentTab } from 'utils/tools';
@@ -20,11 +20,15 @@ const buttons = [
     isPrimary: true,
     url: '/',
     key: 'new-look',
+    source: 'newlooks',
+    filterKey: 'stylesIds',
   },
   {
     text: 'BOUTIQUE',
     url: '/boutique',
     key: 'boutique',
+    source: 'items',
+    filterKey: 'figureIds',
   },
   {
     text: 'CREATE NEW LOOK',
@@ -35,18 +39,31 @@ const buttons = [
   },
 ];
 
+const filterPages = [
+  ...buttons.filter(item => item.source),
+  {
+    url: '/favorites',
+    key: 'favorites',
+    source: 'items',
+    filterKey: 'figureIds',
+  },
+];
+
 const Sider = () => {
   const dispatch = useDispatch();
   const { pathname, query } = useRouter();
-  const figures = useSelector(getFiguresSelectors);
-  const { filter } = useSelector(newlooksSelectors.getFilters);
-  const currentFigureIds = filter?.stylesIds || [];
   const url = getCurrentTab(pathname, 1);
+  const currentFilterPage = filterPages.find(filterPage => filterPage.key === (url || 'new-look'));
+
+  const figures = useSelector(getFiguresSelectors);
+  const { filter } = useSelector(crudSelectors.[currentFilterPage?.source].getFilters);
+  const currentFigureIds = filter?.[currentFilterPage?.filterKey] || [];
+
 
   const { q } = query;
 
   const retrieveList = (filterData, isRefresh) => {
-    dispatch(getAllNewlooks({
+    dispatch(crudActions?.[currentFilterPage?.source]?.getAll({
       data: {
         ...filterData,
       },
@@ -64,7 +81,7 @@ const Sider = () => {
         ...q && {
           q,
         },
-        stylesIds: xor(currentFigureIds, [id]),
+        [currentFilterPage?.filterKey]: xor(currentFigureIds, [id]),
       },
     }, true)
   }
