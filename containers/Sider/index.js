@@ -36,6 +36,8 @@ const buttons = [
     Icon: PlusCircleFilled,
     url: '/create-new-look',
     key: 'create-new-look',
+    source: 'newlooks',
+    filterKey: 'stylesIds',
   },
 ];
 
