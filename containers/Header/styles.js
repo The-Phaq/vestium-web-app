@@ -4,7 +4,7 @@ import { Layout } from "antd";
 const { Header } = Layout;
 
 export default styled(Header)`
-  background: ${({ theme }) => theme.palette.lightPrimary};
+  background: ${({ theme }) => theme.palette.lightPrimary} !important;
   display: flex;
   align-items: center;
   justify-content: space-between;

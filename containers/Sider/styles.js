@@ -10,6 +10,7 @@ export default styled(Sider)`
         display: flex;
         align-items: stretch;
         width: 100%;
+        background: #fff !important;
     }
 
     .vertical-divider {

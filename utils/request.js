@@ -25,9 +25,21 @@ export const setInitHeader = (ctx) => {
       }
       return config;
     },
-    (error) => Promise.reject(error?.response || error.message),
+    (error) => {
+      return Promise.reject(error?.response || error.message)
+    },
   );
 };
+
+
+request.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    return Promise.reject(
+      error?.response?.data,
+    );
+  },
+);
 
 
 export default request;

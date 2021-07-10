@@ -24,7 +24,7 @@ export const getNewLooksSelectors = createSelector(
         name: item?.itemId?.name,
         brand: item?.itemId?.brand,
         price: item?.itemId?.price,
-        img: item?.url || item?.itemId?.image?.url,
+        img: item?.itemId?.image?.url,
       })),
     }));
   },
