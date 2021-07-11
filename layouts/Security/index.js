@@ -3,6 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { getFigures } from "store/figures/actions";
+import { getProfile } from 'store/auth/actions';
 import { Layout } from "antd";
 import Header from "containers/Header";
 import Sider from "containers/Sider";
@@ -14,12 +15,16 @@ const SecurityLayout = ({ children }) => {
   const figures = useSelector(state => state.figures.data)
   const user = useSelector(state => state.user?.user);
   useEffect(() => {
-    if (!user)
+    console.log('asdasd mount', figures)
+    if (!localStorage.getItem('token'))
       push({
         pathname: "/auth/login",
       });
     if (isEmpty(figures)) {
       dispatch(getFigures());
+    }
+    if (isEmpty(user)) {
+      dispatch(getProfile());
     }
   }, []);
   return (

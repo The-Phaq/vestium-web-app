@@ -1,8 +1,7 @@
 import Head from 'next/head';
-import { Provider } from "react-redux";
 import { ThemeProvider } from 'styled-components';
 import theme from 'theme/main.json';
-import { store } from "../store";
+import { wrapper } from "../store";
 import GlobalStyles from "./globalStyles";
 
 const MyApp = ({ Component, pageProps }) => {
@@ -17,14 +16,12 @@ const MyApp = ({ Component, pageProps }) => {
           rel="stylesheet"
         />
       </Head>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyles />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </Provider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 };
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

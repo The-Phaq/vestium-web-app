@@ -29,6 +29,12 @@ export const NewLookItemWrapper = styled(Row)`
     display: flex;
     flex-direction: column;
     align-items: center;
+    
+    .detail-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
 
     .item-title {
       font-size: 16px;

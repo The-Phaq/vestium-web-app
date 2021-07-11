@@ -19,7 +19,7 @@ const buttons = [
     text: 'NEW LOOK',
     isPrimary: true,
     url: '/',
-    key: 'new-look',
+    key: 'new-looks',
     source: 'newlooks',
     filterKey: 'stylesIds',
   },
@@ -49,13 +49,18 @@ const filterPages = [
     source: 'items',
     filterKey: 'figureIds',
   },
+  {
+    key: 'new-looks',
+    source: 'newlooks',
+    filterKey: 'stylesIds',
+  },
 ];
 
 const Sider = () => {
   const dispatch = useDispatch();
   const { pathname, query } = useRouter();
   const url = getCurrentTab(pathname, 1);
-  const currentFilterPage = filterPages.find(filterPage => filterPage.key === (url || 'new-look'));
+  const currentFilterPage = filterPages.find(filterPage => filterPage.key === (url || 'new-looks'));
 
   const figures = useSelector(getFiguresSelectors);
   const { filter } = useSelector(crudSelectors.[currentFilterPage?.source].getFilters);
@@ -104,7 +109,7 @@ const Sider = () => {
           {buttons.map(({ Icon, text, key, isHighlight, url: btnUrl }, index) => (
             <Link href={btnUrl} key={`button-${String(index)}`}>
               <Button
-                {...(url || 'new-look') === key && {
+                {...(url || 'new-looks') === key && {
                   type: 'primary',
                 }}
                 {...Icon && {

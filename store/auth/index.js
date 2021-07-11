@@ -28,6 +28,8 @@ const slice = createSlice({
             localStorage.setItem('token', action.payload.accessToken);
         },
         loginFailed: (state, action) => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
             state.user = null;
             state.token = null;
             state.loading = false;

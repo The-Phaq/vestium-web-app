@@ -19,3 +19,10 @@ export async function fetchRegister(data) {
 export async function fetchProfile() {
     return get('/auth/me');
 }
+
+export const getUserApi = id => get('/users', {
+    _id: id,
+    page: 1,
+    perPage: 1,
+    total: 1,
+})

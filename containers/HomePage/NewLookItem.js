@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Avatar, Col, Button, Divider, Row } from 'antd';
+import { Avatar, Col, Button, Divider, Row, message, Tooltip } from 'antd';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { getAllFiguresSelectors } from 'store/figures/selectors';
 import {
   HeartIcon,
 } from 'components/SVGIcon';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { NewLookItemWrapper } from './styles';
 
 const infos = [
@@ -28,6 +29,12 @@ const infos = [
     shape: "round",
     text: "SHARE",
     value: (data) => `${data} Shares`,
+    onClick: data => {
+      if (process.browser) {
+        navigator.clipboard.writeText(`${window.location.origin}/new-looks/${data?._id}`);
+        message.success('Copied to clipboard');
+      }
+    },
   },
   {
     id: "followers",
@@ -38,11 +45,14 @@ const infos = [
 ];
 
 const NewLookItem = ({ newLook }) => {
-  const { img, user, name, items, stylesIds } = newLook || {};
+  const { push } = useRouter();
+  const { _id, img, user, name, items, stylesIds } = newLook || {};
   const figures = useSelector(getAllFiguresSelectors);
   const features = useMemo(() => {
     return stylesIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)
   }, [stylesIds, figures])
+
+  const handleViewDetail = id => () => push(`/new-looks/${id}`);
 
   return (
     <NewLookItemWrapper gutter={[20, 20]}>
@@ -66,6 +76,9 @@ const NewLookItem = ({ newLook }) => {
                     {...(info?.isPrimary && {
                       type: "primary",
                     })}
+                    {...info?.onClick && {
+                      onClick: () => info.onClick(newLook),
+                    }}
                     {...(info?.Icon && {
                       icon: <info.Icon />,
                     })}
@@ -80,7 +93,12 @@ const NewLookItem = ({ newLook }) => {
             </div>
           </div>
           <Divider />
-          <div className="item-section">
+          <div className="item-section">        
+            <Button onClick={handleViewDetail(_id)} className="detail-btn" type="text" icon={(
+              <Tooltip title="View detail">
+                <ArrowRightOutlined />
+              </Tooltip>
+            )} />
             <div className="item-title">{name}</div>
             <div className="tags">
               {features?.toString()?.replaceAll(',', '  ·  ')}
