@@ -5,13 +5,13 @@ import { getByIdNewlooks } from 'store/newlooks/actions';
 
 const NewLookDetail = dynamic(() => import('containers/NewLookDetail'), { ssr: false });
 
-const index = () => <NewLookDetail />;
+const index = props => <NewLookDetail {...props} />;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async ({ store, query }) => {
     const { id } = query;
     
-  await store.dispatch(getByIdNewlooks({
+  const { payload } = await store.dispatch(getByIdNewlooks({
     data: {
       _id: id,
     },
@@ -23,7 +23,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     },
   }));
   return {
-    props: {},
+    props: {
+      newLook: payload?.data,
+    },
   };
   },
 );

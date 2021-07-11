@@ -191,8 +191,7 @@ const infos = [
   },
 ];
 
-const NewLookItem = () => {
-  const newLook = useSelector(state => state.newlooks.currentData);
+const NewLookItem = ({ newLook }) => {
   const loading = useSelector(state => state.newlooks.loading);
 
   const { url, user, name, items, stylesIds } = newLook || {};

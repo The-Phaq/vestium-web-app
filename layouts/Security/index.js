@@ -15,7 +15,6 @@ const SecurityLayout = ({ children }) => {
   const figures = useSelector(state => state.figures.data)
   const user = useSelector(state => state.user?.user);
   useEffect(() => {
-    console.log('asdasd mount', figures)
     if (!localStorage.getItem('token'))
       push({
         pathname: "/auth/login",
