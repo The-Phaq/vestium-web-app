@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 import { Avatar, Col, Button, Divider, Row, message, Skeleton } from 'antd';
 import Image from 'next/image';
 import SecurityLayout from 'layouts/Security';
@@ -201,91 +201,115 @@ const NewLookItem = ({ newLook }) => {
   }, [stylesIds, figures])
 
   return (
-    <SecurityLayout>
-      <Head>
-        <meta name="description" content={`View new look created by ${user?.firstName}`}></meta>
-        <meta property="og:title" content={name} key="ogtitle" />
-        <meta property="og:description" content={`View new look created by ${user?.firstName}`} key="ogdesc" />
-        <meta property="og:site_name" content="Vestiums" key="ogsitename" />
-        <meta property="og:image" content={url} key="ogimage" />
-      </Head>
-      <NewLookItemWrapper gutter={[20, 20]}>
-        <Col span={24}>
-          {loading && (
-            <Skeleton active />
-          )}
-        </Col>
-        <Col md={11} sm={24} xs={24}>
-          <div className="img-wrapper">
-            {url && <Image layout="fill" src={url} objectFit="contain" />}
-          </div>
-        </Col>
-        <Col md={13} sm={24} xs={24}>
-          <div className="info-section">
-            <div className="user-section">
-              <div className="user">
-                <Avatar src={user?.avatar} icon={<UserOutlined />} size={44} />
-                <div className="name">{`${user?.firstName || ''} ${user?.lastName || ''}`}</div>
-              </div>
-              <div className="info">
-                {infos.map((info) => (
-                  <div className="info-button" key={info?.id}>
-                    <Button
-                      shape={info?.shape}
-                      {...(info?.isPrimary && {
-                        type: "primary",
-                      })}
-                      {...info?.onClick && {
-                        onClick: () => info.onClick(newLook),
-                      }}
-                      {...(info?.Icon && {
-                        icon: <info.Icon />,
-                      })}
-                    >
-                      {info?.text || ""}
-                    </Button>
-                    <div className="info-value">
-                      {info?.value(newLook?.[info?.id] || 0)}
+    <>
+      <NextSeo
+        title={`New look detail: ${name}`}
+        description={`View new look created by ${user?.firstName}`}
+        openGraph={{
+          type: 'website',
+          url: 'https://vestium-web-app.vercel.app',
+          title: `New look detail: ${name}`,
+          description: `View new look created by ${user?.firstName}`,
+          images: [
+            {
+              url,
+              width: 800,
+              height: 600,
+              alt: 'New Look Detail',
+            },
+          ],
+        }}
+      />
+      <SecurityLayout>
+        {/* <Head>
+          <meta name="description" content={`View new look created by ${user?.firstName}`}></meta>
+          <meta property="title" content={`New look detail: ${name}`} />
+          <meta property="og:title" content={`New look detail: ${name}`} key="ogtitle" />
+          <meta property="og:description" content={`View new look created by ${user?.firstName}`} key="ogdesc" />
+          <meta property="og:site_name" content="Vestiums" key="ogsitename" />
+          <meta property="og:image" content={url} key="ogimage" />
+          <meta property="og:type" content="website" />
+          <meta property="og:image:width" content="1400" />
+          <meta property="og:image:height" content="600" />
+        </Head> */}
+        <NewLookItemWrapper gutter={[20, 20]}>
+          <Col span={24}>
+            {loading && (
+              <Skeleton active />
+            )}
+          </Col>
+          <Col md={11} sm={24} xs={24}>
+            <div className="img-wrapper">
+              {url && <Image layout="fill" src={url} objectFit="contain" />}
+            </div>
+          </Col>
+          <Col md={13} sm={24} xs={24}>
+            <div className="info-section">
+              <div className="user-section">
+                <div className="user">
+                  <Avatar src={user?.avatar} icon={<UserOutlined />} size={44} />
+                  <div className="name">{`${user?.firstName || ''} ${user?.lastName || ''}`}</div>
+                </div>
+                <div className="info">
+                  {infos.map((info) => (
+                    <div className="info-button" key={info?.id}>
+                      <Button
+                        shape={info?.shape}
+                        {...(info?.isPrimary && {
+                          type: "primary",
+                        })}
+                        {...info?.onClick && {
+                          onClick: () => info.onClick(newLook),
+                        }}
+                        {...(info?.Icon && {
+                          icon: <info.Icon />,
+                        })}
+                      >
+                        {info?.text || ""}
+                      </Button>
+                      <div className="info-value">
+                        {info?.value(newLook?.[info?.id] || 0)}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-            <Divider />
-            <div className="item-section">
-              <div className="item-title">{name}</div>
-              <div className="tags">
-                {features?.toString()?.replaceAll(',', '  ·  ')}
-              </div>
-              {items?.length > 0 && (
-                <Row gutter={[20, 20]} className="items">
-                  {items.map(
-                    ({ itemId: item }) => (
-                      <Col span={8} key={item?._id}>
-                        <div className="item-wrapper">
-                          <div className="item-image">
-                            {item?.image?.url && (
-                              <Image
-                                objectFit="contain"
-                                layout="fill"
-                                src={item?.image?.url}
-                              />
-                            )}
+              <Divider />
+              <div className="item-section">
+                <div className="item-title">{name}</div>
+                <div className="tags">
+                  {features?.toString()?.replaceAll(',', '  ·  ')}
+                </div>
+                {items?.length > 0 && (
+                  <Row gutter={[20, 20]} className="items">
+                    {items.map(
+                      ({ itemId: item }) => (
+                        <Col span={8} key={item?._id}>
+                          <div className="item-wrapper">
+                            <div className="item-image">
+                              {item?.image?.url && (
+                                <Image
+                                  objectFit="contain"
+                                  layout="fill"
+                                  src={item?.image?.url}
+                                />
+                              )}
+                            </div>
+                            <div className="item-name">{item?.name}</div>
+                            <div className="item-name">{item?.brand}</div>
+                            <div className="price">{`$${item?.price || 0}`}</div>
                           </div>
-                          <div className="item-name">{item?.name}</div>
-                          <div className="item-name">{item?.brand}</div>
-                          <div className="price">{`$${item?.price || 0}`}</div>
-                        </div>
-                      </Col>
-                    ),
-                  )}
-                </Row>
-              )}
+                        </Col>
+                      ),
+                    )}
+                  </Row>
+                )}
+              </div>
             </div>
-          </div>
-        </Col>
-      </NewLookItemWrapper>
-    </SecurityLayout>
+          </Col>
+        </NewLookItemWrapper>
+      </SecurityLayout>
+    </>
   );
 };
 
