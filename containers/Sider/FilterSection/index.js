@@ -22,6 +22,7 @@ const FilterSection = ({ pageSource }) => {
     dispatch(crudActions?.[pageSource]?.getAll({
       data: {
         ...filter,
+        orderBy: '-createdAt',
       },
       options: {
         isRefresh,

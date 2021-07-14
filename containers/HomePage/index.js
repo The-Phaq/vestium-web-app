@@ -24,6 +24,7 @@ const HomePage = () => {
   const retrieveList = (filterData, isRefresh) => {
     dispatch(getAllNewlooks({
       data: {
+        orderBy: '-createdAt',
         ...filterData,
       },
       options: {

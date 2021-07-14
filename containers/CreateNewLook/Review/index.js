@@ -111,6 +111,7 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
       })).then(() => {
         dispatch(getAllNewlooks({
           data: {
+            orderBy: '-createdAt',
             pageSize: 10,
             offset: 0,
           },

@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getConfigNewLook,
   getConfigCategories,
+  getConfigBoutique,
 } from './actions';
 
 export const initialState = {
   data: [],
+  boutiqueData: [],
   category: {
     item: [],
     background: [],
@@ -20,6 +22,9 @@ const { reducer } = createSlice({
   extraReducers: {
     [getConfigNewLook.fulfilled]: (state, { payload }) => {
       state.data = payload;
+    },
+    [getConfigBoutique.fulfilled]: (state, { payload }) => {
+      state.boutiqueData = payload;
     },
     [getConfigCategories.fulfilled]: (state, { payload }) => {
       state.category = payload;

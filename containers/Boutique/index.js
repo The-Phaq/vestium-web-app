@@ -6,6 +6,7 @@ import { Row, Col, Skeleton, Empty } from 'antd';
 import { Waypoint } from 'react-waypoint';
 import SecurityLayout from 'layouts/Security';
 import ItemCard from 'components/ItemCard';
+import ItemFilterSection from 'containers/Sider/FilterSection/ItemFilterSection';
 import BoutiqueWrapper from './styles';
 
 const Boutique = () => {
@@ -39,7 +40,7 @@ const Boutique = () => {
     }, true);
   }, [])
   return (
-    <SecurityLayout>
+    <SecurityLayout FilterSection={ItemFilterSection}>
       <BoutiqueWrapper>
         <Row gutter={[20, 40]}>
           {items.map(item => (

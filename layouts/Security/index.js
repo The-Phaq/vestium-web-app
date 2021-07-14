@@ -7,7 +7,7 @@ import { getProfile } from 'store/auth/actions';
 import { Layout } from "antd";
 import Header from "containers/Header";
 import Sider from "containers/Sider";
-import { getConfigNewLook, getConfigCategories } from 'store/config/actions';
+import { getConfigNewLook, getConfigCategories, getConfigBoutique } from 'store/config/actions';
 import SecurityLayoutWrapper from "./styles";
 
 const DefaultFilterSection = () => <div style={{ flexGrow: 2 }} />
@@ -19,6 +19,7 @@ const SecurityLayout = ({ children, FilterSection, pageSource }) => {
 
   const categoryConfig = useSelector(state => state.config.category);
   const newLookConfig = useSelector(state => state.config.data);
+  const boutiqueConfig = useSelector(state => state.config.boutiqueData);
 
   const user = useSelector(state => state.user?.user);
   useEffect(() => {
@@ -37,6 +38,9 @@ const SecurityLayout = ({ children, FilterSection, pageSource }) => {
   useEffect(() => {
     if (isEmpty(newLookConfig)) {
       dispatch(getConfigNewLook());
+    }
+    if (isEmpty(boutiqueConfig)) {
+      dispatch(getConfigBoutique());
     }
     if (isEmpty(categoryConfig?.item) && isEmpty(categoryConfig?.background) && isEmpty(categoryConfig?.emoji)) {
       dispatch(getConfigCategories());
