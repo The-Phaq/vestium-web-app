@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react'
 import { Row, Col, Image } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
+import { getConfigSelector } from 'store/config/selectors';
 import { getUrl, uploadMedia } from 'api/uploadMedia';
 import SharpEdgeButton from 'components/SharpEdgeButton';
 import flatten from 'lodash/flatten';
+import intersectionBy from 'lodash/intersectionBy';
 import { useRouter } from 'next/router';
 import { createNewlooks, getAllNewlooks } from 'store/newlooks/actions';
-import { colorsSelectors } from 'store/colors/selectors';
-import { getAllFiguresSelectors } from 'store/figures/selectors';
 import styled from 'styled-components';
 
 const InfoWrapper = styled.div`
@@ -78,12 +78,11 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
   const { push } = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const colors = useSelector(colorsSelectors.getDataArr);
-  const figures = useSelector(getAllFiguresSelectors);
+  const configData = useSelector(getConfigSelector);
   const user = useSelector(state => state.user?.user);
   
   const features = useMemo(() => {
-    return flatten([newLookData?.colorIds.map(colorId => colors.find(color => color?._id === colorId)?.name), newLookData?.figureIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)])
+    return flatten(configData?.map(config => intersectionBy(config.items, newLookData?.[config.source]?.map(id => ({ _id: id })), '_id')))
   }, [newLookData])
 
   const onClick = async () => {
@@ -95,9 +94,7 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
       const response = await uploadMedia(responseS3.uploadUrl, file);
       if (response) dispatch(createNewlooks({
         data: {
-          name: newLookData?.name,
-          stylesIds: newLookData?.figureIds,
-          colorIds: newLookData?.colorIds,
+          ...newLookData,
           url: responseS3.url,
           image: {
             url: responseS3.url,
@@ -139,7 +136,7 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
             {newLookData?.name}
           </h1>
           <div className="features">
-            {features?.toString()?.replaceAll(',', '  ·  ')}
+            {features?.map(feature => feature.name)?.toString()?.replaceAll(',', '  ·  ')}
           </div>
           {listBoutique?.length > 0 && (
             <Row gutter={[20, 20]} className="items">

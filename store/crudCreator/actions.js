@@ -68,7 +68,7 @@ export const getDataById = (resource, customApiResource, primaryKey = PRIMARY_KE
       }
       return thunkAPI.rejectWithValue({ data: result, options });
     } catch (error) {
-      return thunkAPI.rejectWithValue({ data, options });
+      return thunkAPI.rejectWithValue({ data: error, options });
     }
   });
 

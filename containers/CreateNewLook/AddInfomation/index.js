@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Row, Col, Image, Form, Input, Button, Divider } from "antd";
+import { Row, Col, Image, Form, Input, Button, Divider, Checkbox } from "antd";
 import { useSelector } from 'react-redux';
-import { getFiguresSelectors } from 'store/figures/selectors';
+import { getConfigSelector } from 'store/config/selectors';
 import SharpEdgeButton from 'components/SharpEdgeButton';
 import xor from 'lodash/xor';
+import get from 'lodash/get';
 import styled from 'styled-components';
-import AttributeSelector from './AttributeSelector';
 
 const FormWrapper = styled(Form)`
   height: 450px;
@@ -36,14 +36,13 @@ const ButtonWrapper = styled(Button)`
 
 const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
   const [form] = Form.useForm();
-  const figures = useSelector(getFiguresSelectors);
-  const [figureIds, setFigureIds] = useState([]);
+  const configData = useSelector(getConfigSelector);
+  const [filterData, setFilterData] = useState({});
   
   const onFinish = values => {
     setNewLookData({
       ...values,
-      colorIds: values.colorIds || [],
-      figureIds,
+      ...filterData,
     });
     setCurrentStep(2);
   }
@@ -61,28 +60,57 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
           <Form.Item name="name" label="NAME">
             <Input />
           </Form.Item>
-          {figures.map(figure => (
-            <>
-              <label style={{ textTransform: 'uppercase '}}>{figure.text}</label>
-              <br />
-              <div style={{ minHeight: '40px',display: 'flex', width: '100%', overflowX: 'auto'}}>
-                {figure?.items?.length ? (
-                  figure?.items?.map(item => (
-                    <ButtonWrapper
-                      {...figureIds.includes(item.id) && {
-                        type: 'primary',
-                      }}
-                      onClick={() => setFigureIds(currentFigureIds => xor(currentFigureIds, [item.id]))}
-                    >
-                      {item.text}
-                    </ButtonWrapper>
-                  ))
-                ) : <div>No data</div>}
-              </div>
-              <Divider />
-            </>
+          {configData.map(config => (
+            config?.name === 'Color' ? (
+              <Checkbox.Group onChange={values => setFilterData(filter => ({
+                ...filter,
+                [config.source]: values,
+              }))} style={{marginTop: '10px', width: '100%', overflow: 'hidden'}}>
+                <div style={{ minHeight: '40px',display: 'flex', width: '100%', overflowX: 'auto'}}>
+                  {config?.items.length ? (
+                    <>
+                      {
+                        config?.items.map(item => (
+                          <CheckBoxWrapper
+                            value={item?._id}
+                            {...item?.hsl && {
+                              color: `hsl(${item?.hsl?.H}, ${item?.hsl?.S}%, ${item?.hsl?.L}%)`,
+                            }}
+                          >
+                            {item?.name}
+                          </CheckBoxWrapper>
+                        ))
+                      }
+                    </>
+                  ) : <div>No data</div>}
+                </div>
+              </Checkbox.Group>
+            ) : (
+              <>
+                <label style={{ textTransform: 'uppercase '}}>{config.name}</label>
+                <br />
+                <div style={{ minHeight: '40px',display: 'flex', width: '100%', overflowX: 'auto'}}>
+                  {config?.items?.length ? (
+                    config?.items?.map(item => (
+                        <ButtonWrapper
+                          {...filterData[config.source]?.includes(item._id) && {
+                            type: 'primary',
+                          }}
+                          onClick={() => setFilterData(filter => ({
+                            ...filter,
+                            [config.source]: xor(get(filter, config.source, []), [item._id]),
+                          }))}
+                        >
+                          {item.name}
+                        </ButtonWrapper>
+                    ))
+                  ) : <div>No data</div>}
+                </div>
+                <Divider />
+              </>
+            )
           ))}
-          <AttributeSelector source="colorIds" label="COLOR" type="colors" />
+          {/* <AttributeSelector source="colorIds" label="COLOR" type="colors" /> */}
           
           <div style={{ width: '100%', textAlign: 'center'}}>
           <br />
@@ -96,5 +124,62 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
     </Row>
   );
 };
+
+
+export const CheckBoxWrapper = styled(Checkbox)`
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+
+
+
+  span {
+    display: inline-flex;
+    padding: 5px 7px;
+    border: none;
+    background: #fff;
+    color: #000;
+    width: 120px;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    align-items: center;
+    line-height: 16px;
+  }
+
+  .ant-checkbox {
+    display: none !important;
+  }
+
+  &:after {
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    background: ${({ color }) => color};
+    color: ${({ color }) => color};
+    border-radius: 50%;
+    justify-content: center;
+    content: '✓';
+    font-size: 24px;
+    font-weight: 800;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  &.ant-checkbox-wrapper-checked:after {
+    background: #fff;
+  }
+
+
+  .ant-checkbox-checked + span {
+    ${'' /* border-color: ${({ theme, color }) => color || theme.palette.primary};
+    background: ${({ theme, color }) => color || theme.palette.primary};
+    color: #fff; */}
+  }
+`;
+
 
 export default AddInfomation;

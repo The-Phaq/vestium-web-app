@@ -2,13 +2,13 @@ import { createSelector } from "reselect";
 import { CRUDSelectors } from "store/crudCreator/selectors";
 import { MODEL_NAME } from "./actions";
 
-export const newlooksSelectors = new CRUDSelectors(MODEL_NAME);
+export const favoritesSelectors = new CRUDSelectors(MODEL_NAME);
 
-const getNewLooks = state => state.newlooks.data;
-const getNewLookIds = state => state.newlooks.ids;
+const getFavorites = state => state.favorites.data;
+const getFavoriteIds = state => state.favorites.ids;
 
-export const getNewLooksSelectors = createSelector(
-  [getNewLooks, getNewLookIds],
+export const getFavoritesSelectors = createSelector(
+  [getFavorites, getFavoriteIds],
   (newLookData, newLookIds) => {
     return newLookIds.map(id => ({
       ...newLookData[id],

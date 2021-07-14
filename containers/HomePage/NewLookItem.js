@@ -1,10 +1,15 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Image, Avatar, Col, Button, Divider, Row, message, Tooltip } from 'antd';
+import { getConfigSelector } from 'store/config/selectors';
 import { useRouter } from 'next/router';
-import { getAllFiguresSelectors } from 'store/figures/selectors';
+import intersectionBy from 'lodash/intersectionBy';
+import flatten from 'lodash/flatten';
 import {
   HeartIcon,
+  LikeIcon,
+  ShareIcon,
+  FollowIcon,
 } from 'components/SVGIcon';
 import { UserOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { NewLookItemWrapper } from './styles';
@@ -13,20 +18,19 @@ const infos = [
   {
     id: "votes",
     shape: "round",
-    text: "VOTE",
+    Icon: LikeIcon,
     value: (data) => `${data} Votes`,
-    isPrimary: true,
   },
   {
-    id: "favorite",
+    id: "favorites",
     shape: "circle",
     Icon: HeartIcon,
-    value: () => "Favorite",
+    value: (data) => `${data} Favorite`,
   },
   {
     id: "shares",
     shape: "round",
-    text: "SHARE",
+    Icon: ShareIcon,
     value: (data) => `${data} Shares`,
     onClick: data => {
       if (process.browser) {
@@ -38,18 +42,19 @@ const infos = [
   {
     id: "followers",
     shape: "round",
-    text: "FOLLOW",
+    Icon: FollowIcon,
     value: (data) => `${data} Followers`,
   },
 ];
 
 const NewLookItem = ({ newLook }) => {
   const { push } = useRouter();
-  const { _id, img, user, name, items, stylesIds } = newLook || {};
-  const figures = useSelector(getAllFiguresSelectors);
+  const { _id, img, user, name, items } = newLook || {};
+  const configData = useSelector(getConfigSelector);
   const features = useMemo(() => {
-    return stylesIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)
-  }, [stylesIds, figures])
+    // return stylesIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)
+    return flatten(configData?.map(config => intersectionBy(config.items, newLook?.[config.source]?.map(id => ({ _id: id })), '_id')))
+  }, [configData, newLook])
 
   const handleViewDetail = id => () => push(`/new-looks/${id}`);
 
@@ -100,7 +105,7 @@ const NewLookItem = ({ newLook }) => {
             )} />
             <div className="item-title">{name}</div>
             <div className="tags">
-              {features?.toString()?.replaceAll(',', '  ·  ')}
+              {features?.map(feature => feature.name)?.toString()?.replaceAll(',', '  ·  ')}
             </div>
             {items?.length > 0 && (
               <Row gutter={[20, 20]} className="items">

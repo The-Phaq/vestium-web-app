@@ -12,9 +12,10 @@ const MyApp = ({ Component, pageProps }) => {
         <meta name="description" content="Vestium web" />
         <link rel="icon" href="/favicon.ico" />
         <link
-          href="https://fonts.googleapis.com/css?family=Livvic&display=optional"
+          href="https://fonts.googleapis.com/css?family=Livvic"
           rel="stylesheet"
-        />
+          label="fonts"
+          />
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyles />

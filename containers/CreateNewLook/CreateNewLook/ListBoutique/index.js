@@ -4,15 +4,13 @@ import { Row, Col, Image, Empty, Skeleton, Button } from "antd";
 import { getAllItems } from 'store/items/actions';
 import { itemsSelectors } from 'store/items/selectors';
 import find from "lodash/find";
-import xor from "lodash/xor";
 import { Waypoint } from 'react-waypoint';
-import { getAllApi } from "api/crud";
 import ListBoutiqueStyles from "./styles";
 
 const ListBoutique = ({ setBoutique }) => {
   const dispatch = useDispatch();
-  const [listCategories, setListCategories] = useState([]);
-  const [currentCategoryIds, setCurrentCategoryIds] = useState([]);
+  const categories = useSelector(state => state.config.category.item);
+  const [currentCategoryId, setCurrentCategoryId] = useState('');
   const items = useSelector(itemsSelectors.getDataArr);
   const loading = useSelector(itemsSelectors.getLoading);
   const enabledLoadMore = useSelector(itemsSelectors.enabledLoadMore);
@@ -39,12 +37,6 @@ const ListBoutique = ({ setBoutique }) => {
       perPage: 10,
       offset: 0,
     }, true);
-    const getListCategories = async () => {
-      const response = await getAllApi("categories");
-      if (response) setListCategories(response);
-    };
-
-    getListCategories();
   }, [])
 
   const onSelectBg = (id) => () => {
@@ -61,12 +53,14 @@ const ListBoutique = ({ setBoutique }) => {
   };
 
   const handleFilterBoutique = id => () => {
-    setCurrentCategoryIds(xor(currentCategoryIds, [id]));
+    setCurrentCategoryId(categoryId => categoryId === id ? '' : id);
     retrieveList({
       perPage: 10,
       offset: 0,
-      filter: {
-        categoryId_$in: xor(currentCategoryIds, [id]),
+      ...currentCategoryId !== id && {
+        filter: {
+          categoryId: id,
+        },
       },
     }, true)
   }
@@ -76,12 +70,13 @@ const ListBoutique = ({ setBoutique }) => {
       <Row gutter={[8, 8]}>
         <Col span={24}>
           <div className="filter-boutique">
-            {listCategories.map(category => (
+            {categories.map(category => (
               <Button
                 shape="round"
-                {...currentCategoryIds.includes(category._id) && {
+                {...currentCategoryId === category._id && {
                   type: 'primary',
                 }}
+                key={category?._id}
                 onClick={handleFilterBoutique(category._id)}
               >
                 {category.name}

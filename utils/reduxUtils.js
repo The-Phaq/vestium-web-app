@@ -53,14 +53,21 @@ export async function apiWrapper(
     }
     return response;
   } catch (error) {
-    process.browser && notification.destroy();
-    process.browser &&
-      error?.statusCode !== 401 &&
+    if (process.browser) {
+      notification.destroy();
+      if (error?.statusCode === 401) {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        fetch('/api/removeToken', {
+          method: 'POST',
+        });
+      }
       !options.dontShowError &&
-      notification.error({
-        message: 'Oops!',
-        description: error.message || error || 'some thing wrong!',
-      });
+        notification.error({
+          message: 'Oops!',
+          description: error.message || error || 'some thing wrong!',
+        });
+    }
     if (options.isShowLoading) {
       // showProgress(false);
     }

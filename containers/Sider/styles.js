@@ -45,60 +45,6 @@ export default styled(Sider)`
             font-weight: 700;
         }
 
-        .filter-section {
-            flex-grow: 2;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-
-            .ant-collapse-borderless > .ant-collapse-item {
-                border: none;
-            }
-
-            .ant-collapse {
-                ${'' /* height: 57vh; */}
-                overflow-y: auto;
-
-                .filter-panel {
-                    background: #fff;
-                    text-transform: uppercase;
-
-                    .ant-btn {
-                        width: 100%;
-                        white-space: break-spaces;
-                        padding: 4px 7px;
-                        text-align: center;
-                        line-height: 14px;
-                        height: auto;
-                        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-                    }
-                }
-            }
-
-            .ant-collapse::-webkit-scrollbar-track {
-                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-                background-color: #f5f5f5;
-                border-radius: 10px;
-            }
-
-            .ant-collapse::-webkit-scrollbar {
-                width: 10px;
-                background-color: #f5f5f5;
-            }
-
-            .ant-collapse::-webkit-scrollbar-thumb {
-                border-radius: 10px;
-                background-color: ${({ theme }) => theme.palette.primary};
-            }
-
-            .filter-title {
-                font-size: 18px;
-                font-weight: 700;
-                text-align: center;
-                margin-bottom: 14px;
-            }
-        }
-
         .actions-section {
             display: flex;
             flex-direction: column;

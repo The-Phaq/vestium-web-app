@@ -7,7 +7,7 @@ const request = axios.create({
   // withCredentials: true,
 });
 
-const getAuthToken = () => localStorage.getItem('token')
+const getAuthToken = (ctx) => ctx?.token || localStorage.getItem('token')
 
 export const setInitHeader = (ctx) => {
   if (!ctx) {

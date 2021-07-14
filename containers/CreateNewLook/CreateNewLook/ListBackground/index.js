@@ -1,33 +1,83 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Image, Empty } from "antd";
-import { getAllApi } from "api/crud";
+import { Row, Col, Image, Empty, Button, Skeleton } from "antd";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllBackgrounds } from 'store/backgrounds/actions';
+import { backgroundsSelectors } from 'store/backgrounds/selectors';
+import { Waypoint } from 'react-waypoint';
 import ListBackgroundStyles from "./styles";
 
 const ListBackground = ({ setBackground }) => {
-  const [listBackgrounds, setListBackgrounds] = useState([]);
-  useEffect(() => {
-    const getListBg = async () => {
-      const response = await getAllApi("backgrounds", {
-        perPage: 50,
-        page: 1,
-      });
-      if (response?.data) setListBackgrounds(response.data);
-      else setListBackgrounds([]);
-    };
+  const dispatch = useDispatch();
+  const categories = useSelector(state => state.config.category.background);
+  const [currentCategoryId, setCurrentCategoryId] = useState('');
 
-    getListBg();
-  }, []);
+  const backgrounds = useSelector(backgroundsSelectors.getDataArr);
+  const loading = useSelector(backgroundsSelectors.getLoading);
+  const enabledLoadMore = useSelector(backgroundsSelectors.enabledLoadMore);
+
+  const retrieveList = (filterData, isRefresh) => {
+    dispatch(getAllBackgrounds({
+      data: {
+        ...filterData,
+      },
+      options: {
+        isRefresh,
+      },
+    }))
+  }
+
+  const handleEnterWaypoint = () => {
+    if (enabledLoadMore && !loading) {
+      retrieveList({}, false);
+    }
+  }
+
+  useEffect(() => {
+    retrieveList({
+      perPage: 10,
+      offset: 0,
+    }, true);
+  }, [])
 
   const onSelectBg = (url) => () => {
     if (!url) return;
     setBackground(`${url}?exp=${new Date().getTime()}`);
   };
 
+  const handleFilterBackground = id => () => {
+    setCurrentCategoryId(categoryId => categoryId === id ? '' : id);
+    retrieveList({
+      perPage: 10,
+      offset: 0,
+      ...currentCategoryId !== id && {
+        filter: {
+          categoryId: id,
+        },
+      },
+    }, true)
+  }
+
   return (
     <ListBackgroundStyles>
       <Row gutter={[8, 8]}>
-        {listBackgrounds?.length > 0 &&
-          listBackgrounds.map((background) => (
+        <Col span={24}>
+          <div className="filter-boutique">
+            {categories.map(category => (
+              <Button
+                shape="round"
+                {...currentCategoryId === category._id && {
+                  type: 'primary',
+                }}
+                key={category?._id}
+                onClick={handleFilterBackground(category._id)}
+              >
+                {category.name}
+              </Button>
+            ))}
+          </div>
+        </Col>
+        {backgrounds?.length > 0 &&
+          backgrounds.map((background) => (
             <Col span={8} key={background._id}>
               <Image
                 src={background?.image?.url}
@@ -37,8 +87,14 @@ const ListBackground = ({ setBackground }) => {
               />
             </Col>
           ))}
+          {loading && (
+            <Col span={24}>
+              <Skeleton active />
+            </Col>
+          )}
+          {enabledLoadMore && <Waypoint onEnter={handleEnterWaypoint} />}
       </Row>
-      {listBackgrounds?.length === 0 && <Empty />}
+      {backgrounds?.length === 0 && !loading && <Empty />}
     </ListBackgroundStyles>
   );
 };

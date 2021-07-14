@@ -7,12 +7,19 @@ import { getProfile } from 'store/auth/actions';
 import { Layout } from "antd";
 import Header from "containers/Header";
 import Sider from "containers/Sider";
+import { getConfigNewLook, getConfigCategories } from 'store/config/actions';
 import SecurityLayoutWrapper from "./styles";
 
-const SecurityLayout = ({ children }) => {
-  const { pathname, push, query } = useRouter();
+const DefaultFilterSection = () => <div style={{ flexGrow: 2 }} />
+
+const SecurityLayout = ({ children, FilterSection, pageSource }) => {
+  const { push } = useRouter();
   const dispatch = useDispatch();
   const figures = useSelector(state => state.figures.data)
+
+  const categoryConfig = useSelector(state => state.config.category);
+  const newLookConfig = useSelector(state => state.config.data);
+
   const user = useSelector(state => state.user?.user);
   useEffect(() => {
     if (!localStorage.getItem('token'))
@@ -26,6 +33,16 @@ const SecurityLayout = ({ children }) => {
       dispatch(getProfile());
     }
   }, []);
+
+  useEffect(() => {
+    if (isEmpty(newLookConfig)) {
+      dispatch(getConfigNewLook());
+    }
+    if (isEmpty(categoryConfig?.item) && isEmpty(categoryConfig?.background) && isEmpty(categoryConfig?.emoji)) {
+      dispatch(getConfigCategories());
+    }
+  }, [])
+
   return (
     <SecurityLayoutWrapper>
       <Layout>
@@ -34,7 +51,7 @@ const SecurityLayout = ({ children }) => {
         </div>
         <div className="container layout-content-wrapper">
           <Layout className="layout-content">
-            <Sider />
+            <Sider FilterSection={FilterSection} pageSource={pageSource} />
             <div className="content-wrapper">{children}</div>
           </Layout>
         </div>
@@ -42,5 +59,10 @@ const SecurityLayout = ({ children }) => {
     </SecurityLayoutWrapper>
   );
 };
+
+SecurityLayout.defaultProps = {
+  FilterSection: DefaultFilterSection,
+  pageSource: 'newlooks',
+}
 
 export default SecurityLayout;

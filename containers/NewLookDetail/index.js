@@ -1,11 +1,19 @@
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { NextSeo } from 'next-seo';
 import { Avatar, Col, Button, Divider, Row, message, Skeleton, Image } from 'antd';
+import get from 'lodash/get';
+import intersectionBy from 'lodash/intersectionBy';
+import flatten from 'lodash/flatten';
+import { useRouter } from 'next/router';
 import SecurityLayout from 'layouts/Security';
-import { getAllFiguresSelectors } from 'store/figures/selectors';
+import { getConfigSelector } from 'store/config/selectors';
+import { logout } from 'store/auth/actions';
 import {
   HeartIcon,
+  LikeIcon,
+  ShareIcon,
+  FollowIcon,
 } from 'components/SVGIcon';
 import { UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -23,15 +31,8 @@ export const NewLookItemWrapper = styled(Row)`
     min-height: 400px;
     overflow: hidden;
     position: relative;
-
-    .ant-image {
-      height: 100%;
-      display: flex;
-
-      img {
-        height: 100%;
-      }
-    }
+    display: flex;
+    justify-content: center;
   }
 
   .item-section {
@@ -44,6 +45,7 @@ export const NewLookItemWrapper = styled(Row)`
       position: absolute;
       top: 10px;
       right: 10px;
+      z-index: 10;
     }
 
     .item-title {
@@ -75,7 +77,7 @@ export const NewLookItemWrapper = styled(Row)`
           width: 100%;
           height: 140px;
           position: relative;
-          
+
           .ant-image {
             height: 100%;
             display: flex;
@@ -176,22 +178,21 @@ export const NewLookItemWrapper = styled(Row)`
 
 const infos = [
   {
-    id: "votes",
+    id: "likeCount",
     shape: "round",
-    text: "VOTE",
+    Icon: LikeIcon,
     value: (data) => `${data} Votes`,
-    isPrimary: true,
   },
   {
-    id: "favorite",
-    shape: "circle",
-    Icon: HeartIcon,
-    value: () => "Favorite",
-  },
-  {
-    id: "shares",
+    id: "favoriteCount",
     shape: "round",
-    text: "SHARE",
+    Icon: HeartIcon,
+    value: (data) => `${data} Favorite`,
+  },
+  {
+    id: "shareCount",
+    shape: "round",
+    Icon: ShareIcon,
     value: (data) => `${data} Shares`,
     onClick: data => {
       if (process.browser) {
@@ -201,21 +202,32 @@ const infos = [
     },
   },
   {
-    id: "followers",
+    id: "followCount",
     shape: "round",
-    text: "FOLLOW",
+    Icon: FollowIcon,
     value: (data) => `${data} Followers`,
   },
 ];
 
 const NewLookItem = ({ newLook }) => {
+  const dispatch = useDispatch();
+  const { push } = useRouter();
   const loading = useSelector(state => state.newlooks.loading);
 
-  const { url, user, name, items, stylesIds } = newLook || {};
-  const figures = useSelector(getAllFiguresSelectors);
+  const { url, user, name, items } = newLook || {};
+  const configData = useSelector(getConfigSelector);
   const features = useMemo(() => {
-    return stylesIds?.map(figureId => figures.find(figure => figure?._id === figureId)?.name)
-  }, [stylesIds, figures])
+    return flatten(configData?.map(config => intersectionBy(config.items, newLook?.[config.source]?.map(id => ({ _id: id })), '_id')))
+  }, [configData, newLook])
+
+  useEffect(() => {
+    if (newLook?.statusCode === 401) {
+      dispatch(logout());
+      push({
+        pathname: '/auth/login',
+      });
+    }
+  }, [newLook?.statusCode])
 
   return (
     <>
@@ -285,7 +297,7 @@ const NewLookItem = ({ newLook }) => {
                         {info?.text || ""}
                       </Button>
                       <div className="info-value">
-                        {info?.value(newLook?.[info?.id] || 0)}
+                        {info?.value(get(newLook, info?.id, 0))}
                       </div>
                     </div>
                   ))}
@@ -295,7 +307,7 @@ const NewLookItem = ({ newLook }) => {
               <div className="item-section">
                 <div className="item-title">{name}</div>
                 <div className="tags">
-                  {features?.toString()?.replaceAll(',', '  ·  ')}
+                  {features?.map(feature => feature.name)?.toString()?.replaceAll(',', '  ·  ')}
                 </div>
                 {items?.length > 0 && (
                   <Row gutter={[20, 20]} className="items">

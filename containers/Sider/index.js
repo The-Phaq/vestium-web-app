@@ -1,18 +1,11 @@
 import React from 'react';
 import Divider from 'components/Divider';
-import xor from 'lodash/xor';
-import { useSelector, useDispatch } from 'react-redux';
-import { getFiguresSelectors } from 'store/figures/selectors';
-import crudActions from 'store/crudActions';
-import crudSelectors from 'store/crudSelectors';
-import { Button, Collapse, Row, Col } from 'antd';
+import { Button } from 'antd';
 import { useRouter } from 'next/router';
 import { getCurrentTab } from 'utils/tools';
 import Link from 'next/link';
-import { PlusCircleFilled, CaretRightOutlined } from '@ant-design/icons';
+import { PlusCircleFilled } from '@ant-design/icons';
 import SiderWrapper from './styles';
-
-const { Panel } = Collapse;
 
 const buttons = [
   {
@@ -21,7 +14,6 @@ const buttons = [
     url: '/',
     key: 'new-looks',
     source: 'newlooks',
-    filterKey: 'stylesIds',
   },
   {
     text: 'BOUTIQUE',
@@ -29,6 +21,7 @@ const buttons = [
     key: 'boutique',
     source: 'items',
     filterKey: 'figureIds',
+    
   },
   {
     text: 'CREATE NEW LOOK',
@@ -41,57 +34,9 @@ const buttons = [
   },
 ];
 
-const filterPages = [
-  ...buttons.filter(item => item.source),
-  {
-    url: '/favorites',
-    key: 'favorites',
-    source: 'items',
-    filterKey: 'figureIds',
-  },
-  {
-    key: 'new-looks',
-    source: 'newlooks',
-    filterKey: 'stylesIds',
-  },
-];
-
-const Sider = () => {
-  const dispatch = useDispatch();
-  const { pathname, query } = useRouter();
+const Sider = ({ FilterSection, pageSource }) => {
+  const { pathname } = useRouter();
   const url = getCurrentTab(pathname, 1);
-  const currentFilterPage = filterPages.find(filterPage => filterPage.key === (url || 'new-looks'));
-
-  const figures = useSelector(getFiguresSelectors);
-  const { filter } = useSelector(crudSelectors.[currentFilterPage?.source].getFilters);
-  const currentFigureIds = filter?.[currentFilterPage?.filterKey] || [];
-
-
-  const { q } = query;
-
-  const retrieveList = (filterData, isRefresh) => {
-    dispatch(crudActions?.[currentFilterPage?.source]?.getAll({
-      data: {
-        ...filterData,
-      },
-      options: {
-        isRefresh,
-      },
-    }))
-  }
-
-  const handleFilterNewLooks = id => () => {
-    retrieveList({
-      pageSize: 10,
-      offset: 0,
-      filter: {
-        ...q && {
-          q,
-        },
-        [currentFilterPage?.filterKey]: xor(currentFigureIds, [id]),
-      },
-    }, true)
-  }
 
   return (
     <SiderWrapper width={255}>
@@ -125,42 +70,7 @@ const Sider = () => {
           ))}
         </div>
         <Divider className="divider" />
-        <div className="filter-section">
-          <div className="filter-title">
-            FILTER
-          </div>
-          <Collapse
-            bordered={false}
-            defaultActiveKey={['1']}
-            expandIconPosition="right"
-            expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-            className="filter-content"
-          >
-            {figures.map((figure, index) => (
-              <Panel
-                header={figure.text}
-                key={`button-${String(index)}`}
-                className="filter-panel"
-              >
-                <Row gutter={[8, 8]}>
-                  {figure?.items?.map(item => (
-                    <Col span={12} key={item.id}>
-                      <Button
-                        shape="round"
-                        {...currentFigureIds.includes(item.id) && {
-                          type: 'primary',
-                        }}
-                        onClick={handleFilterNewLooks(item.id)}
-                      >
-                        {item.text}
-                      </Button>
-                    </Col>
-                  ))}
-                </Row>
-              </Panel>
-            ))}
-          </Collapse>
-        </div>
+        <FilterSection pageSource={pageSource} />
       </div>
       <Divider vertical color="#fff" />
     </SiderWrapper>

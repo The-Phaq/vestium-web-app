@@ -15,6 +15,14 @@ export const login =
     dispatch(loginFetch());
     try {
       const res = await fetchLogin({ email: username, password });
+
+      fetch('/api/token', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: res?.accessToken,
+        }),
+      })
       dispatch(loginSuccess(res));
     } catch (e) {
       message.error(e.message);
@@ -26,6 +34,14 @@ export const registerAction = (data) => async (dispatch) => {
   dispatch(loginFetch());
   try {
     const res = await register(data);
+
+    fetch('/api/token', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: res?.accessToken,
+      }),
+    })
     dispatch(loginSuccess(res));
   } catch (e) {
     message.error(e.message);
@@ -36,6 +52,9 @@ export const registerAction = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     // fetchLogout();
+    fetch('/api/removeToken', {
+      method: 'POST',
+    });
     return dispatch(logoutSuccess());
   } catch (e) {
     return console.error(e.message);
@@ -54,7 +73,15 @@ export const register =
         password,
         ...query,
       });
-      message.success("Your account have bên create successfully!");
+      message.success("Your account have been created successfully!");
+
+      fetch('/api/token', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: res?.accessToken,
+        }),
+      })
       dispatch(loginSuccess(res));
     } catch (e) {
       message.error(e.message);

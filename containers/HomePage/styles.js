@@ -23,6 +23,8 @@ export const NewLookItemWrapper = styled(Row)`
     min-height: 300px;
     overflow: hidden;
     position: relative;
+    display: flex;
+    justify-content: center;
   }
 
   .item-section {
@@ -34,6 +36,8 @@ export const NewLookItemWrapper = styled(Row)`
       position: absolute;
       bottom: 10px;
       right: 10px;
+
+      z-index: 10;
     }
 
     .item-title {

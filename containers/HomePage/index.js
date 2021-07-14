@@ -7,6 +7,7 @@ import SecurityLayout from 'layouts/Security';
 import Divider from 'components/Divider';
 import { newlooksSelectors, getNewLooksSelectors } from 'store/newlooks/selectors';
 import { getAllNewlooks } from 'store/newlooks/actions';
+import FilterSection from 'containers/Sider/FilterSection';
 import NewLookItem from './NewLookItem';
 import HomeWrapper from './styles';
 
@@ -41,7 +42,7 @@ const HomePage = () => {
     retrieveList({
       pageSize: 10,
       offset: 0,
-      order: '-createdAt',
+      orderBy: '-createdAt',
       ...q && {
         filter: {
           q,
@@ -54,7 +55,7 @@ const HomePage = () => {
   }, [q])
 
   return (
-    <SecurityLayout>
+    <SecurityLayout FilterSection={FilterSection}>
       <HomeWrapper>
         {newLooks.map((newLook, index) => (
           <Fragment key={newLook.id}>
