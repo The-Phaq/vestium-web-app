@@ -4,6 +4,8 @@ import { NextSeo } from 'next-seo';
 import { Avatar, Col, Button, Divider, Row, message, Skeleton, Image } from 'antd';
 import get from 'lodash/get';
 import intersectionBy from 'lodash/intersectionBy';
+import { reactNewLook, deleteReactNewLook } from 'store/newlooks/actions';
+import { FacebookProvider, Share } from 'react-facebook';
 import flatten from 'lodash/flatten';
 import { useRouter } from 'next/router';
 import SecurityLayout from 'layouts/Security';
@@ -145,6 +147,11 @@ export const NewLookItemWrapper = styled(Row)`
 
           .ant-btn-primary {
             color: #fff;
+
+
+            .img-icon img {
+              filter: brightness(0) invert(1);
+            }
           }
 
           .info-value {
@@ -176,69 +183,124 @@ export const NewLookItemWrapper = styled(Row)`
   }
 `;
 
-const infos = [
-  {
-    id: "likeCount",
-    shape: "round",
-    Icon: LikeIcon,
-    value: (data) => `${data} Votes`,
-  },
-  {
-    id: "favoriteCount",
-    shape: "round",
-    Icon: HeartIcon,
-    value: (data) => `${data} Favorite`,
-  },
-  {
-    id: "shareCount",
-    shape: "round",
-    Icon: ShareIcon,
-    value: (data) => `${data} Shares`,
-    onClick: data => {
-      if (process.browser) {
-        navigator.clipboard.writeText(`${window.location.origin}/new-looks/${data?._id}`);
-        message.success('Copied to clipboard');
-      }
-    },
-  },
-  {
-    id: "followCount",
-    shape: "round",
-    Icon: FollowIcon,
-    value: (data) => `${data} Followers`,
-  },
-];
-
-const NewLookItem = ({ newLook }) => {
+const NewLookItem = ({ newLook: newLookFromProps }) => {
   const dispatch = useDispatch();
   const { push } = useRouter();
   const loading = useSelector(state => state.newlooks.loading);
-
-  const { url, user, name, items } = newLook || {};
+  const newLook = useSelector(state => state.newlooks.currentData);
+  const { _id, url, user, name, items, isLike, isShare, isFavorite } = newLook || {};
   const configData = useSelector(getConfigSelector);
   const features = useMemo(() => {
     return flatten(configData?.map(config => intersectionBy(config.items, newLook?.[config.source]?.map(id => ({ _id: id })), '_id')))
   }, [configData, newLook])
 
+  const reactAction = ({ id, actionType, isDone }) => {
+    const action = isDone ? deleteReactNewLook : reactNewLook;
+    dispatch(action({
+      id,
+      actionType,
+    }))
+  }
+
+  const infos = [
+    {
+      id: "likeCount",
+      shape: "round",
+      Icon: LikeIcon,
+      value: (data) => `${data} Votes`,
+      isPrimary: isLike,
+      onClick: ({ _id }) => reactAction({
+        id: _id,
+        actionType: 'LIKE',
+        isDone: isLike,
+      }),
+    },
+    {
+      id: "favoriteCount",
+      shape: "circle",
+      Icon: HeartIcon,
+      value: (data) => `${data} Favorite`,
+      isPrimary: isFavorite,
+      onClick: ({ _id }) => reactAction({
+        id: _id,
+        actionType: 'FAVORITE',
+        isDone: isFavorite,
+      }),
+    },
+    {
+      id: "shareCount",
+      shape: "round",
+      Icon: ShareIcon,
+      value: (data) => `${data} Shares`,
+      CustomButton: () => (
+        <FacebookProvider appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}>
+          <Share href={`${window.location.origin}/new-looks/${_id}`}>
+            {({ handleClick }) => (
+              <Button
+                shape="round"
+                {...(isShare && {
+                  type: "primary",
+                })}
+                onClick={e => {
+                  if (!isShare) {
+                    reactAction({
+                      id: _id,
+                      actionType: 'SHARE',
+                      isDone: isShare,
+                    });
+                  }
+                  handleClick(e);
+                }}
+                icon={<ShareIcon />}
+              />
+            )}
+          </Share>
+        </FacebookProvider>
+      ),
+      // onClick: ({ _id }) => {
+      //   if (!isShare) {
+      //     reactAction({
+      //       id: _id,
+      //       actionType: 'SHARE',
+      //       isDone: isShare,
+      //     });
+      //   }
+      // },
+      // onClick: data => {
+      //   if (process.browser) {
+      //     navigator.clipboard.writeText(`${window.location.origin}/new-looks/${data?._id}`);
+      //     message.success('Copied to clipboard');
+      //   }
+      // },
+      isPrimary: isShare,
+    },
+    {
+      id: "followers",
+      shape: "round",
+      Icon: FollowIcon,
+      value: (data) => `${data} Followers`,
+    },
+  ];
+
   useEffect(() => {
-    if (newLook?.statusCode === 401) {
+    if (newLookFromProps?.statusCode === 401) {
       dispatch(logout());
       push({
         pathname: '/auth/login',
       });
     }
-  }, [newLook?.statusCode])
+  }, [newLookFromProps?.statusCode])
 
   return (
     <>
       <NextSeo
-        title={`New look detail: ${name}`}
-        description={`View new look created by ${user?.firstName}`}
+        title={`New look detail: ${newLookFromProps?.name}`}
+        description={`View new look created by ${newLookFromProps?.user?.firstName}`}
         openGraph={{
           type: 'website',
           url: 'https://vestium-web-app.vercel.app',
-          title: `New look detail: ${name}`,
-          description: `View new look created by ${user?.firstName}`,
+          title: `New look detail: ${newLookFromProps?.name}`,
+          description: `View new look created by ${newLookFromProps?.user?.firstName}`,
           images: [
             {
               url,
@@ -282,20 +344,24 @@ const NewLookItem = ({ newLook }) => {
                 <div className="info">
                   {infos.map((info) => (
                     <div className="info-button" key={info?.id}>
-                      <Button
-                        shape={info?.shape}
-                        {...(info?.isPrimary && {
-                          type: "primary",
-                        })}
-                        {...info?.onClick && {
-                          onClick: () => info.onClick(newLook),
-                        }}
-                        {...(info?.Icon && {
-                          icon: <info.Icon />,
-                        })}
-                      >
-                        {info?.text || ""}
-                      </Button>
+                      {info?.CustomButton ? (
+                        <info.CustomButton />
+                      ) : (
+                        <Button
+                          shape={info?.shape}
+                          {...(info?.isPrimary && {
+                            type: "primary",
+                          })}
+                          {...info?.onClick && {
+                            onClick: () => info.onClick(newLook),
+                          }}
+                          {...(info?.Icon && {
+                            icon: <info.Icon />,
+                          })}
+                        >
+                          {info?.text || ""}
+                        </Button>
+                      )}
                       <div className="info-value">
                         {info?.value(get(newLook, info?.id, 0))}
                       </div>

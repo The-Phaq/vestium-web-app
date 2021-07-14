@@ -18,7 +18,7 @@ const boutiqueConfigSource = {
 export const getConfigSelector = createSelector(
   [getConfigData],
   (configData) => {
-    return configData?.filter(config => !!configSource[config?.collection])?.map(config => ({
+    return configData?.filter(config => !!configSource[config?.name])?.map(config => ({
       ...config,
       id: config._id,
       source: configSource[config?.name],

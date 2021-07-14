@@ -137,6 +137,10 @@ export const NewLookItemWrapper = styled(Row)`
 
           .ant-btn-primary {
             color: #fff;
+
+            .img-icon img {
+              filter: brightness(0) invert(1);
+            }
           }
 
           .info-value {
