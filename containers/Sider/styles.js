@@ -28,6 +28,8 @@ export default styled(Sider)`
                 )
                 top left/70px 70px no-repeat,
             #fff;
+        display: flex;
+        flex-direction: column;
 
         .divider {
             padding-right: 0;
@@ -35,6 +37,7 @@ export default styled(Sider)`
 
         .title {
             height: 80px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -43,12 +46,17 @@ export default styled(Sider)`
         }
 
         .filter-section {
+            flex-grow: 2;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+
             .ant-collapse-borderless > .ant-collapse-item {
                 border: none;
             }
 
             .ant-collapse {
-                height: 57vh;
+                ${'' /* height: 57vh; */}
                 overflow-y: auto;
 
                 .filter-panel {

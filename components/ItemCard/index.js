@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import { Image} from 'antd';
 import { formatMoney } from 'utils/tools';
 import ItemCardWrapper from './styles';
 

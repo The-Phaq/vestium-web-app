@@ -14,6 +14,15 @@ export default styled.div`
         border-radius: 10px;
         border: 1px solid #ddd;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+        .ant-image {
+            height: 100%;
+            display: flex;
+
+            img {
+                height: 100%;
+            }
+        }
     }
 
     .item-title {

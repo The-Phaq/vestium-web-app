@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { NextSeo } from 'next-seo';
-import { Avatar, Col, Button, Divider, Row, message, Skeleton } from 'antd';
-import Image from 'next/image';
+import { Avatar, Col, Button, Divider, Row, message, Skeleton, Image } from 'antd';
 import SecurityLayout from 'layouts/Security';
 import { getAllFiguresSelectors } from 'store/figures/selectors';
 import {
@@ -24,6 +23,15 @@ export const NewLookItemWrapper = styled(Row)`
     min-height: 400px;
     overflow: hidden;
     position: relative;
+
+    .ant-image {
+      height: 100%;
+      display: flex;
+
+      img {
+        height: 100%;
+      }
+    }
   }
 
   .item-section {
@@ -67,6 +75,15 @@ export const NewLookItemWrapper = styled(Row)`
           width: 100%;
           height: 140px;
           position: relative;
+          
+          .ant-image {
+            height: 100%;
+            display: flex;
+
+            img {
+              height: 100%;
+            }
+          }
         }
         
         .item-name {

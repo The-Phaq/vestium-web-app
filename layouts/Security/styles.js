@@ -17,19 +17,22 @@ export default styled.div`
 
     .layout-content-wrapper {
         margin-top: 74px;
+        height: calc(100vh - 90px);
     }
 
     .layout-content {
         background: #fff;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         margin-bottom: 30px;
+        height: 100%;
+        ${'' /* overflow: hidden; */}
     }
 
     .content-wrapper {
         min-height: calc(100vh - 104px);
         width: 100%;
         max-width: calc(100% - 255px);
-        height: 88vh;
+        height: 100%;
         overflow-y: auto;
     }
     .content-wrapper::-webkit-scrollbar-track {

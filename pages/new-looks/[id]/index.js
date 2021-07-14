@@ -22,6 +22,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       // },
     },
   }));
+
   return {
     props: {
       newLook: payload?.data,

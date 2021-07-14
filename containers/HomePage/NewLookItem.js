@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Avatar, Col, Button, Divider, Row, message, Tooltip } from 'antd';
-import Image from 'next/image';
+import { Image, Avatar, Col, Button, Divider, Row, message, Tooltip } from 'antd';
 import { useRouter } from 'next/router';
 import { getAllFiguresSelectors } from 'store/figures/selectors';
 import {

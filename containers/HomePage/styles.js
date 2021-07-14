@@ -65,6 +65,15 @@ export const NewLookItemWrapper = styled(Row)`
           width: 100%;
           height: 140px;
           position: relative;
+
+          .ant-image {
+            height: 100%;
+            display: flex;
+
+            img {
+              height: 100%;
+            }
+          }
         }
         
         .item-name {

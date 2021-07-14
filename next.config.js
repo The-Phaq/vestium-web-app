@@ -7,6 +7,7 @@ const nextConfig = {
       'vestiums-uploaded-images-staging.s3.amazonaws.com',
       'vestiums-uploaded-images-staging.s3.eu-west-3.amazonaws.com',
       'vestium-web-app.vercel.app',
+      'd1wbxjl1rjyizm.cloudfront.net',
     ],
   },
 };

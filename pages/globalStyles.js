@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
+  div::-webkit-scrollbar-track {
+    background: #fff !important;
+  }
+
   html,body {
     padding: 0;
     margin: 0;
@@ -34,7 +38,7 @@ export default createGlobalStyle`
     margin-left: auto;
     font-family: 'Livvic', serif;
     max-height: calc(100vh);
-    max-width: calc(100vw - 40px);
+    max-width: calc(100vw);
   }
 
   @media (min-width: 576px) {
@@ -45,29 +49,29 @@ export default createGlobalStyle`
 
   @media (max-width: 768px) {
     .container {
-      max-width: calc(100vw - 40px);
+      max-width: calc(100vw);
     }
   }
 
   @media (max-width: 992px) {
     .container {
-      max-width: calc(100vw - 40px);
+      max-width: calc(100vw);
     }
   }
 
   @media (max-width: 1200px) {
     .container {
-      max-width: calc(100vw - 40px);
+      max-width: calc(100vw);
     }
   }
   @media (min-width: 1201px) {
     .container {
-      max-width: calc(100vw - 40px);
+      max-width: calc(100vw);
     }
   }
   @media (min-width: 1441px) {
     .container {
-      max-width: calc(100vw - 40px);
+      max-width: calc(100vw);
     }
   }
   @media (min-width: 2000px) {

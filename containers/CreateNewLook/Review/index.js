@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUrl, uploadMedia } from 'api/uploadMedia';
 import SharpEdgeButton from 'components/SharpEdgeButton';
 import flatten from 'lodash/flatten';
-import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 import { createNewlooks, getAllNewlooks } from 'store/newlooks/actions';
 import { colorsSelectors } from 'store/colors/selectors';
@@ -41,6 +40,15 @@ const InfoWrapper = styled.div`
           width: 100%;
           height: 140px;
           position: relative;
+
+          .ant-image {
+            height: 100%;
+            display: flex;
+
+            img {
+              height: 100%;
+            }
+          }
         }
         
         .item-name {
@@ -140,7 +148,7 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
                   <Col span={8} key={id}>
                     <div className="item-wrapper">
                       <div className="item-image">
-                        <NextImage
+                        <Image
                           objectFit="contain"
                           layout="fill"
                           src={image?.url}
