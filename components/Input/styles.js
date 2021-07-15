@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export default styled.div`
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     .notch {
         clip-path: polygon(
             0 46%,
@@ -14,7 +15,6 @@ export default styled.div`
             0% 10%
         );
         // todo
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         background: #fff;
         border: none;
         /* flex: 1; */
