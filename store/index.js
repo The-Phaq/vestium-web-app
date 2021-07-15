@@ -9,6 +9,7 @@ import figures from './figures/slice';
 import items from './items/slice';
 import emojis from './emojis/slice';
 import backgrounds from './backgrounds/slice';
+import myCreations from './myCreations/slice';
 import colors from './colors/slice';
 import user from './auth';
 import config from './config/slice';
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     items,
     emojis,
     backgrounds,
+    myCreations,
     colors,
     user: user.reducer,
 })

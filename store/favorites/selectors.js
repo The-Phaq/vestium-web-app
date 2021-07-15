@@ -13,7 +13,7 @@ export const getFavoritesSelectors = createSelector(
     return newLookIds.map(id => ({
       ...newLookData[id],
       id: newLookData[id]?._id,
-      img: newLookData[id]?.image?.url || newLookData[id]?.url || '/images/newLook.png',
+      img: newLookData[id]?.image?.url || newLookData[id]?.url,
       votes:  newLookData[id]?.likeCount || 0,
       shares: newLookData[id]?.shareCount || 0,
       favorites: newLookData[id]?.favoriteCount || 0,

@@ -13,15 +13,16 @@ const buttons = [
     isPrimary: true,
     url: '/',
     key: 'new-looks',
-    source: 'newlooks',
   },
   {
     text: 'BOUTIQUE',
     url: '/boutique',
     key: 'boutique',
-    source: 'items',
-    filterKey: 'figureIds',
-    
+  },
+  {
+    text: 'VESTIUM-SISTA',
+    url: '/my-creations',
+    key: 'my-creations',
   },
   {
     text: 'CREATE NEW LOOK',
@@ -29,8 +30,6 @@ const buttons = [
     Icon: PlusCircleFilled,
     url: '/create-new-look',
     key: 'create-new-look',
-    source: 'newlooks',
-    filterKey: 'stylesIds',
   },
 ];
 
