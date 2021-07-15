@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { getFilterFromUrl } from 'utils/tools';
 
 export class CRUDSelectors {
   constructor(resource) {
@@ -29,7 +28,7 @@ export class CRUDSelectors {
     [this.getDefaultValue, this.getDefaultFromProps],
     (defaultValue, defaultValueFromProps) =>
       defaultValue !== ''
-        ? getFilterFromUrl(defaultValue).filter
+        ? defaultValue
         : defaultValueFromProps || {},
   );
 
