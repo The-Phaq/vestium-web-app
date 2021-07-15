@@ -19,7 +19,7 @@ export default createGlobalStyle`
 
   * {
     box-sizing: border-box;
-    font-family: 'Livvic', serif;
+    font-family: 'Rubik', serif;
   }
 
   img {
@@ -36,7 +36,7 @@ export default createGlobalStyle`
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-    font-family: 'Livvic', serif;
+    font-family: 'Rubik', serif;
     max-height: calc(100vh);
     max-width: calc(100vw);
   }

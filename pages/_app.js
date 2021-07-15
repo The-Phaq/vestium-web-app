@@ -12,7 +12,7 @@ const MyApp = ({ Component, pageProps }) => {
         <meta name="description" content="Vestium web" />
         <link rel="icon" href="/favicon.ico" />
         <link
-          href="https://fonts.googleapis.com/css?family=Livvic"
+          href="https://fonts.googleapis.com/css?family=Rubik"
           rel="stylesheet"
           label="fonts"
           />
