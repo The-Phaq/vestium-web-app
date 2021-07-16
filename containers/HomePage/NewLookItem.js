@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Image, Avatar, Col, Button, Divider, Row, message, Tooltip } from 'antd';
+import { Image, Avatar, Col, Button, Divider, Row, Popover, Tooltip } from 'antd';
 import { getConfigSelector } from 'store/config/selectors';
 import { reactNewLook, deleteReactNewLook } from 'store/newlooks/actions';
 import { useRouter } from 'next/router';
@@ -13,7 +13,8 @@ import {
   FollowIcon,
 } from 'components/SVGIcon';
 import { UserOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { FacebookProvider, Share } from 'react-facebook';
+import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
+import styled from 'styled-components';
 import { NewLookItemWrapper } from './styles';
 
 const NewLookItem = ({ newLook }) => {
@@ -58,17 +59,15 @@ const NewLookItem = ({ newLook }) => {
       id: "shares",
       shape: "round",
       Icon: ShareIcon,
-      value: (data) => `${data} Shares`,
+      value: () => `Share`,
       CustomButton: () => (
-        <FacebookProvider appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}>
-          <Share href={`${window.location.origin}/new-looks/${_id}`}>
-            {({ handleClick }) => (
-              <Button
-                shape="round"
-                {...(isShare && {
-                  type: "primary",
-                })}
-                onClick={e => {
+        <Popover
+          content={(
+            <ShareWrapper>
+              <FacebookShareButton
+                className="social-btn facebook-btn"
+                url={`${window.location.origin}/new-looks/${_id}`}
+                onShareWindowClose={() => {
                   if (!isShare) {
                     reactAction({
                       id: _id,
@@ -76,29 +75,40 @@ const NewLookItem = ({ newLook }) => {
                       isDone: isShare,
                     });
                   }
-                  handleClick(e);
                 }}
-                icon={<ShareIcon />}
-              />
-            )}
-          </Share>
-        </FacebookProvider>
+              >
+                <FacebookIcon size={32} />
+                <div className="btn-content">Share on Facebook</div>
+              </FacebookShareButton>
+              <TwitterShareButton
+                className="social-btn twitter-btn"
+                url={`${window.location.origin}/new-looks/${_id}`}
+                onShareWindowClose={() => {
+                  if (!isShare) {
+                    reactAction({
+                      id: _id,
+                      actionType: 'SHARE',
+                      isDone: isShare,
+                    });
+                  }
+                }}
+              >
+                <TwitterIcon size={32} />
+                <div className="btn-content">Share on Twitter</div>
+              </TwitterShareButton>
+            </ShareWrapper>
+          )}
+          trigger="click"
+        >
+          <Button
+            shape="round"
+            {...(isShare && {
+              type: "primary",
+            })}
+            icon={<ShareIcon />}
+          />
+        </Popover>
       ),
-      // onClick: ({ _id }) => {
-      //   if (!isShare) {
-      //     reactAction({
-      //       id: _id,
-      //       actionType: 'SHARE',
-      //       isDone: isShare,
-      //     });
-      //   }
-      // },
-      // onClick: data => {
-      //   if (process.browser) {
-      //     navigator.clipboard.writeText(`${window.location.origin}/new-looks/${data?._id}`);
-      //     message.success('Copied to clipboard');
-      //   }
-      // },
       isPrimary: isShare,
     },
     {
@@ -198,5 +208,36 @@ const NewLookItem = ({ newLook }) => {
     </NewLookItemWrapper>
   );
 };
+
+const ShareWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  .social-btn {
+    display: flex;
+    align-items: stretch;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    .btn-content {
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      color: white;
+      border-left: 1px solid #fff;
+      flex-grow: 2;
+    }
+  }
+  .facebook-btn {
+    .btn-content {
+      background: #3b5998;
+    } 
+  }
+  .twitter-btn {
+    .btn-content {
+      background: #00aced;
+    } 
+  }
+`
 
 export default NewLookItem;
