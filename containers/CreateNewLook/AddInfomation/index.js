@@ -13,19 +13,19 @@ const FormWrapper = styled(Form)`
 `;
 
 const ButtonWrapper = styled(Button)`
-  display: inline-flex;
-  padding: 5px 7px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
+  display: inline-flex !important;
+  padding: 5px 7px !important;
+  border-radius: 10px !important;
+  border: 1px solid #ccc !important;
   width: 120px;
   min-width: 120px;
   justify-content: center;
-  text-align: center;
-  height: 100%;
+  text-align: center !important;
+  height: 100% !important;
   align-items: center;
-  line-height: 16px;
-  margin-right: 8px !important;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  line-height: 16px !important;
+  margin-right: 14px !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)  !important;
 
   &.ant-button-primary {
     border-color: ${({ theme }) => theme.palette.primary};
@@ -62,34 +62,38 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
           </Form.Item>
           {configData.map(config => (
             config?.name === 'Color' ? (
-              <Checkbox.Group onChange={values => setFilterData(filter => ({
-                ...filter,
-                [config.source]: values,
-              }))} style={{marginTop: '10px', width: '100%', overflow: 'hidden'}}>
-                <div style={{ minHeight: '40px',display: 'flex', width: '100%', overflowX: 'auto'}}>
-                  {config?.items.length ? (
-                    <>
-                      {
-                        config?.items.map(item => (
-                          <CheckBoxWrapper
-                            value={item?._id}
-                            {...item?.hsl && {
-                              color: `hsl(${item?.hsl?.H}, ${item?.hsl?.S}%, ${item?.hsl?.L}%)`,
-                            }}
-                          >
-                            {item?.name}
-                          </CheckBoxWrapper>
-                        ))
-                      }
-                    </>
-                  ) : <div>No data</div>}
-                </div>
-              </Checkbox.Group>
+              <>
+                <label style={{ textTransform: 'uppercase '}}>{config.name}</label>
+                <br />
+                <Checkbox.Group onChange={values => setFilterData(filter => ({
+                  ...filter,
+                  [config.source]: values,
+                }))} style={{marginTop: '10px', width: '100%', overflow: 'hidden'}}>
+                  <div style={{ padding: '10px 0 34px',display: 'flex', width: '100%', overflowX: 'auto'}}>
+                    {config?.items.length ? (
+                      <>
+                        {
+                          config?.items.map(item => (
+                            <CheckBoxWrapper
+                              value={item?._id}
+                              {...item?.hex && {
+                                color: item?.hex,
+                              }}
+                            >
+                              {item?.name}
+                            </CheckBoxWrapper>
+                          ))
+                        }
+                      </>
+                    ) : <div>No data</div>}
+                  </div>
+                </Checkbox.Group>
+              </>
             ) : (
               <>
                 <label style={{ textTransform: 'uppercase '}}>{config.name}</label>
                 <br />
-                <div style={{ minHeight: '40px',display: 'flex', width: '100%', overflowX: 'auto'}}>
+                <div style={{ padding: '10px 0 34px',display: 'flex', width: '100%', overflowX: 'auto'}}>
                   {config?.items?.length ? (
                     config?.items?.map(item => (
                         <ButtonWrapper
@@ -106,7 +110,7 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
                     ))
                   ) : <div>No data</div>}
                 </div>
-                <Divider />
+                <Divider style={{ margin: '0 0 24px'}} />
               </>
             )
           ))}
@@ -127,9 +131,9 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
 
 
 export const CheckBoxWrapper = styled(Checkbox)`
-  display: flex;
+  display: flex !important;
   flex-direction: column-reverse;
-  align-items: center;
+  align-items: center !important;
 
 
 
@@ -152,7 +156,7 @@ export const CheckBoxWrapper = styled(Checkbox)`
   }
 
   &:after {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     overflow: hidden;
     width: 40px;
@@ -163,14 +167,14 @@ export const CheckBoxWrapper = styled(Checkbox)`
     color: ${({ color }) => color};
     border-radius: 50%;
     justify-content: center;
-    content: '✓';
+    content: '✓' !important;
     font-size: 24px;
     font-weight: 800;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
   &.ant-checkbox-wrapper-checked:after {
-    background: #fff;
+    background: ${({ color }) => color === '#ffffff' ? '#ddd' : '#fff'};
   }
 
 
