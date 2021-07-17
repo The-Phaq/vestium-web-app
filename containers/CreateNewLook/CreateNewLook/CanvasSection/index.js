@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import useImage from "use-image";
-import SharpEdgeButton from 'components/SharpEdgeButton';
+import SharpEdgeButton from "components/SharpEdgeButton";
 import { Stage, Layer, Group, Text, Image } from "react-konva";
 import TransformerComponent from "../Transformer";
 import CanvasSectionStyles from "./styles";
@@ -81,17 +81,13 @@ class CanvasSection extends Component {
               </Group>
             )}
             {this.props?.listItems?.map((item) => (
-              <Group name="group" draggable>
-                <ItemImage url={item?.image?.url} name={`${item._id}`} />
+              <Group name="group" draggable x={40} y={40}>
+                <ItemImage url={item?.image?.originUrl} name={`${item._id}`} />
               </Group>
             ))}
             {this.props?.listEmoji?.map((item) => (
-              <Group name="group" x={400} y={200}>
-                <ItemImage
-                  url={item?.image?.url}
-                  name={`${item._id}`}
-                  draggable
-                />
+              <Group name="group" x={40} y={40} draggable>
+                <ItemImage url={item?.image?.originUrl} name={`${item._id}`} />
               </Group>
             ))}
             <TransformerComponent

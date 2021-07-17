@@ -1,43 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Image, Empty, Button, Skeleton } from "antd";
-import { getAllEmojis } from 'store/emojis/actions';
-import { emojisSelectors } from 'store/emojis/selectors';
+import { getAllEmojis } from "store/emojis/actions";
+import { emojisSelectors } from "store/emojis/selectors";
 import find from "lodash/find";
-import { Waypoint } from 'react-waypoint';
+import { Waypoint } from "react-waypoint";
 import ListEmojiStyles from "./styles";
 
 const ListEmoji = ({ setEmoji }) => {
   const dispatch = useDispatch();
-  const categories = useSelector(state => state.config.category.emoji);
-  const [currentCategoryId, setCurrentCategoryId] = useState('');
+  const categories = useSelector((state) => state.config.category.emoji);
+  const [currentCategoryId, setCurrentCategoryId] = useState("");
   const emojis = useSelector(emojisSelectors.getDataArr);
   const loading = useSelector(emojisSelectors.getLoading);
   const enabledLoadMore = useSelector(emojisSelectors.enabledLoadMore);
 
   const retrieveList = (filterData, isRefresh) => {
-    dispatch(getAllEmojis({
-      data: {
-        ...filterData,
-      },
-      options: {
-        isRefresh,
-      },
-    }))
-  }
+    dispatch(
+      getAllEmojis({
+        data: {
+          ...filterData,
+        },
+        options: {
+          isRefresh,
+        },
+      })
+    );
+  };
 
   const handleEnterWaypoint = () => {
     if (enabledLoadMore && !loading) {
       retrieveList({}, false);
     }
-  }
+  };
 
   useEffect(() => {
-    retrieveList({
-      perPage: 10,
-      offset: 0,
-    }, true);
-  }, [])
+    retrieveList(
+      {
+        perPage: 10,
+        offset: 0,
+      },
+      true
+    );
+  }, []);
 
   const onSelectBg = (id) => () => {
     if (!id) return;
@@ -46,36 +51,39 @@ const ListEmoji = ({ setEmoji }) => {
     setEmoji({
       ...emoji,
       image: {
-        ...emoji.iamge,
+        ...emoji.image,
         url: `${emoji.image.url}?exp=${new Date().getTime()}`,
       },
     });
   };
 
-  const handleFilterEmoji = id => () => {
-    setCurrentCategoryId(categoryId => categoryId === id ? '' : id);
-    retrieveList({
-      perPage: 10,
-      offset: 0,
-      ...currentCategoryId !== id && {
-        filter: {
-          categoryId: id,
-        },
+  const handleFilterEmoji = (id) => () => {
+    setCurrentCategoryId((categoryId) => (categoryId === id ? "" : id));
+    retrieveList(
+      {
+        perPage: 10,
+        offset: 0,
+        ...(currentCategoryId !== id && {
+          filter: {
+            categoryId: id,
+          },
+        }),
       },
-    }, true)
-  }
+      true
+    );
+  };
 
   return (
     <ListEmojiStyles>
       <Row gutter={[8, 8]}>
         <Col span={24}>
           <div className="filter-boutique">
-            {categories.map(category => (
+            {categories.map((category) => (
               <Button
                 shape="round"
-                {...currentCategoryId === category._id && {
-                  type: 'primary',
-                }}
+                {...(currentCategoryId === category._id && {
+                  type: "primary",
+                })}
                 key={category?._id}
                 onClick={handleFilterEmoji(category._id)}
               >
@@ -95,12 +103,12 @@ const ListEmoji = ({ setEmoji }) => {
               />
             </Col>
           ))}
-          {loading && (
-            <Col span={24}>
-              <Skeleton active />
-            </Col>
-          )}
-          {enabledLoadMore && <Waypoint onEnter={handleEnterWaypoint} />}
+        {loading && (
+          <Col span={24}>
+            <Skeleton active />
+          </Col>
+        )}
+        {enabledLoadMore && <Waypoint onEnter={handleEnterWaypoint} />}
       </Row>
       {emojis?.length === 0 && !loading && <Empty />}
     </ListEmojiStyles>
