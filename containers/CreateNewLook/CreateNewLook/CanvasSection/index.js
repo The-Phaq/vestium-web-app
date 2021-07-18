@@ -54,6 +54,27 @@ class CanvasSection extends Component {
     }
   };
 
+  onDragEnd = (e) => {
+    const name = e.target.name();
+    const items = this.props?.listItems.slice();
+    const index = name.split("_")?.[1];
+    let item = this.props.listItems[index];
+    // update item position
+    item = {
+      ...item,
+      x: e.target.x(),
+      y: e.target.y(),
+    };
+    // remove from the list:
+    items.splice(index, 1);
+    // add to the top
+    items.push(item);
+    this.props.setListItems(items);
+    this.setState({
+      selectedShapeName: `${item._id}_${items.length - 1}`,
+    });
+  };
+
   onNext = () => {
     const uri = this.newLookRef?.current?.toDataURL();
     if (uri) {
@@ -80,14 +101,19 @@ class CanvasSection extends Component {
                 <BgImage url={this.props?.background} name="backgroundImg" />
               </Group>
             )}
-            {this.props?.listItems?.map((item) => (
-              <Group name="group" draggable x={40} y={40}>
-                <ItemImage url={item?.image?.originUrl} name={`${item._id}`} />
-              </Group>
-            ))}
-            {this.props?.listEmoji?.map((item) => (
-              <Group name="group" x={40} y={40} draggable>
-                <ItemImage url={item?.image?.originUrl} name={`${item._id}`} />
+            {this.props?.listItems?.map((item, intex) => (
+              <Group
+                name={`${item._id}_${intex}`}
+                key={`${item._id}_${intex}`}
+                onDragEnd={this.onDragEnd}
+                draggable
+                x={item?.x || 40}
+                y={item?.y || 40}
+              >
+                <ItemImage
+                  url={item?.image?.originUrl}
+                  name={`${item._id}_${intex}`}
+                />
               </Group>
             ))}
             <TransformerComponent

@@ -50,10 +50,7 @@ const ListEmoji = ({ setEmoji }) => {
     if (!emoji?.image?.url) return;
     setEmoji({
       ...emoji,
-      image: {
-        ...emoji.image,
-        url: `${emoji.image.url}?exp=${new Date().getTime()}`,
-      },
+      isEmoji: true,
     });
   };
 

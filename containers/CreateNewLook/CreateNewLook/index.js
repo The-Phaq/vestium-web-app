@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Tabs, Steps } from "antd";
-import xorBy from 'lodash/xorBy';
+import xorBy from "lodash/xorBy";
 // import components
 import CanvasSection from "./CanvasSection";
 import ListBackground from "./ListBackground";
@@ -9,16 +9,16 @@ import ListEmoji from "./ListEmoji";
 
 const { TabPane } = Tabs;
 
-const CreateNewLook = ({ listBoutique, setListBoutique, setCurrentStep, setNewLookImg }) => {
+const CreateNewLook = ({
+  listBoutique,
+  setListBoutique,
+  setCurrentStep,
+  setNewLookImg,
+}) => {
   const [background, setBackground] = useState(null);
-  const [listEmoji, setListEmoji] = useState([]);
 
   const setBoutique = (item) => {
-    setListBoutique(boutiques => xorBy(boutiques, [item], '_id'));
-  };
-
-  const setEmoji = (url) => {
-    setListEmoji([...listEmoji, url]);
+    setListBoutique((boutiques) => [...boutiques, item]);
   };
 
   return (
@@ -27,7 +27,7 @@ const CreateNewLook = ({ listBoutique, setListBoutique, setCurrentStep, setNewLo
         <CanvasSection
           background={background}
           listItems={listBoutique}
-          listEmoji={listEmoji}
+          setListItems={setListBoutique}
           setCurrentStep={setCurrentStep}
           setNewLookImg={setNewLookImg}
         />
@@ -41,7 +41,7 @@ const CreateNewLook = ({ listBoutique, setListBoutique, setCurrentStep, setNewLo
             <ListBoutique setBoutique={setBoutique} />
           </TabPane>
           <TabPane tab="ELEMENTS" key="3">
-            <ListEmoji setEmoji={setEmoji} />
+            <ListEmoji setEmoji={setBoutique} />
           </TabPane>
         </Tabs>
       </Col>

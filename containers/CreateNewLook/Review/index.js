@@ -1,14 +1,15 @@
-import React, { useMemo, useState } from 'react'
-import { Row, Col, Image } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
-import { getConfigSelector } from 'store/config/selectors';
-import { getUrl, uploadMedia } from 'api/uploadMedia';
-import SharpEdgeButton from 'components/SharpEdgeButton';
-import flatten from 'lodash/flatten';
-import intersectionBy from 'lodash/intersectionBy';
-import { useRouter } from 'next/router';
-import { createNewlooks, getAllNewlooks } from 'store/newlooks/actions';
-import styled from 'styled-components';
+import React, { useMemo, useState, useEffect } from "react";
+import { Row, Col, Image } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { getConfigSelector } from "store/config/selectors";
+import { getUrl, uploadMedia } from "api/uploadMedia";
+import SharpEdgeButton from "components/SharpEdgeButton";
+import flatten from "lodash/flatten";
+import uniqBy from "lodash/uniqBy";
+import intersectionBy from "lodash/intersectionBy";
+import { useRouter } from "next/router";
+import { createNewlooks, getAllNewlooks } from "store/newlooks/actions";
+import styled from "styled-components";
 
 const InfoWrapper = styled.div`
   text-align: center;
@@ -26,102 +27,122 @@ const InfoWrapper = styled.div`
   }
 
   .items {
-      margin-top: 20px;
+    margin-top: 20px;
+    width: 100%;
+
+    .item-wrapper {
       width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-      .item-wrapper {
+      .item-image {
         width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        height: 140px;
+        position: relative;
 
-        .item-image {
-          width: 100%;
-          height: 140px;
-          position: relative;
+        .ant-image {
+          height: 100%;
+          display: flex;
 
-          .ant-image {
+          img {
             height: 100%;
-            display: flex;
-
-            img {
-              height: 100%;
-            }
           }
         }
-        
-        .item-name {
-          font-weight: bold;
-          text-align: center;
-        }
+      }
 
-        .price {
-          font-weight: 500;
-        }
+      .item-name {
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .price {
+        font-weight: 500;
       }
     }
+  }
 `;
 
-const b64toBlob = (base64String) => fetch(base64String).then(res => res.blob())
+const b64toBlob = (base64String) =>
+  fetch(base64String).then((res) => res.blob());
 
 const guid = () => {
   const s4 = () => {
-      return Math.floor((1 + Math.random()) * 0x10000)
-          .toString(16)
-          .substring(1);
-  }
-  return `${s4() + s4()  }-${  s4()  }-${  s4()  }-${  s4()  }-${  s4()  }${s4()  }${s4()}`;
-}
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  };
+  return `${s4() + s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
+};
 
-const Review = ({ listBoutique, newLookImg, newLookData }) => {
+const Review = ({ listBoutique, newLookImg, newLookData }) => {
   const { push } = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const configData = useSelector(getConfigSelector);
-  const user = useSelector(state => state.user?.user);
-  
+  const user = useSelector((state) => state.user?.user);
+  const listItems = useMemo(() => {
+    return uniqBy(
+      listBoutique?.filter((boutique) => !boutique?.isEmoji),
+      "_id"
+    );
+  });
+
   const features = useMemo(() => {
-    return flatten(configData?.map(config => intersectionBy(config.items, newLookData?.[config.source]?.map(id => ({ _id: id })), '_id')))
-  }, [newLookData])
+    return flatten(
+      configData?.map((config) =>
+        intersectionBy(
+          config.items,
+          newLookData?.[config.source]?.map((id) => ({ _id: id })),
+          "_id"
+        )
+      )
+    );
+  }, [newLookData]);
 
   const onClick = async () => {
     try {
       setLoading(true);
-      const file = await (b64toBlob(newLookImg));
+      const file = await b64toBlob(newLookImg);
       file.name = `new-look-${guid()}`;
       const responseS3 = await getUrl(file.name, file.type);
       const response = await uploadMedia(responseS3.uploadUrl, file);
-      if (response) dispatch(createNewlooks({
-        data: {
-          ...newLookData,
-          url: responseS3.url,
-          image: {
-            url: responseS3.url,
-            name: file.name,
-          },
-          items: listBoutique?.map(boutique => ({
-            itemId: boutique?._id,
-          })),
-          userId: user?._id,
-        },
-        options: {
-          customApiResource: 'newlooks/me',
-        },
-      })).then(() => {
-        dispatch(getAllNewlooks({
-          data: {
-            orderBy: '-createdAt',
-            pageSize: 10,
-            offset: 0,
-          },
-        })).then(() => push('/'))
-      })
+      if (response)
+        dispatch(
+          createNewlooks({
+            data: {
+              ...newLookData,
+              url: responseS3.url,
+              image: {
+                url: responseS3.url,
+                name: file.name,
+              },
+              items: listItems?.map((boutique) => ({
+                itemId: boutique?._id,
+              })),
+              userId: user?._id,
+            },
+            options: {
+              customApiResource: "newlooks/me",
+            },
+          })
+        ).then(() => {
+          dispatch(
+            getAllNewlooks({
+              data: {
+                orderBy: "-createdAt",
+                pageSize: 10,
+                offset: 0,
+              },
+            })
+          ).then(() => push("/"));
+        });
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <Row gutter={[16, 32]}>
@@ -133,15 +154,16 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
       </Col>
       <Col span={12}>
         <InfoWrapper>
-          <h1>
-            {newLookData?.name}
-          </h1>
+          <h1>{newLookData?.name}</h1>
           <div className="features">
-            {features?.map(feature => feature.name)?.toString()?.replaceAll(',', '  ·  ')}
+            {features
+              ?.map((feature) => feature.name)
+              ?.toString()
+              ?.replaceAll(",", "  ·  ")}
           </div>
-          {listBoutique?.length > 0 && (
+          {listItems?.length > 0 && (
             <Row gutter={[20, 20]} className="items">
-              {listBoutique.map(
+              {listItems.map(
                 ({ _id: id, name: itemName, brand, price, image }) => (
                   <Col span={8} key={id}>
                     <div className="item-wrapper">
@@ -157,25 +179,28 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
                       <div className="price">{`$${price}`}</div>
                     </div>
                   </Col>
-                ),
+                )
               )}
             </Row>
           )}
-          <div style={{ width: '100%'}}>
+          <div style={{ width: "100%" }}>
             <br />
-            <SharpEdgeButton loading={loading}  type="primary" size="large" onClick={onClick}>
+            <SharpEdgeButton
+              loading={loading}
+              type="primary"
+              size="large"
+              onClick={onClick}
+            >
               SEND MY NEW LOOK
             </SharpEdgeButton>
             <br />
             <br />
-            <SharpEdgeButton  size="large">
-              ADD TO FAVORITE
-            </SharpEdgeButton>
+            <SharpEdgeButton size="large">ADD TO FAVORITE</SharpEdgeButton>
           </div>
         </InfoWrapper>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
 export default Review;
