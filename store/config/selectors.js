@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import xor from 'lodash/xor';
 
 const getConfigData = state => state.config.data;
 const getBoutiqueConfigData = state => state.config.boutiqueData;
@@ -11,8 +12,26 @@ const configSource = {
 }
 
 const boutiqueConfigSource = {
-  Category: 'categoryId.$in',
-  Figure: 'figureIds.$all',
+  Category: {
+    source: 'categoryId',
+    getData: item => item?._id,
+    validateData: (prev, id) => prev !== id,
+    getActive: (prev, item) => prev === item?._id,
+  },
+  Brand: {
+    source: 'brand.$in',
+    getData: (item, prev = []) => xor(prev, [item?.name]),
+    validateData: () => true,
+    getActive: (prev = [], item) => prev?.includes(item?.name),
+  },
+  Color: {
+    source: 'colorSourceIds.$all',
+    getData: (item, prev = []) => xor(prev, [item?._id]),
+    validateData: () => true,
+    getActive: (prev = [], item) => prev?.includes(item?._id),
+  },
+  Price: 'price',
+  // Figure: 'figureIds.$all',
 }
 
 export const getConfigSelector = createSelector(
@@ -32,7 +51,7 @@ export const getBoutiqueConfigSelector = createSelector(
     return configData?.filter(config => !!boutiqueConfigSource[config?.collection])?.map(config => ({
       ...config,
       id: config._id,
-      source: boutiqueConfigSource[config?.collection],
+      filterType: boutiqueConfigSource[config?.collection],
     }));
   },
 );

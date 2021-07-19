@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Collapse, Row, Col, Button } from 'antd';
+import { Collapse, Row, Col, Button, Slider } from 'antd';
 import styled from 'styled-components';
 import { CaretRightOutlined } from '@ant-design/icons';
 import { getBoutiqueConfigSelector } from 'store/config/selectors';
@@ -33,10 +33,11 @@ const ItemFilterSection = () => {
     }))
   }
 
-  const handleFilter = (id, source) => () => {
+  const handleFilter = (item, filterType) => () => {
     const filter = {};
-
-    set(filter, source, xor(get(filterData, source, []), [id]))
+    if (filterType.validateData(filterData?.[filterType.source], filterType.getData(item))) {
+      set(filter, filterType.source, filterType.getData(item, get(filterData, filterType.source)))
+    } else set(filter, filterType.source, '')
     retrieveList({
       pageSize: 10,
       offset: 0,
@@ -46,6 +47,25 @@ const ItemFilterSection = () => {
           q,
         },
         ...filter,
+      },
+    }, true)
+  }
+
+  const priceFilter = filters.find(filter => filter.filterType === 'price');
+
+  const handleFilterPrice = value => {
+    retrieveList({
+      pageSize: 10,
+      offset: 0,
+      filter: {
+        ...filterData,
+        ...q && {
+          q,
+        },
+        price: {
+          $gt: value[0] * 100,
+          $lt: value[1] * 100,
+        },
       },
     }, true)
   }
@@ -62,7 +82,7 @@ const ItemFilterSection = () => {
         expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
         className="filter-content"
       >
-        {filters.map((filter, index) => (
+        {filters.filter(filter => filter.filterType !== 'price').map((filter, index) => (
           <Panel
             header={filter.name}
             key={`button-${String(index)}`}
@@ -73,10 +93,10 @@ const ItemFilterSection = () => {
                 <Col span={12} key={item._id}>
                   <Button
                     shape="round"
-                    {...get(filterData, filter.source, [])?.includes(item._id) && {
+                    {...filter.filterType?.getActive(get(filterData, filter.filterType.source), item) && {
                       type: 'primary',
                     }}
-                    onClick={handleFilter(item._id, filter.source)}
+                    onClick={handleFilter(item, filter.filterType)}
                   >
                     {item.name}
                   </Button>
@@ -85,6 +105,22 @@ const ItemFilterSection = () => {
             </Row>
           </Panel>
         ))}
+        {priceFilter && (
+          <Panel
+            header={priceFilter.name}
+            className="filter-panel"
+          >
+            <Slider
+              range
+              min={priceFilter?.items?.[0]/100}
+              max={priceFilter?.items?.[1]/100}
+              {...priceFilter?.items && {
+                defaultValue: priceFilter?.items,
+              }}
+              onAfterChange={handleFilterPrice}
+            />
+          </Panel>
+        )}
       </Collapse>
     </ItemFilterSectionWrapper>
   )
@@ -114,7 +150,7 @@ const ItemFilterSectionWrapper = styled.div`
               padding: 4px 7px;
               text-align: center;
               line-height: 14px;
-              height: auto;
+              height: 100%;
               box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
           }
       }

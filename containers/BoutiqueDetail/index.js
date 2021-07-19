@@ -14,7 +14,6 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
 
   const loading = useSelector((state) => state.items.loading);
   const boutique = useSelector((state) => state.items.currentData);
-  console.log("asdasd boutique", boutiqueFromProps, boutique);
 
   const {
     _id,
@@ -38,7 +37,7 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
       action({
         id,
         actionType,
-      })
+      }),
     );
   };
 
