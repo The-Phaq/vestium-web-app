@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import { CRUDSelectors } from "store/crudCreator/selectors";
+import get from 'lodash/get';
 import { MODEL_NAME } from "./actions";
 
 export const newlooksSelectors = new CRUDSelectors(MODEL_NAME);
@@ -18,7 +19,7 @@ export const getNewLooksSelectors = createSelector(
       shares: newLookData[id]?.shareCount || 0,
       favorites: newLookData[id]?.favoriteCount || 0,
       followers: newLookData[id]?.followCount || 0,
-      items: newLookData[id]?.items?.map(item => ({
+      items: get(newLookData, `${id}.items`, []).filter(item => !!item.itemId).map(item => ({
         ...item,
         id: item?.itemId?._id,
         _id: item?.itemId?._id,
