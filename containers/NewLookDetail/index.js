@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 import {
   Avatar,
   Col,
@@ -251,18 +252,25 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                     {items.map(({ itemId: item }) => (
                       <Col span={8} key={item?._id}>
                         <div className="item-wrapper">
-                          <div className="item-image">
-                            {item?.image?.url && (
-                              <Image
-                                objectFit="contain"
-                                layout="fill"
-                                src={item?.image?.url}
-                              />
-                            )}
-                          </div>
-                          <div className="item-name">{item?.name}</div>
-                          <div className="item-name">{item?.brand}</div>
-                          <div className="price">{`$${item?.price || 0}`}</div>
+                          <Link href={`/boutique/${item?._id}`}>
+                            <a>
+                              <div className="item-image">
+                                {item?.image?.url && (
+                                  <Image
+                                    objectFit="contain"
+                                    layout="fill"
+                                    src={item?.image?.url}
+                                    preview={false}
+                                  />
+                                )}
+                              </div>
+                              <div className="item-name">{item?.name}</div>
+                              <div className="item-name">{item?.brand}</div>
+                              <div className="price">{`$${
+                                item?.price || 0
+                              }`}</div>
+                            </a>
+                          </Link>
                         </div>
                       </Col>
                     ))}
@@ -386,6 +394,7 @@ export const NewLookItemWrapper = styled(Row)`
 
         .price {
           font-weight: 500;
+          text-align: center;
         }
       }
     }

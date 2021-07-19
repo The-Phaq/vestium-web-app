@@ -225,18 +225,21 @@ const NewLookItem = ({ newLook }) => {
                   ({ id, name: itemName, brand, price, img: itemImg }) => (
                     <Col span={8} key={id}>
                       <div className="item-wrapper">
-                        <div className="item-image">
-                          <Image
-                            objectFit="contain"
-                            layout="fill"
-                            src={itemImg}
-                          />
-                        </div>
-                        <div className="item-name">
-                          <Link href={`/boutique/${id}`}>{itemName}</Link>
-                        </div>
-                        <div className="item-name">{brand}</div>
-                        <div className="price">{`$${price}`}</div>
+                        <Link href={`/boutique/${id}`}>
+                          <a>
+                            <div className="item-image">
+                              <Image
+                                objectFit="contain"
+                                layout="fill"
+                                src={itemImg}
+                                preview={false}
+                              />
+                            </div>
+                            <div className="item-name">{itemName}</div>
+                            <div className="item-name">{brand}</div>
+                            <div className="price">{`$${price}`}</div>
+                          </a>
+                        </Link>
                       </div>
                     </Col>
                   )
