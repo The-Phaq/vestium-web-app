@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   div::-webkit-scrollbar-track {
@@ -9,7 +9,6 @@ export default createGlobalStyle`
     padding: 0;
     margin: 0;
     font-family: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif';
-    overflow: hidden;
   }
 
   a {
