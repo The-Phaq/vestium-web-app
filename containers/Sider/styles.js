@@ -5,7 +5,10 @@ const { Sider } = Layout;
 
 export default styled(Sider)`
     background: #fff;
-    overflow-y: auto;
+
+    .divider-vertical {
+        padding-left: 0 !important;
+    }
 
     .ant-layout-sider-children {
         display: flex;
@@ -33,7 +36,11 @@ export default styled(Sider)`
         flex-direction: column;
 
         .divider {
-            padding-right: 0;
+            ${'' /* padding-right: 0; */}
+        }
+
+        .sider-content-children {
+            overflow-y: auto;
         }
 
         .title {
@@ -50,7 +57,6 @@ export default styled(Sider)`
             display: flex;
             flex-direction: column;
             padding: 10px;
-            padding-right: 0;
 
             & > .ant-btn {
                 width: 100%;

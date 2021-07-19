@@ -49,29 +49,31 @@ const Sider = ({ FilterSection, pageSource }) => {
         <div className="title">
           VESTIUMS
         </div>
-        <div className="actions-section">
-          {buttons.map(({ Icon, text, key, isHighlight, url: btnUrl }, index) => (
-            <Link href={btnUrl} key={`button-${String(index)}`}>
-              <Button
-                {...(url || 'new-looks') === key && {
-                  type: 'primary',
-                }}
-                {...Icon && {
-                  icon: <Icon />,
-                }}
-                {...isHighlight && {
-                  className: 'highlight-btn',
-                }}
-              >
-                {text}
-              </Button>
-            </Link>
-          ))}
+        <div className="sider-content-children">
+          <div className="actions-section">
+            {buttons.map(({ Icon, text, key, isHighlight, url: btnUrl }, index) => (
+              <Link href={btnUrl} key={`button-${String(index)}`}>
+                <Button
+                  {...(url || 'new-looks') === key && {
+                    type: 'primary',
+                  }}
+                  {...Icon && {
+                    icon: <Icon />,
+                  }}
+                  {...isHighlight && {
+                    className: 'highlight-btn',
+                  }}
+                >
+                  {text}
+                </Button>
+              </Link>
+            ))}
+          </div>
+          <Divider className="divider" />
+          <FilterSection pageSource={pageSource} />
         </div>
-        <Divider className="divider" />
-        <FilterSection pageSource={pageSource} />
       </div>
-      <Divider vertical color="#fff" />
+      <Divider className="divider-vertical" vertical color="#fff" />
     </SiderWrapper>
   )
 }
