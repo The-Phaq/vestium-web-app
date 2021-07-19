@@ -2,7 +2,6 @@ import React from "react";
 import { Image } from "antd";
 
 import Link from "next/link";
-import { formatMoney } from "utils/tools";
 import ItemCardWrapper from "./styles";
 
 const ItemCard = ({ data }) => {
