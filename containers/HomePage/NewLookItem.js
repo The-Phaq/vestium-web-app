@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { Image, Avatar, Col, Button, Divider, Row, Popover, Tooltip } from 'antd';
 import { getConfigSelector } from 'store/config/selectors';
@@ -193,7 +194,11 @@ const NewLookItem = ({ newLook }) => {
                             src={itemImg}
                           />
                         </div>
-                        <div className="item-name">{itemName}</div>
+                        <div className="item-name">
+                          <Link href={`/boutique/${id}`}>
+                            {itemName}
+                          </Link>
+                        </div>
                         <div className="item-name">{brand}</div>
                         <div className="price">{`$${price}`}</div>
                       </div>

@@ -1,6 +1,38 @@
 import { makeCRUDSlice } from 'store/crudCreator';
-import { MODEL_NAME, itemsActions } from './actions';
+import get from 'lodash/get';
+import { MODEL_NAME, itemsActions, reactItem, deleteReactItem } from './actions';
 
-const slice = makeCRUDSlice(MODEL_NAME, itemsActions);
+const slice = makeCRUDSlice(MODEL_NAME, itemsActions, {
+  [reactItem.fulfilled]: (state, { payload }) => {
+    state.data = {
+      ...state.data,
+      [payload.id]: {
+        ...get(state.data, payload.id, {}),
+        [payload.type]: get(state.data, `${payload.id}.${payload.type}`, 0) + 1,
+        [payload.isDone]: true,
+      },
+    }
+    state.currentData = {
+      ...state.currentData,
+      [payload.type]: get(state.currentData, payload.type, 0) + 1,
+      [payload.isDone]: true,
+    }
+  },
+  [deleteReactItem.fulfilled]: (state, { payload }) => {
+    state.data = {
+      ...state.data,
+      [payload.id]: {
+        ...get(state.data, payload.id, {}),
+        [payload.type]: get(state.data, `${payload.id}.${payload.type}`, 1) - 1,
+        [payload.isDone]:  false,
+      },
+    }
+    state.currentData = {
+      ...state.currentData,
+      [payload.type]: get(state.currentData, payload.type, 1) - 1,
+      [payload.isDone]: false,
+    }
+  },
+});
 
 export default slice.reducer;
