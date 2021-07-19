@@ -63,8 +63,8 @@ const ItemFilterSection = () => {
           q,
         },
         price: {
-          $gt: value[0] * 100,
-          $lt: value[1] * 100,
+          $gt: value[0],
+          $lt: value[1],
         },
       },
     }, true)
@@ -112,8 +112,8 @@ const ItemFilterSection = () => {
           >
             <Slider
               range
-              min={priceFilter?.items?.[0]/100}
-              max={priceFilter?.items?.[1]/100}
+              min={priceFilter?.items?.[0]}
+              max={priceFilter?.items?.[1]}
               {...priceFilter?.items && {
                 defaultValue: priceFilter?.items,
               }}
