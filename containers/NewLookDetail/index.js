@@ -1,43 +1,63 @@
-import React, { useMemo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { NextSeo } from 'next-seo';
-import { Avatar, Col, Button, Divider, Row, Popover, Skeleton, Image } from 'antd';
-import get from 'lodash/get';
-import intersectionBy from 'lodash/intersectionBy';
-import { reactNewLook, deleteReactNewLook } from 'store/newlooks/actions';
-import flatten from 'lodash/flatten';
-import { useRouter } from 'next/router';
-import SecurityLayout from 'layouts/Security';
-import { getConfigSelector } from 'store/config/selectors';
-import { logout } from 'store/auth/actions';
+import React, { useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { NextSeo } from "next-seo";
 import {
-  HeartIcon,
-  LikeIcon,
-  ShareIcon,
-  FollowIcon,
-} from 'components/SVGIcon';
-import { UserOutlined } from '@ant-design/icons';
-import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
-import styled from 'styled-components';
+  Avatar,
+  Col,
+  Button,
+  Divider,
+  Row,
+  Popover,
+  Skeleton,
+  Image,
+} from "antd";
+import get from "lodash/get";
+import intersectionBy from "lodash/intersectionBy";
+import { reactNewLook, deleteReactNewLook } from "store/newlooks/actions";
+import flatten from "lodash/flatten";
+import { useRouter } from "next/router";
+import SecurityLayout from "layouts/Security";
+import { getConfigSelector } from "store/config/selectors";
+import { logout } from "store/auth/actions";
+import { HeartIcon, LikeIcon, ShareIcon, FollowIcon } from "components/SVGIcon";
+import { UserOutlined } from "@ant-design/icons";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from "react-share";
+import styled from "styled-components";
 
 const NewLookItem = ({ newLook: newLookFromProps }) => {
   const dispatch = useDispatch();
   const { push } = useRouter();
-  const loading = useSelector(state => state.newlooks.loading);
-  const newLook = useSelector(state => state.newlooks.currentData);
-  const { _id, url, user, name, items, isLike, isShare, isFavorite } = newLook || {};
+  const loading = useSelector((state) => state.newlooks.loading);
+  const newLook = useSelector((state) => state.newlooks.currentData);
+  const { _id, url, user, name, items, isLike, isShare, isFavorite } =
+    newLook || {};
   const configData = useSelector(getConfigSelector);
   const features = useMemo(() => {
-    return flatten(configData?.map(config => intersectionBy(config.items, newLook?.[config.source]?.map(id => ({ _id: id })), '_id')))
-  }, [configData, newLook])
+    return flatten(
+      configData?.map((config) =>
+        intersectionBy(
+          config.items,
+          newLook?.[config.source]?.map((id) => ({ _id: id })),
+          "_id"
+        )
+      )
+    );
+  }, [configData, newLook]);
 
   const reactAction = ({ id, actionType, isDone }) => {
     const action = isDone ? deleteReactNewLook : reactNewLook;
-    dispatch(action({
-      id,
-      actionType,
-    }))
-  }
+    dispatch(
+      action({
+        id,
+        actionType,
+      })
+    );
+  };
 
   const infos = [
     {
@@ -46,11 +66,12 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       Icon: LikeIcon,
       value: (data) => `${data} Votes`,
       isPrimary: isLike,
-      onClick: ({ _id }) => reactAction({
-        id: _id,
-        actionType: 'LIKE',
-        isDone: isLike,
-      }),
+      onClick: ({ _id }) =>
+        reactAction({
+          id: _id,
+          actionType: "LIKE",
+          isDone: isLike,
+        }),
     },
     {
       id: "favoriteCount",
@@ -58,11 +79,12 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       Icon: HeartIcon,
       value: (data) => `${data} Favorite`,
       isPrimary: isFavorite,
-      onClick: ({ _id }) => reactAction({
-        id: _id,
-        actionType: 'FAVORITE',
-        isDone: isFavorite,
-      }),
+      onClick: ({ _id }) =>
+        reactAction({
+          id: _id,
+          actionType: "FAVORITE",
+          isDone: isFavorite,
+        }),
     },
     {
       id: "shareCount",
@@ -71,7 +93,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       value: () => `Share`,
       CustomButton: () => (
         <Popover
-          content={(
+          content={
             <ShareWrapper>
               <FacebookShareButton
                 className="social-btn facebook-btn"
@@ -80,7 +102,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                   if (!isShare) {
                     reactAction({
                       id: _id,
-                      actionType: 'SHARE',
+                      actionType: "SHARE",
                       isDone: isShare,
                     });
                   }
@@ -96,7 +118,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                   if (!isShare) {
                     reactAction({
                       id: _id,
-                      actionType: 'SHARE',
+                      actionType: "SHARE",
                       isDone: isShare,
                     });
                   }
@@ -106,7 +128,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                 <div className="btn-content">Share on Twitter</div>
               </TwitterShareButton>
             </ShareWrapper>
-          )}
+          }
           trigger="click"
         >
           <Button
@@ -131,9 +153,9 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
   useEffect(() => {
     if (newLookFromProps?.statusCode === 401) {
       dispatch(logout());
-      window.location = '/auth/login';
+      window.location = "/auth/login";
     }
-  }, [newLookFromProps?.statusCode])
+  }, [newLookFromProps?.statusCode]);
 
   return (
     <>
@@ -141,8 +163,8 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
         title={`New look detail: ${newLookFromProps?.name}`}
         description={`View new look created by ${newLookFromProps?.user?.firstName}`}
         openGraph={{
-          type: 'website',
-          url: 'https://vestium-web-app.vercel.app',
+          type: "website",
+          url: "https://vestium-web-app.vercel.app",
           title: `New look detail: ${newLookFromProps?.name}`,
           description: `View new look created by ${newLookFromProps?.user?.firstName}`,
           images: [
@@ -150,7 +172,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
               url,
               width: 800,
               height: 600,
-              alt: 'New Look Detail',
+              alt: "New Look Detail",
             },
           ],
         }}
@@ -168,11 +190,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
           <meta property="og:image:height" content="600" />
         </Head> */}
         <NewLookItemWrapper gutter={[20, 20]}>
-          <Col span={24}>
-            {loading && (
-              <Skeleton active />
-            )}
-          </Col>
+          <Col span={24}>{loading && <Skeleton active />}</Col>
           <Col md={11} sm={24} xs={24}>
             <div className="img-wrapper">
               {url && <Image layout="fill" src={url} objectFit="contain" />}
@@ -182,8 +200,14 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
             <div className="info-section">
               <div className="user-section">
                 <div className="user">
-                  <Avatar src={user?.avatar} icon={<UserOutlined />} size={44} />
-                  <div className="name">{`${user?.firstName || ''} ${user?.lastName || ''}`}</div>
+                  <Avatar
+                    src={user?.avatar}
+                    icon={<UserOutlined />}
+                    size={44}
+                  />
+                  <div className="name">{`${user?.firstName || ""} ${
+                    user?.lastName || ""
+                  }`}</div>
                 </div>
                 <div className="info">
                   {infos.map((info) => (
@@ -196,9 +220,9 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                           {...(info?.isPrimary && {
                             type: "primary",
                           })}
-                          {...info?.onClick && {
+                          {...(info?.onClick && {
                             onClick: () => info.onClick(newLook),
-                          }}
+                          })}
                           {...(info?.Icon && {
                             icon: <info.Icon />,
                           })}
@@ -217,30 +241,31 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
               <div className="item-section">
                 <div className="item-title">{name}</div>
                 <div className="tags">
-                  {features?.map(feature => feature.name)?.toString()?.replaceAll(',', '  ·  ')}
+                  {features
+                    ?.map((feature) => feature.name)
+                    ?.toString()
+                    ?.replaceAll(",", "  ·  ")}
                 </div>
                 {items?.length > 0 && (
                   <Row gutter={[20, 20]} className="items">
-                    {items.map(
-                      ({ itemId: item }) => (
-                        <Col span={8} key={item?._id}>
-                          <div className="item-wrapper">
-                            <div className="item-image">
-                              {item?.image?.url && (
-                                <Image
-                                  objectFit="contain"
-                                  layout="fill"
-                                  src={item?.image?.url}
-                                />
-                              )}
-                            </div>
-                            <div className="item-name">{item?.name}</div>
-                            <div className="item-name">{item?.brand}</div>
-                            <div className="price">{`$${item?.price || 0}`}</div>
+                    {items.map(({ itemId: item }) => (
+                      <Col span={8} key={item?._id}>
+                        <div className="item-wrapper">
+                          <div className="item-image">
+                            {item?.image?.url && (
+                              <Image
+                                objectFit="contain"
+                                layout="fill"
+                                src={item?.image?.url}
+                              />
+                            )}
                           </div>
-                        </Col>
-                      ),
-                    )}
+                          <div className="item-name">{item?.name}</div>
+                          <div className="item-name">{item?.brand}</div>
+                          <div className="price">{`$${item?.price || 0}`}</div>
+                        </div>
+                      </Col>
+                    ))}
                   </Row>
                 )}
               </div>
@@ -274,21 +299,20 @@ const ShareWrapper = styled.div`
   .facebook-btn {
     .btn-content {
       background: #3b5998;
-    } 
+    }
   }
   .twitter-btn {
     .btn-content {
       background: #00aced;
-    } 
+    }
   }
-`
-
+`;
 
 export const NewLookItemWrapper = styled(Row)`
   margin: 10px !important;
   padding: 0 20px;
 
-  .img-wrapper {
+  .img-wrapper .ant-image {
     border-radius: 8px;
     border: 1px solid #ddd;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -299,6 +323,7 @@ export const NewLookItemWrapper = styled(Row)`
     position: relative;
     display: flex;
     justify-content: center;
+    cursor: pointer;
   }
 
   .item-section {
@@ -353,7 +378,7 @@ export const NewLookItemWrapper = styled(Row)`
             }
           }
         }
-        
+
         .item-name {
           font-weight: bold;
           text-align: center;
@@ -392,7 +417,7 @@ export const NewLookItemWrapper = styled(Row)`
             border-radius: 10px;
             border-color: ${({ theme }) => theme.palette.primary};
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            color: ${({  theme }) => theme.palette.primary};
+            color: ${({ theme }) => theme.palette.primary};
 
             img {
               width: 20px !important;
@@ -412,7 +437,6 @@ export const NewLookItemWrapper = styled(Row)`
           .ant-btn-primary {
             color: #fff;
 
-
             .img-icon img {
               filter: brightness(0) invert(1);
             }
@@ -423,7 +447,7 @@ export const NewLookItemWrapper = styled(Row)`
             font-weight: 600;
           }
         }
-        
+
         & > div {
           margin-right: 5px;
           margin-left: 5px;
@@ -446,6 +470,5 @@ export const NewLookItemWrapper = styled(Row)`
     }
   }
 `;
-
 
 export default NewLookItem;
