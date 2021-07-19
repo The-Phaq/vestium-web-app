@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import useImage from "use-image";
-import SharpEdgeButton from "components/SharpEdgeButton";
+import { Button } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { Stage, Layer, Group, Text, Image } from "react-konva";
+import SharpEdgeButton from "components/SharpEdgeButton";
 import TransformerComponent from "../Transformer";
 import CanvasSectionStyles from "./styles";
 
@@ -75,6 +77,15 @@ class CanvasSection extends Component {
     });
   };
 
+  onDelete = () => {
+    if (!this.state?.selectedShapeName) return;
+    const index = this.state.selectedShapeName.split("_")?.[1];
+    const items = this.props?.listItems.slice();
+    // remove from the list:
+    items.splice(index, 1);
+    this.props.setListItems(items);
+  };
+
   onNext = () => {
     const uri = this.newLookRef?.current?.toDataURL();
     if (uri) {
@@ -122,9 +133,17 @@ class CanvasSection extends Component {
           </Layer>
         </Stage>
         <div className="action-section">
-          <SharpEdgeButton size="large" type="primary" onClick={this.onNext}>
-            CREATE
-          </SharpEdgeButton>
+          <div>
+            <Button onClick={this.onDelete} icon={<DeleteOutlined />}>
+              Remove
+            </Button>
+          </div>
+          <br />
+          <div>
+            <SharpEdgeButton size="large" type="primary" onClick={this.onNext}>
+              CREATE
+            </SharpEdgeButton>
+          </div>
         </div>
       </CanvasSectionStyles>
     );

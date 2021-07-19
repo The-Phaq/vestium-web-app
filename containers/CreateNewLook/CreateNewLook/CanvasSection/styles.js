@@ -13,7 +13,9 @@ export default styled.div`
 
   .action-section {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin: 10px 0;
   }
 `;
