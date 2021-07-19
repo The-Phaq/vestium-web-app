@@ -1,5 +1,7 @@
 import { post, get } from './utils';
 
+export const forgotPasswordApi = data => post('/auth/forgotPassword', data);
+
 export async function fetchLogin(data) {
     return post('/auth/login', data);
 }

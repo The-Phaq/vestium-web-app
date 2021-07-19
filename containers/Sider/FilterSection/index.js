@@ -88,7 +88,7 @@ const FilterSection = ({ pageSource }) => {
 
 const FilterSectionWrapper = styled.div`
   flex-grow: 2;
-  overflow: hidden;
+  ${'' /* overflow: hidden; */}
   display: flex;
   flex-direction: column;
 
@@ -97,8 +97,7 @@ const FilterSectionWrapper = styled.div`
   }
 
   .ant-collapse {
-      ${'' /* height: 57vh; */}
-      overflow-y: auto;
+      ${'' /* overflow-y: auto; */}
 
       .filter-panel {
           background: #fff;
