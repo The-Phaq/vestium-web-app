@@ -131,9 +131,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
   useEffect(() => {
     if (newLookFromProps?.statusCode === 401) {
       dispatch(logout());
-      push({
-        pathname: '/auth/login',
-      });
+      window.location = '/auth/login';
     }
   }, [newLookFromProps?.statusCode])
 

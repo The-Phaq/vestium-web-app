@@ -1,14 +1,36 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { apiWrapper } from 'utils/reduxUtils';
 import { message } from "antd";
 import {
   fetchLogin,
   fetchLogout,
   fetchRegister,
   fetchProfile,
+  forgotPasswordApi,
 } from "../../api/user";
 import slice from "./index";
 
 const { loginSuccess, logoutSuccess, loginFetch, loginFailed, profileSuccess } =
   slice.actions;
+
+export const forgotPassword = createAsyncThunk(
+  'auth/forgotPassword',
+  async (payload, thunkAPI) => {
+    try {
+      const response = await apiWrapper(
+        {
+          isShowSuccess: true,
+        },
+        forgotPasswordApi,
+        payload,
+      );
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue();
+    }
+  },
+);
+
 export const login =
   ({ username, password }) =>
   async (dispatch) => {

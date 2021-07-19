@@ -5,6 +5,7 @@ const { Sider } = Layout;
 
 export default styled(Sider)`
     background: #fff;
+    overflow-y: auto;
 
     .ant-layout-sider-children {
         display: flex;

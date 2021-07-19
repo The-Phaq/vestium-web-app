@@ -61,6 +61,7 @@ export async function apiWrapper(
         fetch('/api/removeToken', {
           method: 'POST',
         });
+        window.location = '/auth/login';
       }
       !options.dontShowError &&
         notification.error({

@@ -81,12 +81,13 @@ const LoginForm = () => {
                             >
                                 <Checkbox>Remember me</Checkbox>
                             </Form.Item>
-                            <a
-                                className="login-form-forgot text-forgot"
-                                href=""
-                            >
-                                Forgot password?
-                            </a>
+                            <span className="login-form-forgot text-forgot">
+                                <Link
+                                    href="/auth/forgot-password"
+                                >
+                                    Forgot password?
+                                </Link>
+                            </span>
                         </div>
                         <Form.Item>
                             <ButtonC

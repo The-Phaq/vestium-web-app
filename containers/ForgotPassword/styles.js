@@ -28,13 +28,11 @@ export default styled.div`
         font-family: 'Rubik', normal;
     }
     .text-forgot {
-        a {
-            color: #f8a71b;
+        color: #f8a71b;
         font-family: 'Rubik', normal;
         font-size: 10px;
         line-height: 12px;
         margin-top: 7px;
-        }
     }
     .form-login {
         width: 320px;
