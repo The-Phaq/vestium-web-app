@@ -7,6 +7,7 @@ import {
   fetchRegister,
   fetchProfile,
   forgotPasswordApi,
+  resetPasswordApi,
 } from "../../api/user";
 import slice from "./index";
 
@@ -22,6 +23,23 @@ export const forgotPassword = createAsyncThunk(
           isShowSuccess: true,
         },
         forgotPasswordApi,
+        payload,
+      );
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue();
+    }
+  },
+);
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async (payload, thunkAPI) => {
+    try {
+      const response = await apiWrapper(
+        {
+          isShowSuccess: true,
+        },
+        resetPasswordApi,
         payload,
       );
       return response;

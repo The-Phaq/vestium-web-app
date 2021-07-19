@@ -3,15 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'antd';
 import { MailFilled } from '@ant-design/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from './styles';
 import { forgotPassword } from '../../store/auth/actions';
 
 const ForgotPassword = () => {
     const dispatch = useDispatch();
+    const { push } = useRouter();
     const { loading } = useSelector((state) => state.user);
     const onFinish = (values) => {
-        dispatch(forgotPassword(values));
+        dispatch(forgotPassword(values)).then(() => {
+            push({
+                pathname: '/auth/reset-password',
+                query: {
+                    email: values.email,
+                },
+            })
+        });
     };
     return (
         <LoginWrapper>
