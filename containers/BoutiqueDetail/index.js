@@ -1,45 +1,53 @@
-import React, { useMemo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { NextSeo } from 'next-seo';
-import { Col, Row, Skeleton, Image } from 'antd';
-import { reactItem, deleteReactItem } from 'store/items/actions';
-import flatten from 'lodash/flatten';
-import Button from 'components/Button';
-import SecurityLayout from 'layouts/Security';
-import { logout } from 'store/auth/actions';
-import styled from 'styled-components';
+import React, { useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { NextSeo } from "next-seo";
+import { Col, Row, Skeleton, Image } from "antd";
+import { reactItem, deleteReactItem } from "store/items/actions";
+import flatten from "lodash/flatten";
+import Button from "components/Button";
+import SecurityLayout from "layouts/Security";
+import { logout } from "store/auth/actions";
+import styled from "styled-components";
 
 const NewLookItem = ({ boutique: boutiqueFromProps }) => {
   const dispatch = useDispatch();
-  
-  const loading = useSelector(state => state.items.loading);
-  const boutique = useSelector(state => state.items.currentData);
-  console.log('asdasd boutique', boutiqueFromProps, boutique);
 
-  const { _id, subcategory, figures, category, isFavorite, link, image, name, brand, price } = boutique || {};
+  const loading = useSelector((state) => state.items.loading);
+  const boutique = useSelector((state) => state.items.currentData);
+  console.log("asdasd boutique", boutiqueFromProps, boutique);
+
+  const {
+    _id,
+    subcategory,
+    figures,
+    category,
+    isFavorite,
+    link,
+    image,
+    name,
+    brand,
+    price,
+  } = boutique || {};
   const features = useMemo(() => {
-    return flatten([
-      [category],
-      subcategory,
-      figures,
-    ],
-    )
-  }, [category, subcategory, figures])
+    return flatten([[category], subcategory, figures]);
+  }, [category, subcategory, figures]);
 
   const reactAction = ({ id, actionType, isDone }) => {
     const action = isDone ? deleteReactItem : reactItem;
-    dispatch(action({
-      id,
-      actionType,
-    }))
-  }
+    dispatch(
+      action({
+        id,
+        actionType,
+      })
+    );
+  };
 
   useEffect(() => {
     if (boutiqueFromProps?.statusCode === 401) {
       dispatch(logout());
-      window.location = '/auth/login';
+      window.location = "/auth/login";
     }
-  }, [boutiqueFromProps?.statusCode])
+  }, [boutiqueFromProps?.statusCode]);
 
   return (
     <>
@@ -47,8 +55,8 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
         title={`Boutique detail: ${boutiqueFromProps?.name}`}
         description={`Boutique detail: ${boutiqueFromProps?.name}`}
         openGraph={{
-          type: 'website',
-          url: 'https://vestium-web-app.vercel.app',
+          type: "website",
+          url: "https://vestium-web-app.vercel.app",
           title: `Boutique detail: ${boutiqueFromProps?.name}`,
           description: `Boutique detail: ${boutiqueFromProps?.name}`,
           images: [
@@ -56,21 +64,19 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
               url: boutiqueFromProps?.image?.url,
               width: 800,
               height: 600,
-              alt: 'Boutique Detail',
+              alt: "Boutique Detail",
             },
           ],
         }}
       />
       <SecurityLayout>
         <BoutiqueItemWrapper gutter={[20, 20]}>
-          <Col span={24}>
-            {loading && (
-              <Skeleton active />
-            )}
-          </Col>
+          <Col span={24}>{loading && <Skeleton active />}</Col>
           <Col md={11} sm={24} xs={24}>
             <div className="img-wrapper">
-              {image?.url && <Image layout="fill" src={image?.url} objectFit="contain" />}
+              {image?.url && (
+                <Image layout="fill" src={image?.url} objectFit="contain" />
+              )}
             </div>
           </Col>
           <Col md={13} sm={24} xs={24}>
@@ -114,7 +120,10 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
                 <div className="item-brand">{brand}</div>
                 <div className="item-price">{`$${price}`}</div>
                 <div className="tags">
-                  {features?.map(feature => feature.name)?.toString()?.replaceAll(',', '  ·  ')}
+                  {features
+                    ?.map((feature) => feature.name)
+                    ?.toString()
+                    ?.replaceAll(",", "  ·  ")}
                 </div>
                 {link && (
                   <Button>
@@ -123,12 +132,17 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
                     </a>
                   </Button>
                 )}
-                <Button {...isFavorite && { type: 'primary' }} onClick={() => reactAction({
-                  id: _id,
-                  actionType: 'FAVORITE',
-                  isDone: isFavorite,
-                })}>
-                  {`${isFavorite ? 'ADDED TO FAVORITE' : 'ADD TO FAVORITE'}`}
+                <Button
+                  {...(isFavorite && { type: "primary" })}
+                  onClick={() =>
+                    reactAction({
+                      id: _id,
+                      actionType: "FAVORITE",
+                      isDone: isFavorite,
+                    })
+                  }
+                >
+                  {`${isFavorite ? "ADDED TO FAVORITE" : "ADD TO FAVORITE"}`}
                 </Button>
               </div>
             </div>
@@ -143,7 +157,7 @@ export const BoutiqueItemWrapper = styled(Row)`
   margin: 10px !important;
   padding: 0 20px;
 
-  .img-wrapper {
+  .img-wrapper .ant-image {
     border-radius: 8px;
     border: 1px solid #ddd;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -154,6 +168,7 @@ export const BoutiqueItemWrapper = styled(Row)`
     position: relative;
     display: flex;
     justify-content: center;
+    cursor: pointer;
   }
 
   .item-section {
@@ -228,7 +243,7 @@ export const BoutiqueItemWrapper = styled(Row)`
             }
           }
         }
-        
+
         .item-name {
           font-weight: bold;
           text-align: center;
@@ -267,7 +282,7 @@ export const BoutiqueItemWrapper = styled(Row)`
             border-radius: 10px;
             border-color: ${({ theme }) => theme.palette.primary};
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            color: ${({  theme }) => theme.palette.primary};
+            color: ${({ theme }) => theme.palette.primary};
 
             img {
               width: 20px !important;
@@ -287,7 +302,6 @@ export const BoutiqueItemWrapper = styled(Row)`
           .ant-btn-primary {
             color: #fff;
 
-
             .img-icon img {
               filter: brightness(0) invert(1);
             }
@@ -298,7 +312,7 @@ export const BoutiqueItemWrapper = styled(Row)`
             font-weight: 600;
           }
         }
-        
+
         & > div {
           margin-right: 5px;
           margin-left: 5px;
@@ -321,6 +335,5 @@ export const BoutiqueItemWrapper = styled(Row)`
     }
   }
 `;
-
 
 export default NewLookItem;

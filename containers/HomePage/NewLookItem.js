@@ -1,35 +1,47 @@
-import React, { useMemo } from 'react';
-import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
-import { Image, Avatar, Col, Button, Divider, Row, Popover, Tooltip } from 'antd';
-import { getConfigSelector } from 'store/config/selectors';
-import { reactNewLook, deleteReactNewLook } from 'store/newlooks/actions';
-import { useRouter } from 'next/router';
-import intersectionBy from 'lodash/intersectionBy';
-import flatten from 'lodash/flatten';
+import React, { useMemo } from "react";
+import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
 import {
-  HeartIcon,
-  LikeIcon,
-  ShareIcon,
-  FollowIcon,
-} from 'components/SVGIcon';
-import { UserOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
-import styled from 'styled-components';
-import { NewLookItemWrapper } from './styles';
+  Image,
+  Avatar,
+  Col,
+  Button,
+  Divider,
+  Row,
+  Popover,
+  Tooltip,
+} from "antd";
+import { getConfigSelector } from "store/config/selectors";
+import { reactNewLook, deleteReactNewLook } from "store/newlooks/actions";
+import { useRouter } from "next/router";
+import intersectionBy from "lodash/intersectionBy";
+import flatten from "lodash/flatten";
+import { HeartIcon, LikeIcon, ShareIcon, FollowIcon } from "components/SVGIcon";
+import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from "react-share";
+import styled from "styled-components";
+import { NewLookItemWrapper } from "./styles";
 
 const NewLookItem = ({ newLook }) => {
   const dispatch = useDispatch();
   const { push } = useRouter();
-  const { _id, img, user, name, items, isLike, isFavorite, isShare } = newLook || {};
+  const { _id, img, user, name, items, isLike, isFavorite, isShare } =
+    newLook || {};
 
   const reactAction = ({ id, actionType, isDone }) => {
     const action = isDone ? deleteReactNewLook : reactNewLook;
-    dispatch(action({
-      id,
-      actionType,
-    }))
-  }
+    dispatch(
+      action({
+        id,
+        actionType,
+      })
+    );
+  };
 
   const infos = [
     {
@@ -38,11 +50,12 @@ const NewLookItem = ({ newLook }) => {
       Icon: LikeIcon,
       value: (data) => `${data} Votes`,
       isPrimary: isLike,
-      onClick: ({ _id }) => reactAction({
-        id: _id,
-        actionType: 'LIKE',
-        isDone: isLike,
-      }),
+      onClick: ({ _id }) =>
+        reactAction({
+          id: _id,
+          actionType: "LIKE",
+          isDone: isLike,
+        }),
     },
     {
       id: "favorites",
@@ -50,11 +63,12 @@ const NewLookItem = ({ newLook }) => {
       Icon: HeartIcon,
       value: (data) => `${data} Favorite`,
       isPrimary: isFavorite,
-      onClick: ({ _id }) => reactAction({
-        id: _id,
-        actionType: 'FAVORITE',
-        isDone: isFavorite,
-      }),
+      onClick: ({ _id }) =>
+        reactAction({
+          id: _id,
+          actionType: "FAVORITE",
+          isDone: isFavorite,
+        }),
     },
     {
       id: "shares",
@@ -63,7 +77,7 @@ const NewLookItem = ({ newLook }) => {
       value: () => `Share`,
       CustomButton: () => (
         <Popover
-          content={(
+          content={
             <ShareWrapper>
               <FacebookShareButton
                 className="social-btn facebook-btn"
@@ -72,7 +86,7 @@ const NewLookItem = ({ newLook }) => {
                   if (!isShare) {
                     reactAction({
                       id: _id,
-                      actionType: 'SHARE',
+                      actionType: "SHARE",
                       isDone: isShare,
                     });
                   }
@@ -88,7 +102,7 @@ const NewLookItem = ({ newLook }) => {
                   if (!isShare) {
                     reactAction({
                       id: _id,
-                      actionType: 'SHARE',
+                      actionType: "SHARE",
                       isDone: isShare,
                     });
                   }
@@ -98,7 +112,7 @@ const NewLookItem = ({ newLook }) => {
                 <div className="btn-content">Share on Twitter</div>
               </TwitterShareButton>
             </ShareWrapper>
-          )}
+          }
           trigger="click"
         >
           <Button
@@ -119,20 +133,34 @@ const NewLookItem = ({ newLook }) => {
       value: (data) => `${data} Followers`,
     },
   ];
-  
+
   const configData = useSelector(getConfigSelector);
   const features = useMemo(() => {
     // return stylesIds.map(figureId => figures.find(figure => figure?._id === figureId)?.name)
-    return flatten(configData?.map(config => intersectionBy(config.items, newLook?.[config.source]?.map(id => ({ _id: id })), '_id')))
-  }, [configData, newLook])
+    return flatten(
+      configData?.map((config) =>
+        intersectionBy(
+          config.items,
+          newLook?.[config.source]?.map((id) => ({ _id: id })),
+          "_id"
+        )
+      )
+    );
+  }, [configData, newLook]);
 
-  const handleViewDetail = id => () => push(`/new-looks/${id}`);
+  const handleViewDetail = (id) => () => push(`/new-looks/${id}`);
 
   return (
     <NewLookItemWrapper gutter={[20, 20]}>
       <Col md={11} sm={24} xs={24}>
         <div className="img-wrapper">
-          <Image layout="fill" src={img} objectFit="contain" />
+          <Image
+            layout="fill"
+            src={img}
+            objectFit="contain"
+            preview={false}
+            onClick={handleViewDetail(_id)}
+          />
         </div>
       </Col>
       <Col md={13} sm={24} xs={24}>
@@ -140,7 +168,9 @@ const NewLookItem = ({ newLook }) => {
           <div className="user-section">
             <div className="user">
               <Avatar src={user?.avatar} icon={<UserOutlined />} size={44} />
-              <div className="name">{`${user?.firstName || ''} ${user?.lastName || ''}`}</div>
+              <div className="name">{`${user?.firstName || ""} ${
+                user?.lastName || ""
+              }`}</div>
             </div>
             <div className="info">
               {infos.map((info) => (
@@ -153,9 +183,9 @@ const NewLookItem = ({ newLook }) => {
                       {...(info?.isPrimary && {
                         type: "primary",
                       })}
-                      {...info?.onClick && {
+                      {...(info?.onClick && {
                         onClick: () => info.onClick(newLook),
-                      }}
+                      })}
                       {...(info?.Icon && {
                         icon: <info.Icon />,
                       })}
@@ -171,15 +201,23 @@ const NewLookItem = ({ newLook }) => {
             </div>
           </div>
           <Divider />
-          <div className="item-section">        
-            <Button onClick={handleViewDetail(_id)} className="detail-btn" type="text" icon={(
-              <Tooltip title="View detail">
-                <ArrowRightOutlined />
-              </Tooltip>
-            )} />
+          <div className="item-section">
+            <Button
+              onClick={handleViewDetail(_id)}
+              className="detail-btn"
+              type="text"
+              icon={
+                <Tooltip title="View detail">
+                  <ArrowRightOutlined />
+                </Tooltip>
+              }
+            />
             <div className="item-title">{name}</div>
             <div className="tags">
-              {features?.map(feature => feature.name)?.toString()?.replaceAll(',', '  ·  ')}
+              {features
+                ?.map((feature) => feature.name)
+                ?.toString()
+                ?.replaceAll(",", "  ·  ")}
             </div>
             {items?.length > 0 && (
               <Row gutter={[20, 20]} className="items">
@@ -195,15 +233,13 @@ const NewLookItem = ({ newLook }) => {
                           />
                         </div>
                         <div className="item-name">
-                          <Link href={`/boutique/${id}`}>
-                            {itemName}
-                          </Link>
+                          <Link href={`/boutique/${id}`}>{itemName}</Link>
                         </div>
                         <div className="item-name">{brand}</div>
                         <div className="price">{`$${price}`}</div>
                       </div>
                     </Col>
-                  ),
+                  )
                 )}
               </Row>
             )}
@@ -236,13 +272,13 @@ const ShareWrapper = styled.div`
   .facebook-btn {
     .btn-content {
       background: #3b5998;
-    } 
+    }
   }
   .twitter-btn {
     .btn-content {
       background: #00aced;
-    } 
+    }
   }
-`
+`;
 
 export default NewLookItem;

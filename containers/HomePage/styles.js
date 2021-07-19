@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Row } from 'antd';
+import styled from "styled-components";
+import { Row } from "antd";
 
 export default styled.div`
   padding: 20px;
@@ -14,7 +14,7 @@ export const NewLookItemWrapper = styled(Row)`
   margin-top: 10px;
   margin-bottom: 10px;
 
-  .img-wrapper {
+  .img-wrapper .ant-image {
     border-radius: 8px;
     border: 1px solid #ddd;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -25,13 +25,14 @@ export const NewLookItemWrapper = styled(Row)`
     position: relative;
     display: flex;
     justify-content: center;
+    cursor: pointer;
   }
 
   .item-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     .detail-btn {
       position: absolute;
       bottom: 10px;
@@ -79,7 +80,7 @@ export const NewLookItemWrapper = styled(Row)`
             }
           }
         }
-        
+
         .item-name {
           font-weight: bold;
           text-align: center;
@@ -118,7 +119,7 @@ export const NewLookItemWrapper = styled(Row)`
             border-radius: 10px;
             border-color: ${({ theme }) => theme.palette.primary};
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            color: ${({  theme }) => theme.palette.primary};
+            color: ${({ theme }) => theme.palette.primary};
 
             img {
               width: 20px !important;
@@ -148,7 +149,7 @@ export const NewLookItemWrapper = styled(Row)`
             font-weight: 600;
           }
         }
-        
+
         & > div {
           margin-right: 5px;
           margin-left: 5px;
