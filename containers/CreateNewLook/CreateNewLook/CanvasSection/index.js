@@ -96,6 +96,32 @@ class CanvasSection extends Component {
     });
   };
 
+  onTransformEnd = (e) => {
+    const name = e.target.name();
+    const items = this.props?.listItems.slice();
+    const index = name.split("_")?.[1];
+    let item = items[index];
+    // update item position
+    item = {
+      ...item,
+      attrs: {
+        x: e.target.x(),
+        y: e.target.y(),
+        rotation: e.target.rotation(),
+        scaleX: e.target.scaleX(),
+        scaleY: e.target.scaleY(),
+      },
+    };
+    // remove from the list:
+    items.splice(index, 1);
+    // add to the top
+    items.push(item);
+    this.props.setListItems(items);
+    this.setState({
+      selectedShapeName: `${item._id}_${items.length - 1}`,
+    });
+  };
+
   onDelete = () => {
     if (!this.state?.selectedShapeName) return;
     const index = this.state.selectedShapeName.split("_")?.[1];
@@ -132,6 +158,7 @@ class CanvasSection extends Component {
                 name={`${item._id}_${intex}`}
                 key={`${item._id}_${intex}`}
                 onDragEnd={this.onDragEnd}
+                onTransformEnd={this.onTransformEnd}
                 draggable
                 x={item?.attrs?.x || 40}
                 y={item?.attrs?.y || 40}
