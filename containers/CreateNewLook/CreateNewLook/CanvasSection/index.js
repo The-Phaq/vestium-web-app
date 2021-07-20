@@ -25,7 +25,21 @@ class CanvasSection extends Component {
 
   state = {
     selectedShapeName: "",
+    isNext: false,
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.isNext && this.state.isNext) {
+      const uri = this.newLookRef?.current?.toDataURL();
+      this.setState({
+        isNext: true,
+      });
+      if (uri) {
+        this.props?.setNewLookImg(uri);
+        this.props?.setCurrentStep(1);
+      }
+    }
+  }
 
   handleStageMouseDown = (e) => {
     // clicked on stage - cler selection
@@ -92,14 +106,10 @@ class CanvasSection extends Component {
   };
 
   onNext = () => {
-    const uri = this.newLookRef?.current?.toDataURL();
-    if (uri) {
-      this.setState({
-        selectedShapeName: "",
-      });
-      this.props?.setNewLookImg(uri);
-      this.props?.setCurrentStep(1);
-    }
+    this.setState({
+      selectedShapeName: "",
+      isNext: true,
+    });
   };
 
   render() {
