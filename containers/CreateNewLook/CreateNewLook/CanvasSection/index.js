@@ -64,8 +64,13 @@ class CanvasSection extends Component {
     // update item position
     item = {
       ...item,
-      x: e.target.x(),
-      y: e.target.y(),
+      attrs: {
+        x: e.target.x(),
+        y: e.target.y(),
+        rotation: e.target.rotation(),
+        scaleX: e.target.scaleX(),
+        scaleY: e.target.scaleY(),
+      },
     };
     // remove from the list:
     items.splice(index, 1);
@@ -118,8 +123,11 @@ class CanvasSection extends Component {
                 key={`${item._id}_${intex}`}
                 onDragEnd={this.onDragEnd}
                 draggable
-                x={item?.x || 40}
-                y={item?.y || 40}
+                x={item?.attrs?.x || 40}
+                y={item?.attrs?.y || 40}
+                rotation={item?.attrs?.rotation || 0}
+                scaleX={item?.attrs?.scaleX || 1}
+                scaleY={item?.attrs?.scaleY || 1}
               >
                 <ItemImage
                   url={item?.image?.originUrl}
