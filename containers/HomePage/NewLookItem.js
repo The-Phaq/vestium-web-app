@@ -18,11 +18,14 @@ import intersectionBy from "lodash/intersectionBy";
 import flatten from "lodash/flatten";
 import { HeartIcon, LikeIcon, ShareIcon, FollowIcon } from "components/SVGIcon";
 import { UserOutlined, ArrowRightOutlined } from "@ant-design/icons";
+// import { Snapshare } from 'react-snapshare';
 import {
   FacebookShareButton,
   FacebookIcon,
   TwitterShareButton,
   TwitterIcon,
+  PinterestIcon,
+  PinterestShareButton,
 } from "react-share";
 import styled from "styled-components";
 import { NewLookItemWrapper } from "./styles";
@@ -39,7 +42,7 @@ const NewLookItem = ({ newLook }) => {
       action({
         id,
         actionType,
-      })
+      }),
     );
   };
 
@@ -111,6 +114,27 @@ const NewLookItem = ({ newLook }) => {
                 <TwitterIcon size={32} />
                 <div className="btn-content">Share on Twitter</div>
               </TwitterShareButton>
+              <PinterestShareButton
+                media={img}
+                className="social-btn pinterest-btn"
+                url={`${window.location.origin}/new-looks/${_id}`}
+                onShareWindowClose={() => {
+                  if (!isShare) {
+                    reactAction({
+                      id: _id,
+                      actionType: "SHARE",
+                      isDone: isShare,
+                    });
+                  }
+                }}
+              >
+                <PinterestIcon size={32} />
+                <div className="btn-content">Share on Pinterest</div>
+              </PinterestShareButton>
+              {/* <Snapshare
+                dataShareUrl={`${window.location.origin}/new-looks/${_id}`}
+                stickerAssetURL="https://kit.snapchat.com/ckweb/test/image.png"
+              /> */}
             </ShareWrapper>
           }
           trigger="click"
@@ -142,9 +166,9 @@ const NewLookItem = ({ newLook }) => {
         intersectionBy(
           config.items,
           newLook?.[config.source]?.map((id) => ({ _id: id })),
-          "_id"
-        )
-      )
+          "_id",
+        ),
+      ),
     );
   }, [configData, newLook]);
 
@@ -242,7 +266,7 @@ const NewLookItem = ({ newLook }) => {
                         </Link>
                       </div>
                     </Col>
-                  )
+                  ),
                 )}
               </Row>
             )}
@@ -280,6 +304,37 @@ const ShareWrapper = styled.div`
   .twitter-btn {
     .btn-content {
       background: #00aced;
+    }
+  }
+  .pinterest-btn {
+    .btn-content {
+      background: #CB2128;
+    }
+  }
+
+  .snapchat-creative-kit-share {
+    button {
+      width: 100% !important;
+      height: 32px !important;
+      border-radius: 0 !important;
+      border-color: #FFFC00;
+      
+      & > div {
+        height: 32px;
+        width: 32px;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        text-align: left;
+        background-color: #FFFC00;
+        border-left: 1px solid #000;
+        display: flex;
+        padding: 0 14px;
+        align-items: center;
+        height: 100%;
+      }
     }
   }
 `;

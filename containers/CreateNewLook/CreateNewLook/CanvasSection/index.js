@@ -9,7 +9,7 @@ import CanvasSectionStyles from "./styles";
 
 const BgImage = ({ url, ...props }) => {
   const [image] = useImage(url, "Anonymous");
-  return <Image image={image} width={448} height={448} {...props} />;
+  return <Image image={image} width={600} height={600} {...props} />;
 };
 
 const ItemImage = ({ url, ...props }) => {
@@ -101,8 +101,8 @@ class CanvasSection extends Component {
     return (
       <CanvasSectionStyles>
         <Stage
-          width={450}
-          height={450}
+          width={600}
+          height={600}
           onMouseDown={this.handleStageMouseDown}
           ref={this.newLookRef}
         >
@@ -134,7 +134,7 @@ class CanvasSection extends Component {
         </Stage>
         <div className="action-section">
           <div>
-            <Button onClick={this.onDelete} icon={<DeleteOutlined />}>
+            <Button type="text" onClick={this.onDelete} icon={<DeleteOutlined />}>
               Remove
             </Button>
           </div>

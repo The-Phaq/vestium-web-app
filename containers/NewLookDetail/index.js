@@ -27,6 +27,8 @@ import {
   FacebookIcon,
   TwitterShareButton,
   TwitterIcon,
+  PinterestIcon,
+  PinterestShareButton,
 } from "react-share";
 import styled from "styled-components";
 
@@ -44,9 +46,9 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
         intersectionBy(
           config.items,
           newLook?.[config.source]?.map((id) => ({ _id: id })),
-          "_id"
-        )
-      )
+          "_id",
+        ),
+      ),
     );
   }, [configData, newLook]);
 
@@ -56,7 +58,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       action({
         id,
         actionType,
-      })
+      }),
     );
   };
 
@@ -128,6 +130,23 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                 <TwitterIcon size={32} />
                 <div className="btn-content">Share on Twitter</div>
               </TwitterShareButton>
+              <PinterestShareButton
+                media={url}
+                className="social-btn pinterest-btn"
+                url={`${window.location.origin}/new-looks/${_id}`}
+                onShareWindowClose={() => {
+                  if (!isShare) {
+                    reactAction({
+                      id: _id,
+                      actionType: "SHARE",
+                      isDone: isShare,
+                    });
+                  }
+                }}
+              >
+                <PinterestIcon size={32} />
+                <div className="btn-content">Share on Pinterest</div>
+              </PinterestShareButton>
             </ShareWrapper>
           }
           trigger="click"
@@ -312,6 +331,11 @@ const ShareWrapper = styled.div`
   .twitter-btn {
     .btn-content {
       background: #00aced;
+    }
+  }
+  .pinterest-btn {
+    .btn-content {
+      background: #CB2128;
     }
   }
 `;

@@ -18,13 +18,6 @@ const CreateNewLook = () => {
   return (
     <SecurityLayout>
       <CreateNewLookStyles>
-        <div className="step-section">
-          <Steps progressDot current={currentStep}>
-            <Step title="Create New Look" />
-            <Step title="Add Infomation" />
-            <Step title="Review New Look" />
-          </Steps>
-        </div>
         {currentStep === 0 && (
           <Step1
             setCurrentStep={setCurrentStep}
