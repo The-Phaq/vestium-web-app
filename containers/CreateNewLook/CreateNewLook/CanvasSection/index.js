@@ -25,7 +25,21 @@ class CanvasSection extends Component {
 
   state = {
     selectedShapeName: "",
+    isNext: false,
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.isNext && this.state.isNext) {
+      const uri = this.newLookRef?.current?.toDataURL();
+      this.setState({
+        isNext: true,
+      });
+      if (uri) {
+        this.props?.setNewLookImg(uri);
+        this.props?.setCurrentStep(1);
+      }
+    }
+  }
 
   handleStageMouseDown = (e) => {
     // clicked on stage - cler selection
@@ -64,8 +78,39 @@ class CanvasSection extends Component {
     // update item position
     item = {
       ...item,
-      x: e.target.x(),
-      y: e.target.y(),
+      attrs: {
+        x: e.target.x(),
+        y: e.target.y(),
+        rotation: e.target.rotation(),
+        scaleX: e.target.scaleX(),
+        scaleY: e.target.scaleY(),
+      },
+    };
+    // remove from the list:
+    items.splice(index, 1);
+    // add to the top
+    items.push(item);
+    this.props.setListItems(items);
+    this.setState({
+      selectedShapeName: `${item._id}_${items.length - 1}`,
+    });
+  };
+
+  onTransformEnd = (e) => {
+    const name = e.target.name();
+    const items = this.props?.listItems.slice();
+    const index = name.split("_")?.[1];
+    let item = items[index];
+    // update item position
+    item = {
+      ...item,
+      attrs: {
+        x: e.target.x(),
+        y: e.target.y(),
+        rotation: e.target.rotation(),
+        scaleX: e.target.scaleX(),
+        scaleY: e.target.scaleY(),
+      },
     };
     // remove from the list:
     items.splice(index, 1);
@@ -87,14 +132,10 @@ class CanvasSection extends Component {
   };
 
   onNext = () => {
-    const uri = this.newLookRef?.current?.toDataURL();
-    if (uri) {
-      this.setState({
-        selectedShapeName: "",
-      });
-      this.props?.setNewLookImg(uri);
-      this.props?.setCurrentStep(1);
-    }
+    this.setState({
+      selectedShapeName: "",
+      isNext: true,
+    });
   };
 
   render() {
@@ -117,9 +158,13 @@ class CanvasSection extends Component {
                 name={`${item._id}_${intex}`}
                 key={`${item._id}_${intex}`}
                 onDragEnd={this.onDragEnd}
+                onTransformEnd={this.onTransformEnd}
                 draggable
-                x={item?.x || 40}
-                y={item?.y || 40}
+                x={item?.attrs?.x || 40}
+                y={item?.attrs?.y || 40}
+                rotation={item?.attrs?.rotation || 0}
+                scaleX={item?.attrs?.scaleX || 1}
+                scaleY={item?.attrs?.scaleY || 1}
               >
                 <ItemImage
                   url={item?.image?.originUrl}
