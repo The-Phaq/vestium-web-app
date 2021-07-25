@@ -37,7 +37,7 @@ const CreateNewLook = ({
         />
       </div>
       <Divider vertical color="#fff" />
-      <div className="content-wrapper">
+      <div className="children-content-wrapper">
         <Tabs defaultActiveKey="1">
           <TabPane tab="BACKGROUND" key="1">
             <ListBackground setBackground={setBackground} />
@@ -67,8 +67,9 @@ const CreateNewLookWrapper = styled.div`
     }
   }
 
-  .content-wrapper {
+  .children-content-wrapper {
     margin-left: 20px;
+    overflow-y: auto;
   }
 `;
 

@@ -35,7 +35,9 @@ export default styled.div`
   }
 
   .content-wrapper {
-    min-height: calc(100vh - 104px);
+    ${'' /* height: calc(100vh - 104px); */}
+    height: 100%;
+    max-height: 840px;
     width: 100%;
     max-width: calc(100% - 255px);
     height: 100%;

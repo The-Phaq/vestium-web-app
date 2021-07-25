@@ -18,8 +18,8 @@ const ItemCard = ({ data }) => {
               preview={false}
             />
           </div>
+          <div className="item-brand">{brand}</div>
           <div className="item-title">{name}</div>
-          <div className="item-title">{brand}</div>
           <div className="price">{`$${price}`}</div>
         </a>
       </Link>

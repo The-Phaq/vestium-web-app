@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export default styled.div`
-  height: calc(100vh - 110px);
+  ${'' /* height: calc(100vh - 450px); */}
+  height: 700px;
   overflow: auto;
   padding: 14px;
 

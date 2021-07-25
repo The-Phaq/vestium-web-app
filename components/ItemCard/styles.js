@@ -27,10 +27,18 @@ export default styled.div`
 
   .item-title {
     margin-top: 8px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  .item-brand {
+    margin-top: 8px;
     font-weight: bold;
     text-align: center;
     font-size: 18px;
     line-height: 21px;
+    text-transform: uppercase;
   }
 
   .price {
