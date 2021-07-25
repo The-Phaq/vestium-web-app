@@ -7,14 +7,36 @@ import SharpEdgeButton from "components/SharpEdgeButton";
 import TransformerComponent from "../Transformer";
 import CanvasSectionStyles from "./styles";
 
+const defaultWidthBg = 600;
+const defaultWidthImg = 150;
 const BgImage = ({ url, ...props }) => {
   const [image] = useImage(url, "Anonymous");
-  return <Image image={image} width={600} height={600} {...props} />;
+  return (
+    <Image
+      image={image}
+      width={defaultWidthBg}
+      height={defaultWidthBg}
+      {...props}
+    />
+  );
 };
 
-const ItemImage = ({ url, ...props }) => {
+const ItemImage = ({
+  url,
+  height = defaultWidthImg,
+  width = defaultWidthImg,
+  ...props
+}) => {
+  const ratio = defaultWidthImg / width;
   const [image] = useImage(url, "Anonymous");
-  return <Image image={image} width={150} height={150} {...props} />;
+  return (
+    <Image
+      image={image}
+      width={width * ratio}
+      height={height * ratio}
+      {...props}
+    />
+  );
 };
 
 class CanvasSection extends Component {
@@ -60,8 +82,16 @@ class CanvasSection extends Component {
     const name = e.target.name();
     // const rect = this.state.rectangles.find(r => r.name === name);
     if (name && name !== "backgroundImg") {
+      const items = this.props?.listItems.slice();
+      const index = name.split("_")?.[1];
+      let item = this.props.listItems[index];
+      // remove from the list:
+      items.splice(index, 1);
+      // add to the top
+      items.push(item);
+      this.props.setListItems(items);
       this.setState({
-        selectedShapeName: name,
+        selectedShapeName: `${item._id}_${items.length - 1}`,
       });
     } else {
       this.setState({
@@ -168,6 +198,8 @@ class CanvasSection extends Component {
               >
                 <ItemImage
                   url={item?.image?.originUrl}
+                  height={item?.image?.height}
+                  width={item?.image?.width}
                   name={`${item._id}_${intex}`}
                 />
               </Group>
@@ -179,7 +211,11 @@ class CanvasSection extends Component {
         </Stage>
         <div className="action-section">
           <div>
-            <Button type="text" onClick={this.onDelete} icon={<DeleteOutlined />}>
+            <Button
+              type="text"
+              onClick={this.onDelete}
+              icon={<DeleteOutlined />}
+            >
               Remove
             </Button>
           </div>
