@@ -1,3 +1,4 @@
+import requestUtils from 'utils/request';
 import { post, get } from './utils';
 
 export const forgotPasswordApi = data => post('/auth/forgotPassword', data);
@@ -30,3 +31,15 @@ export const getUserApi = id => get('/users', {
     perPage: 1,
     total: 1,
 })
+
+export async function loginWithGoogleApi(data) {
+    return requestUtils.post('/auth/google', {}, {
+        params: data,
+    });
+}
+
+export async function loginWithFacebookApi(data) {
+    return requestUtils.post('/auth/facebook', {}, {
+        params: data,
+    });
+}

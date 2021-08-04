@@ -26,6 +26,24 @@ export default styled.div`
         margin-top: 61px;
         color: #55433c;
         font-family: 'Rubik', normal;
+
+        
+    }
+    .login-btn {
+        border: none;
+        height: 90px;
+        padding: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 90px;
+
+        .ant-image {
+            min-width: 100px;
+            min-height: 100px;
+        }
     }
     .text-forgot {
         a {

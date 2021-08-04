@@ -1,12 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Checkbox } from 'antd';
+import { Form, Checkbox, Image, Button } from 'antd';
 import { MailFilled, LockFilled } from '@ant-design/icons';
 import Link from 'next/link';
-import Image from 'next/image';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from './styles';
-import { login } from '../../store/auth/actions';
+import { login, loginWithGoogle, loginWithFacebook } from '../../store/auth/actions';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
@@ -15,6 +14,14 @@ const LoginForm = () => {
         console.log('Received values of form: ', values);
         dispatch(login(values));
     };
+
+    const handleClickGoogle = () => {
+        dispatch(loginWithGoogle());
+    }
+    const handleClickFacebook = () => {
+        dispatch(loginWithFacebook());
+    }
+
     return (
         <LoginWrapper>
             <div className="main">
@@ -107,18 +114,24 @@ const LoginForm = () => {
                             </Link>
                         </div>
                         <div className="social">
-                            <Image
-                                src="/images/fb.png"
-                                alt="fb"
-                                width="100px"
-                                height="100px"
-                            />
-                            <Image
-                                src="/images/gg.png"
-                                alt="gg"
-                                width="100px"
-                                height="100px"
-                            />
+                            <Button className="login-btn" onClick={handleClickFacebook}>
+                                <Image
+                                    preview={false}
+                                    src="/images/fb.png"
+                                    alt="fb"
+                                    width="100px"
+                                    height="100px"
+                                />
+                            </Button>
+                            <Button className="login-btn" onClick={handleClickGoogle}>
+                                <Image
+                                    preview={false}
+                                    src="/images/gg.png"
+                                    alt="gg"
+                                    width="100px"
+                                    height="100px"
+                                />
+                            </Button>
                         </div>
                     </Form>
                 </div>

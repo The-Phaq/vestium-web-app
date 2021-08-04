@@ -1,8 +1,11 @@
 import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
 import theme from 'theme/main.json';
+import { initFirebase } from 'api/firebase';
 import { wrapper } from "../store";
 import GlobalStyles from "./globalStyles";
+
+initFirebase();
 
 const MyApp = ({ Component, pageProps }) => {
   return (
