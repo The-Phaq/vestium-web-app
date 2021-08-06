@@ -8,7 +8,13 @@ import {
   fetchProfile,
   forgotPasswordApi,
   resetPasswordApi,
+  loginWithFacebookApi,
+  loginWithGoogleApi,
 } from "../../api/user";
+import {
+  loginWithGoogleFirebaseApi,
+  loginWithFacebookFirebaseApi,
+} from '../../api/firebase';
 import slice from "./index";
 
 const { loginSuccess, logoutSuccess, loginFetch, loginFailed, profileSuccess } =
@@ -142,3 +148,52 @@ export const getProfile = () => async (dispatch) => {
     return console.error(e.message);
   }
 };
+
+
+export const loginWithGoogle = createAsyncThunk(
+  'auth/loginWithGoogle',
+  async (payload, thunkAPI) => {
+    try {
+      const { credential } = await loginWithGoogleFirebaseApi();
+      const { data } = await apiWrapper({}, loginWithGoogleApi, {
+        access_token: credential?.idToken,
+      });
+      if (data) {
+        thunkAPI.dispatch(loginSuccess(data));
+        // setAuthToken(data.accessToken);
+        // setRefreshToken(data.refreshToken);
+        // setInitHeader();
+        // thunkAPI.dispatch(getCurrentUser());
+        return data;
+      }
+      return thunkAPI.rejectWithValue(data);
+    } catch (error) {
+      // console.error(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const loginWithFacebook = createAsyncThunk(
+  'auth/loginWithFacebook',
+  async (payload, thunkAPI) => {
+    try {
+      const { credential } = await loginWithFacebookFirebaseApi();
+      const { data } = await apiWrapper({}, loginWithFacebookApi, {
+        access_token: credential?.accessToken,
+      });
+      if (data) {
+        thunkAPI.dispatch(loginSuccess(data));
+        // setAuthToken(data.accessToken);
+        // setRefreshToken(data.refreshToken);
+        // setInitHeader();
+        // thunkAPI.dispatch(getCurrentUser());
+        return data;
+      }
+      return thunkAPI.rejectWithValue(data);
+    } catch (error) {
+      // console.error(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
