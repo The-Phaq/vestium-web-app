@@ -156,15 +156,15 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const { credential } = await loginWithGoogleFirebaseApi();
       const { data } = await apiWrapper({}, loginWithGoogleApi, {
-        access_token: credential?.accessToken,
+        access_token: credential?.idToken,
       });
       if (data) {
-        console.log('asdasd data', data);
+        thunkAPI.dispatch(loginSuccess(data));
         // setAuthToken(data.accessToken);
         // setRefreshToken(data.refreshToken);
         // setInitHeader();
         // thunkAPI.dispatch(getCurrentUser());
-        return data.user;
+        return data;
       }
       return thunkAPI.rejectWithValue(data);
     } catch (error) {
@@ -183,12 +183,12 @@ export const loginWithFacebook = createAsyncThunk(
         access_token: credential?.accessToken,
       });
       if (data) {
-        console.log('asdasd data', data)
+        thunkAPI.dispatch(loginSuccess(data));
         // setAuthToken(data.accessToken);
         // setRefreshToken(data.refreshToken);
         // setInitHeader();
         // thunkAPI.dispatch(getCurrentUser());
-        return data.user;
+        return data;
       }
       return thunkAPI.rejectWithValue(data);
     } catch (error) {
