@@ -78,4 +78,20 @@ export default createGlobalStyle`
       max-width: calc(100vw - 200px);
     }
   }
+
+  .list-item-variants {
+    width: 400px;
+    height: 200px;
+    display: flex;
+    overflow: auto;
+
+    .variant-item {
+      .ant-image {
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        width: 130px;
+        margin: 0 8px;
+      }
+    }
+  }
 `;
