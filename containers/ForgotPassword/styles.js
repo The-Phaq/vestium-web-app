@@ -39,6 +39,10 @@ export default styled.div`
     }
     .login-form-button {
         margin-top: 50px;
+
+        span {
+            text-transform: uppercase;
+        }
     }
     .social {
         display: flex;

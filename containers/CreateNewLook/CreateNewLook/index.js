@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Tabs } from "antd";
 import styled from 'styled-components';
 import Divider from 'components/Divider';
+import { useTranslation } from 'i18n';
 // import components
 import CanvasSection from "./CanvasSection";
 import ListBackground from "./ListBackground";
@@ -16,6 +17,7 @@ const CreateNewLook = ({
   setCurrentStep,
   setNewLookImg,
 }) => {
+  const {t} = useTranslation();
   const [background, setBackground] = useState(null);
 
   const setBoutique = (item) => {
@@ -25,8 +27,8 @@ const CreateNewLook = ({
   return (
     <CreateNewLookWrapper>
       <div className="canvas-wrapper">
-        <div className="title">
-          CREATE NEW LOOK
+        <div className="title text-uppercase">
+          {t('createNewLook.title')}
         </div>
         <CanvasSection
           background={background}
@@ -39,13 +41,13 @@ const CreateNewLook = ({
       <Divider vertical color="#fff" />
       <div className="children-content-wrapper">
         <Tabs defaultActiveKey="1">
-          <TabPane tab="BACKGROUND" key="1">
+          <TabPane tab={<div className="text-uppercase">{t('createNewLook.tabs.background')}</div>} key="1">
             <ListBackground setBackground={setBackground} />
           </TabPane>
-          <TabPane tab="BOUTIQUE" key="2">
+          <TabPane tab={<div className="text-uppercase">{t('createNewLook.tabs.boutique')}</div>} key="2">
             <ListBoutique setBoutique={setBoutique} />
           </TabPane>
-          <TabPane tab="ELEMENTS" key="3">
+          <TabPane tab={<div className="text-uppercase">{t('createNewLook.tabs.elements')}</div>} key="3">
             <ListEmoji setEmoji={setBoutique} />
           </TabPane>
         </Tabs>

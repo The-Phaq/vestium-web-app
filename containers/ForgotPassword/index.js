@@ -31,7 +31,9 @@ const ForgotPassword = () => {
                 <div className="title">
                     {t('app.appName')}
                 </div>
-                <div className="signin">Forgot password</div>
+                <div className="signin">
+                    {t('auth.forgotPassword')}
+                </div>
                 <div>
                     <Form
                         name="normal_login"
@@ -43,11 +45,11 @@ const ForgotPassword = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Email!',
+                                    message: t('input.email.required'),
                                 },
                                 {
                                     type: 'email',
-                                    message: 'The input is not valid E-mail!',
+                                    message: t('input.email.valid'),
                                 },
                             ]}
                         >
@@ -58,7 +60,7 @@ const ForgotPassword = () => {
                                         style={{ color: '#f8a71b' }}
                                     />
                                 }
-                                placeholder="E-mail"
+                                placeholder={t('input.email.placeholder')}
                             />
                         </Form.Item>
                         <Form.Item>
@@ -69,13 +71,16 @@ const ForgotPassword = () => {
                                 block
                                 loading={loading}
                             >
-                                SEND
+                                {t('button.send')}
                             </ButtonC>
                         </Form.Item>
                         <div className="text-signin">
-                            Remember your password?{' '}
+                            {t('auth.rememberPassword')}
+                            {' '}
                             <Link href="/auth/login">
-                                <a className="text">Sign in</a>
+                                <a className="text">
+                                    {t('button.signin')}
+                                </a>
                             </Link>
                         </div>
                     </Form>

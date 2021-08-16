@@ -8,10 +8,12 @@ import crudActions from 'store/crudActions';
 import crudSelectors from 'store/crudSelectors';
 import { useRouter } from 'next/router';
 import xor from 'lodash/xor';
+import { useTranslation } from 'i18n';
 
 const { Panel } = Collapse;
 
 const FilterSection = ({ pageSource }) => {
+  const { t } = useTranslation();
   const { query } = useRouter();
   const { q } = query;
   const dispatch = useDispatch();
@@ -49,7 +51,7 @@ const FilterSection = ({ pageSource }) => {
   return (
     <FilterSectionWrapper>
       <div className="filter-title">
-        FILTER
+        {t('sider.filter')}
       </div>
       <Collapse
         bordered={false}
@@ -136,6 +138,7 @@ const FilterSectionWrapper = styled.div`
       font-weight: 700;
       text-align: center;
       margin-bottom: 14px;
+      text-transform: uppercase;
   }
 `;
 

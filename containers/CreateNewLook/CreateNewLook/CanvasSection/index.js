@@ -3,6 +3,7 @@ import useImage from "use-image";
 import { Button } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Stage, Layer, Group, Text, Image } from "react-konva";
+import { useTranslation } from 'i18n';
 import SharpEdgeButton from "components/SharpEdgeButton";
 import TransformerComponent from "../Transformer";
 import CanvasSectionStyles from "./styles";
@@ -84,7 +85,7 @@ class CanvasSection extends Component {
     if (name && name !== "backgroundImg") {
       const items = this.props?.listItems.slice();
       const index = name.split("_")?.[1];
-      let item = this.props.listItems[index];
+      const item = this.props.listItems[index];
       // remove from the list:
       items.splice(index, 1);
       // add to the top
@@ -209,26 +210,34 @@ class CanvasSection extends Component {
             />
           </Layer>
         </Stage>
-        <div className="action-section">
-          <div>
-            <Button
-              type="text"
-              onClick={this.onDelete}
-              icon={<DeleteOutlined />}
-            >
-              Remove
-            </Button>
-          </div>
-          <br />
-          <div>
-            <SharpEdgeButton size="large" type="primary" onClick={this.onNext}>
-              CREATE
-            </SharpEdgeButton>
-          </div>
-        </div>
+        <Actions onNext={this.onNext} onDelete={this.onDelete} />
       </CanvasSectionStyles>
     );
   }
+}
+
+const Actions = ({ onDelete, onNext }) => {
+
+  const { t } = useTranslation();
+  return (
+    <div className="action-section">
+      <div>
+        <Button
+          type="text"
+          onClick={onDelete}
+          icon={<DeleteOutlined />}
+        >
+          {t('button.remove')}
+        </Button>
+      </div>
+      <br />
+      <div>
+        <SharpEdgeButton className="text-uppercase" size="large" type="primary" onClick={onNext}>
+          {t('button.create')}
+        </SharpEdgeButton>
+      </div>
+    </div>
+  )
 }
 
 export default CanvasSection;

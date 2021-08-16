@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Row, Col, Image } from "antd";
+import { useTranslation } from 'i18n';
 import { useSelector, useDispatch } from "react-redux";
 import { getConfigSelector } from "store/config/selectors";
 import { getUrl, uploadMedia } from "api/uploadMedia";
@@ -17,6 +18,8 @@ const InfoWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  width: 100%;
+
   .title {
     font-size: 18px;
     font-weight: 500;
@@ -94,6 +97,7 @@ const guid = () => {
 };
 
 const Review = ({ listBoutique, newLookImg, newLookData }) => {
+  const { t } = useTranslation();
   const { push } = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -164,8 +168,8 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
   return (
     <ReviewWrapper>
       <div className="canvas-image">
-        <div className="title">
-          CREATE NEW LOOK
+        <div className="title text-uppercase">
+          {t('createNewLook.title')}
         </div>
         <Image
             src={newLookImg}
@@ -183,7 +187,7 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
           <div className="title">{newLookData?.name}</div>
           <div className="features">
             {features
-              ?.map((feature) => feature?.name)
+              ?.map((feature) => feature.name)
               ?.toString()
               ?.replaceAll(",", "  ·  ")}
           </div>
@@ -216,12 +220,15 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
               type="primary"
               size="large"
               onClick={onClick}
+              className="text-uppercase"
             >
-              SEND MY NEW LOOK
+              {t('button.sendNewLook')}
             </SharpEdgeButton>
             <br />
             <br />
-            <SharpEdgeButton size="large">ADD TO FAVORITE</SharpEdgeButton>
+            <SharpEdgeButton className="text-uppercase" size="large">
+              {t('button.addFavorite')}
+            </SharpEdgeButton>
           </div>
         </InfoWrapper>
     </ReviewWrapper>

@@ -7,6 +7,7 @@ import CustomDivider from 'components/Divider';
 import xor from 'lodash/xor';
 import get from 'lodash/get';
 import styled from 'styled-components';
+import { useTranslation } from 'i18n';
 
 const AddInformationWrapper = styled.div`
   display: flex;
@@ -49,6 +50,7 @@ const ButtonWrapper = styled(Button)`
 `;
 
 const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const configData = useSelector(getConfigSelector);
   const [filterData, setFilterData] = useState({});
@@ -67,8 +69,8 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
   return (
     <AddInformationWrapper>
       <div className="canvas-image">
-      <div className="title">
-          CREATE NEW LOOK
+      <div className="title text-uppercase">
+          {t('createNewLook.title')}
         </div>
         <Image
             src={newLookImg}
@@ -84,16 +86,16 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
       </div>
       <CustomDivider vertical color="#fff" />
       <FormWrapper form={form} onFinish={onFinish}>
-        <div className="title">
-          NEW LOOK INFORMATION
+        <div className="title text-uppercase">
+          {t('createNewLook.newLookInformation')}
         </div>
-        <Form.Item name="name" label="NAME">
+        <Form.Item name="name" label={<div className="text-uppercase">{t('input.name.placeholder')}</div>}>
           <Input />
         </Form.Item>
         {configData.map(config => (
           config?.name === 'Color' ? (
             <>
-              <label style={{ textTransform: 'uppercase '}}>{config.name}</label>
+              <label style={{ textTransform: 'uppercase '}}>{t(`createNewLook.${config.name.toLowerCase()}`)}</label>
               <br />
               <Checkbox.Group onChange={values => setFilterData(filter => ({
                 ...filter,
@@ -115,13 +117,15 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
                         ))
                       }
                     </>
-                  ) : <div>No data</div>}
+                  ) : <div>
+                    {t('text.noData')}
+                  </div>}
                 </div>
               </Checkbox.Group>
             </>
           ) : (
             <>
-              <label style={{ textTransform: 'uppercase '}}>{config.name}</label>
+              <label style={{ textTransform: 'uppercase '}}>{t(`createNewLook.${config.name.toLowerCase()}`)}</label>
               <br />
               <div style={{ padding: '10px 0 34px',display: 'flex', width: '100%', overflowX: 'auto'}}>
                 {config?.items?.length ? (
@@ -138,7 +142,7 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
                         {item.name}
                       </ButtonWrapper>
                   ))
-                ) : <div>No data</div>}
+                ) : <div>{t('text.noData')}</div>}
               </div>
               <Divider style={{ margin: '0 0 24px'}} />
             </>
@@ -149,8 +153,8 @@ const AddInfomation = ({ setNewLookData, newLookImg, setCurrentStep }) => {
         <div style={{ width: '100%', textAlign: 'center'}}>
         <br />
         <br />
-          <SharpEdgeButton  type="primary" size="large" htmlType="submit">
-            CREATE
+          <SharpEdgeButton className="text-uppercase" type="primary" size="large" htmlType="submit">
+            {t('button.create')}
           </SharpEdgeButton>
         </div>
       </FormWrapper>

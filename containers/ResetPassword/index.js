@@ -27,7 +27,9 @@ const ForgotPassword = () => {
                 <div className="title">
                     {t('app.appName')}
                 </div>
-                <div className="signin">Reset password</div>
+                <div className="signin">
+                    {t('auth.resetPassword')}
+                </div>
                 <div>
                     <Form
                         name="normal_login"
@@ -42,11 +44,11 @@ const ForgotPassword = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Email!',
+                                    message: t('input.email.required'),
                                 },
                                 {
                                     type: 'email',
-                                    message: 'The input is not valid E-mail!',
+                                    message: t('input.email.valid'),
                                 },
                             ]}
                         >
@@ -58,7 +60,7 @@ const ForgotPassword = () => {
                                         style={{ color: '#f8a71b' }}
                                     />
                                 }
-                                placeholder="E-mail"
+                                placeholder={t('input.email.placeholder')}
                             />
                         </Form.Item>
                         <Form.Item
@@ -66,7 +68,7 @@ const ForgotPassword = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Email!',
+                                    message: t('input.email.required'),
                                 },
                             ]}
                         >
@@ -85,7 +87,7 @@ const ForgotPassword = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Email!',
+                                    message: t('input.email.required'),
                                 },
                             ]}
                         >
@@ -112,7 +114,7 @@ const ForgotPassword = () => {
                                     )
                                 }
                                 type={showPassword ? 'text': 'password'}
-                                placeholder="Password"
+                                placeholder={t('input.password.placeholder')}
                             />
                         </Form.Item>
                         <Form.Item>
@@ -123,7 +125,7 @@ const ForgotPassword = () => {
                                 block
                                 loading={loading}
                             >
-                                RESET PASSWORD
+                                {t('button.resetPassword')}
                             </ButtonC>
                         </Form.Item>
                     </Form>

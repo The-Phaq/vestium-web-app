@@ -5,7 +5,7 @@ import { HeartIcon, VestIcon, CalendarIcon } from 'components/SVGIcon';
 import { useRouter } from 'next/router';
 import { getCurrentTab } from 'utils/tools';
 import cookies from 'js-cookie';
-import { i18n } from 'i18n';
+import { i18n, useTranslation } from 'i18n';
 import Link from 'next/link';
 import { SearchOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -36,6 +36,7 @@ const actionButtons = [
 ];
 
 const Header = ({ image, fullName }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const currentLanguage = cookies.get('next-i18next') || 'en';
     const { pathname, push, query } = useRouter();
@@ -127,13 +128,13 @@ const Header = ({ image, fullName }) => {
                                         onClick={handleProfile}
                                         key="profile"
                                     >
-                                        Profile
+                                        {t('button.profile')}
                                     </Menu.Item>
                                     <Menu.Item
                                         onClick={handleLogout}
                                         key="logout"
                                     >
-                                        Logout
+                                        {t('button.logout')}
                                     </Menu.Item>
                                 </MenuWrapper>
                             )}

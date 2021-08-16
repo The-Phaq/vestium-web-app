@@ -31,7 +31,9 @@ const LoginForm = () => {
                 <div className="title">
                     {t('app.appName')}
                 </div>
-                <div className="signin">Sign In</div>
+                <div className="signin">
+                    {t('auth.signIn')}
+                </div>
                 <div>
                     <Form
                         name="normal_login"
@@ -46,11 +48,11 @@ const LoginForm = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Email!',
+                                    message: t('input.email.required'),
                                 },
                                 {
                                     type: 'email',
-                                    message: 'The input is not valid E-mail!',
+                                    message: t('input.email.valid'),
                                 },
                             ]}
                         >
@@ -61,7 +63,7 @@ const LoginForm = () => {
                                         style={{ color: '#f8a71b' }}
                                     />
                                 }
-                                placeholder="E-mail"
+                                placeholder={t('input.email.placeholder')}
                             />
                         </Form.Item>
                         <Form.Item
@@ -69,7 +71,7 @@ const LoginForm = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Password!',
+                                    message: t('input.password.required'),
                                 },
                             ]}
                         >
@@ -81,7 +83,7 @@ const LoginForm = () => {
                                     />
                                 }
                                 type="password"
-                                placeholder="Password"
+                                placeholder={t('input.password.placeholder')}
                             />
                         </Form.Item>
                         <div className="row-remember-fotgot">
@@ -90,13 +92,15 @@ const LoginForm = () => {
                                 valuePropName="checked"
                                 noStyle
                             >
-                                <Checkbox>Remember me</Checkbox>
+                                <Checkbox>
+                                    {t('auth.remember')}
+                                </Checkbox>
                             </Form.Item>
                             <span className="login-form-forgot text-forgot">
                                 <Link
                                     href="/auth/forgot-password"
                                 >
-                                    Forgot password?
+                                    {t('auth.forgotPasswordText')}
                                 </Link>
                             </span>
                         </div>
@@ -108,13 +112,16 @@ const LoginForm = () => {
                                 block
                                 loading={loading}
                             >
-                                LOG IN
+                                {t('button.login')}
                             </ButtonC>
                         </Form.Item>
                         <div className="text-signin">
-                            Already have not an account?{' '}
+                            {t('auth.noAccount')}
+                            {' '}
                             <Link href="/auth/signup">
-                                <a className="text">Sign up</a>
+                                <a className="text">
+                                    {t('button.signup')}
+                                </a>
                             </Link>
                         </div>
                         <div className="social">

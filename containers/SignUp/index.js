@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Form, Checkbox } from 'antd';
 import { MailFilled, LockFilled, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import { useTranslation } from 'i18n';
+import { useTranslation, Trans } from 'i18n';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from '../Login/styles';
 import { register } from '../../store/auth/actions';
@@ -26,7 +26,9 @@ const SignUpForm = () => {
                 <div className="title">
                     {t('app.appName')}
                 </div>
-                <div className="signin">Sign Up</div>
+                <div className="signin">
+                    {t('auth.signUp')}
+                </div>
                 <div>
                     <Form
                         name="normal_login"
@@ -41,7 +43,7 @@ const SignUpForm = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your name!',
+                                    message: t('input.name.required'),
                                 },
                             ]}
                         >
@@ -52,7 +54,7 @@ const SignUpForm = () => {
                                         style={{ color: '#f8a71b' }}
                                     />
                                 }
-                                placeholder="Name"
+                                placeholder={t('input.name.placeholder')}
                             />
                         </Form.Item>
                         <Form.Item
@@ -60,11 +62,11 @@ const SignUpForm = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Email!',
+                                    message: t('input.email.required'),
                                 },
                                 {
                                     type: 'email',
-                                    message: 'The input is not valid E-mail!',
+                                    message: t('input.email.valid'),
                                 },
                             ]}
                         >
@@ -75,7 +77,7 @@ const SignUpForm = () => {
                                         style={{ color: '#f8a71b' }}
                                     />
                                 }
-                                placeholder="E-mail"
+                                placeholder={t('input.email.placeholder')}
                             />
                         </Form.Item>
                         <Form.Item
@@ -83,7 +85,7 @@ const SignUpForm = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your Password!',
+                                    message: t('input.password.required'),
                                 },
                             ]}
                         >
@@ -95,7 +97,7 @@ const SignUpForm = () => {
                                     />
                                 }
                                 type="password"
-                                placeholder="Password"
+                                placeholder={t('input.password.placeholder')}
                             />
                         </Form.Item>
                         <div className="row-remember-fotgot">
@@ -105,10 +107,9 @@ const SignUpForm = () => {
                                 noStyle
                             >
                                 <Checkbox>
-                                    I read and agree to{' '}
-                                    <a className="text" href="">
-                                        Term & Conditions
-                                    </a>
+                                    <Trans i18nKey="auth.termsConditions">
+                                        <a className="text" href="" />
+                                    </Trans>
                                 </Checkbox>
                             </Form.Item>
                         </div>
@@ -120,13 +121,16 @@ const SignUpForm = () => {
                                 block
                                 loading={loading}
                             >
-                                CREAT ACCOUNT
+                                {t('button.createAccount')}
                             </ButtonC>
                         </Form.Item>
                         <div className="text-signin">
-                            Already have an account?{' '}
+                            {t('auth.haveAccount')}
+                            {' '}
                             <Link href="/auth/login">
-                                <a className="text">Sign in</a>
+                                <a className="text">
+                                    {t('button.signin')}
+                                </a>
                             </Link>
                         </div>
                     </Form>

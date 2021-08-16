@@ -10,10 +10,12 @@ import { useRouter } from 'next/router';
 import xor from 'lodash/xor';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import { useTranslation } from 'i18n';
 
 const { Panel } = Collapse;
 
 const ItemFilterSection = () => {
+  const { t } = useTranslation();
   const { query } = useRouter();
   const { q } = query;
   const dispatch = useDispatch();
@@ -73,7 +75,7 @@ const ItemFilterSection = () => {
   return (
     <ItemFilterSectionWrapper>
       <div className="filter-title">
-        FILTER
+        {t('sider.filter')}
       </div>
       <Collapse
         bordered={false}
@@ -177,6 +179,7 @@ const ItemFilterSectionWrapper = styled.div`
       font-weight: 700;
       text-align: center;
       margin-bottom: 14px;
+      text-transform: uppercase;
   }
 `;
 

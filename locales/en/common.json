@@ -6,6 +6,75 @@
     "newLook": "New Look",
     "boutique": "Boutique",
     "vestiumSista": "Vestium-sista",
-    "createNewLook": "Create New Look"
+    "createNewLook": "Create New Look",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Log in",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "send": "Send",
+    "createAccount": "Create Account",
+    "resetPassword": "Reset password",
+    "create": "Create",
+    "sendNewLook": "Send My New Look",
+    "addFavorite": "Add To Favorite",
+    "addedFavorite": "Added To Favorite",
+    "remove": "Remove",
+    "buyOnYoox": "Buy On Yoox",
+    "shareFacebook": "Share on Facebook",
+    "shareTwitter": "Share on Twitter",
+    "sharePinterest": "Share on Pinterest"
+  },
+  "sider": {
+    "filter": "Filter"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "remember": "Remember me",
+    "forgotPasswordText": "Forgot password?",
+    "forgotPassword": "Forgot password",
+    "noAccount": "No account?",
+    "rememberPassword": "Remember your password?",
+    "haveAccount": "Already have an account?",
+    "termsConditions": "I read and agree to <0>Term & Conditions</0>",
+    "resetPassword": "Reset password"
+  },
+  "input": {
+    "email": {
+      "placeholder": "E-mail",
+      "valid": "E-mail is not valid",
+      "required": "Please input your E-mail!"
+    },
+    "password": {
+      "placeholder": "Password",
+      "required": "Please input your password!"
+    },
+    "name": {
+      "placeholder": "Name",
+      "required": "Please input your name!"
+    }
+  },
+  "createNewLook": {
+    "title": "Create New Look",
+    "newLookInformation": "New Look Information",
+    "color": "Color",
+    "occasion": "Occasion",
+    "season": "Season",
+    "style": "Style",
+    "tabs": {
+      "background": "Background",
+      "boutique": "Boutique",
+      "elements": "Elements"
+    }
+  },
+  "text": {
+    "noData": "No data"
+  },
+  "newLooks": {
+    "votes": "{{votes}} Votes",
+    "favorite": "{{favorite}} Favorite",
+    "share": "Share",
+    "followers": "{{followers}} Followers"
   }
 }

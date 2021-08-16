@@ -31,8 +31,10 @@ import {
   PinterestShareButton,
 } from "react-share";
 import styled from "styled-components";
+import { useTranslation } from 'i18n';
 
 const NewLookItem = ({ newLook: newLookFromProps }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { push } = useRouter();
   const loading = useSelector((state) => state.newlooks.loading);
@@ -67,7 +69,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       id: "likeCount",
       shape: "round",
       Icon: LikeIcon,
-      value: (data) => `${data} Votes`,
+      value: (data) => t('newLooks.votes', { votes: data }),
       isPrimary: isLike,
       onClick: ({ _id }) =>
         reactAction({
@@ -80,7 +82,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       id: "favoriteCount",
       shape: "circle",
       Icon: HeartIcon,
-      value: (data) => `${data} Favorite`,
+      value: (data) => t('newLooks.favorite', { favorite: data }),
       isPrimary: isFavorite,
       onClick: ({ _id }) =>
         reactAction({
@@ -93,7 +95,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       id: "shareCount",
       shape: "round",
       Icon: ShareIcon,
-      value: () => `Share`,
+      value: () => t('newLooks.share'),
       CustomButton: () => (
         <Popover
           content={
@@ -112,7 +114,9 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                 }}
               >
                 <FacebookIcon size={32} />
-                <div className="btn-content">Share on Facebook</div>
+                <div className="btn-content">
+                  {t('button.shareFacebook')}
+                </div>
               </FacebookShareButton>
               <TwitterShareButton
                 className="social-btn twitter-btn"
@@ -128,7 +132,9 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                 }}
               >
                 <TwitterIcon size={32} />
-                <div className="btn-content">Share on Twitter</div>
+                <div className="btn-content">
+                  {t('button.shareTwitter')}
+                </div>
               </TwitterShareButton>
               <PinterestShareButton
                 media={url}
@@ -145,8 +151,14 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                 }}
               >
                 <PinterestIcon size={32} />
-                <div className="btn-content">Share on Pinterest</div>
+                <div className="btn-content">
+                  {t('button.sharePinterest')}
+                </div>
               </PinterestShareButton>
+              {/* <Snapshare
+                dataShareUrl={`${window.location.origin}/new-looks/${_id}`}
+                stickerAssetURL="https://kit.snapchat.com/ckweb/test/image.png"
+              /> */}
             </ShareWrapper>
           }
           trigger="click"
@@ -166,7 +178,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
       id: "followers",
       shape: "round",
       Icon: FollowIcon,
-      value: (data) => `${data} Followers`,
+      value: (data) => t('newLooks.followers', { followers: data }),
     },
   ];
 

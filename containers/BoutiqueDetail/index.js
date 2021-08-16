@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { NextSeo } from "next-seo";
 import { Col, Row, Skeleton, Image } from "antd";
 import { reactItem, deleteReactItem } from "store/items/actions";
+import { useTranslation } from 'i18n';
 import flatten from "lodash/flatten";
 import Button from "components/Button";
 import SecurityLayout from "layouts/Security";
@@ -10,6 +11,7 @@ import { logout } from "store/auth/actions";
 import styled from "styled-components";
 
 const NewLookItem = ({ boutique: boutiqueFromProps }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const loading = useSelector((state) => state.items.loading);
@@ -126,13 +128,14 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
                 </div>
                 {link && (
                   <Button>
-                    <a href={link} target="_blank" rel="noreferrer">
-                      BUY ON YOOX
+                    <a className="text-uppercase" href={link} target="_blank" rel="noreferrer">
+                      {t('button.buyOnYoox')}
                     </a>
                   </Button>
                 )}
                 <Button
                   {...(isFavorite && { type: "primary" })}
+                  className="text-uppercase"
                   onClick={() =>
                     reactAction({
                       id: _id,
@@ -141,7 +144,7 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
                     })
                   }
                 >
-                  {`${isFavorite ? "ADDED TO FAVORITE" : "ADD TO FAVORITE"}`}
+                  {t(`button.${isFavorite ? "addedFavorite" : "addFavorite"}`)}
                 </Button>
               </div>
             </div>

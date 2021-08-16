@@ -5,6 +5,13 @@ export default createGlobalStyle`
     background: #fff !important;
   }
 
+  .text-uppercase {
+    text-transform: uppercase;
+    span {
+      text-transform: uppercase;
+    }
+  }
+
   html,body {
     padding: 0;
     margin: 0;
