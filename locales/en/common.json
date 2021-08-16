@@ -1,0 +1,11 @@
+{
+  "app": {
+    "appName": "VESTIUMS"
+  },
+  "button": {
+    "newLook": "New Look",
+    "boutique": "Boutique",
+    "vestiumSista": "Vestium-sista",
+    "createNewLook": "Create New Look"
+  }
+}

@@ -43,6 +43,10 @@ export default styled(Sider)`
             overflow-y: auto;
         }
 
+        .sider-title {
+            text-transform: uppercase;
+        }
+
         .title {
             height: 80px;
             min-height: 80px;
@@ -67,6 +71,7 @@ export default styled(Sider)`
 
                 span {
                     font-weight: 800;
+                    text-transform: uppercase;
                 }
             }
 

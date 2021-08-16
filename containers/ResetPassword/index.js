@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'antd';
 import { MailFilled, LoginOutlined, LockOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'i18n';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from './styles';
 import { resetPassword } from '../../store/auth/actions';
 
 const ForgotPassword = () => {
+    const { t } = useTranslation();
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
     const { push, query } = useRouter();
@@ -22,7 +24,9 @@ const ForgotPassword = () => {
         <LoginWrapper>
             <div className="main">
                 <img alt="logo" src="/images/logo.png" />
-                <div className="title">VESTIUMS</div>
+                <div className="title">
+                    {t('app.appName')}
+                </div>
                 <div className="signin">Reset password</div>
                 <div>
                     <Form

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'antd';
+import { useTranslation } from 'i18n';
 import { MailFilled } from '@ant-design/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,6 +10,7 @@ import LoginWrapper from './styles';
 import { forgotPassword } from '../../store/auth/actions';
 
 const ForgotPassword = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { push } = useRouter();
     const { loading } = useSelector((state) => state.user);
@@ -26,7 +28,9 @@ const ForgotPassword = () => {
         <LoginWrapper>
             <div className="main">
                 <img alt="logo" src="/images/logo.png" />
-                <div className="title">VESTIUMS</div>
+                <div className="title">
+                    {t('app.appName')}
+                </div>
                 <div className="signin">Forgot password</div>
                 <div>
                     <Form

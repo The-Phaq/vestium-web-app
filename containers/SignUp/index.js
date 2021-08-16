@@ -4,11 +4,13 @@ import { useRouter } from 'next/router';
 import { Form, Checkbox } from 'antd';
 import { MailFilled, LockFilled, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import { useTranslation } from 'i18n';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from '../Login/styles';
 import { register } from '../../store/auth/actions';
 
 const SignUpForm = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { query } = useRouter();
     const { loading } = useSelector((state) => state.user);
@@ -21,7 +23,9 @@ const SignUpForm = () => {
         <LoginWrapper>
             <div className="main">
                 <img alt="logo" src="/images/logo.png" />
-                <div className="title">VESTIUMS</div>
+                <div className="title">
+                    {t('app.appName')}
+                </div>
                 <div className="signin">Sign Up</div>
                 <div>
                     <Form

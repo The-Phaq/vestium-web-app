@@ -183,7 +183,7 @@ const Review = ({ listBoutique, newLookImg, newLookData }) => {
           <div className="title">{newLookData?.name}</div>
           <div className="features">
             {features
-              ?.map((feature) => feature.name)
+              ?.map((feature) => feature?.name)
               ?.toString()
               ?.replaceAll(",", "  ·  ")}
           </div>

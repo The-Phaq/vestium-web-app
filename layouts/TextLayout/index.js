@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { Layout } from "antd";
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { useTranslation } from 'i18n';
 
 const TextLayout = ({ children }) => {
+  const { t } = useTranslation();
   const { push } = useRouter();
   const onClick = () => {
     push('/');
@@ -21,7 +23,7 @@ const TextLayout = ({ children }) => {
                   />
                 </div>
                 <div className="title">
-                  VESTIUMS
+                  {t('app.appName')}
                 </div>
               </div>
               {children}

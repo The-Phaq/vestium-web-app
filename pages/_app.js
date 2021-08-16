@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
 import theme from 'theme/main.json';
 import { initFirebase } from 'api/firebase';
+import { appWithTranslation } from 'i18n';
 import { wrapper } from "../store";
 import GlobalStyles from "./globalStyles";
 
@@ -28,4 +29,4 @@ const MyApp = ({ Component, pageProps }) => {
   );
 };
 
-export default wrapper.withRedux(MyApp);
+export default wrapper.withRedux(appWithTranslation(MyApp));

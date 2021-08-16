@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Form, Checkbox, Image, Button } from 'antd';
 import { MailFilled, LockFilled } from '@ant-design/icons';
 import Link from 'next/link';
+import { useTranslation } from 'i18n';
 import { InputC, ButtonC } from '../../components';
 import LoginWrapper from './styles';
 import { login, loginWithGoogle, loginWithFacebook } from '../../store/auth/actions';
 
 const LoginForm = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { loading } = useSelector((state) => state.user);
     const onFinish = (values) => {
@@ -26,7 +28,9 @@ const LoginForm = () => {
         <LoginWrapper>
             <div className="main">
                 <img alt="logo" src="/images/logo.png" />
-                <div className="title">VESTIUMS</div>
+                <div className="title">
+                    {t('app.appName')}
+                </div>
                 <div className="signin">Sign In</div>
                 <div>
                     <Form

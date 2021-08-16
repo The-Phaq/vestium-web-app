@@ -239,7 +239,7 @@ const NewLookItem = ({ newLook }) => {
             <div className="item-title">{name}</div>
             <div className="tags">
               {features
-                ?.map((feature) => feature.name)
+                ?.map((feature) => feature?.name)
                 ?.toString()
                 ?.replaceAll(",", "  ·  ")}
             </div>

@@ -4,28 +4,29 @@ import { Button } from 'antd';
 import { useRouter } from 'next/router';
 import { getCurrentTab } from 'utils/tools';
 import Link from 'next/link';
+import { useTranslation } from 'i18n';
 import { PlusCircleFilled } from '@ant-design/icons';
 import SiderWrapper from './styles';
 
 const buttons = [
   {
-    text: 'NEW LOOK',
+    text: 'button.newLook',
     isPrimary: true,
     url: '/',
     key: 'new-looks',
   },
   {
-    text: 'BOUTIQUE',
+    text: 'button.boutique',
     url: '/boutique',
     key: 'boutique',
   },
   {
-    text: 'VESTIUM-SISTA',
+    text: 'button.vestiumSista',
     url: '/my-creations',
     key: 'my-creations',
   },
   {
-    text: 'CREATE NEW LOOK',
+    text: 'button.createNewLook',
     isHighlight: true,
     Icon: PlusCircleFilled,
     url: '/create-new-look',
@@ -36,6 +37,7 @@ const buttons = [
 const Sider = ({ FilterSection, pageSource }) => {
   const { pathname } = useRouter();
   const url = getCurrentTab(pathname, 1);
+  const { t } = useTranslation();
 
   return (
     <SiderWrapper width={255}>
@@ -46,8 +48,8 @@ const Sider = ({ FilterSection, pageSource }) => {
             src="/images/logo.png"
           />
         </div>
-        <div className="title">
-          VESTIUMS
+        <div className="title sider-title">
+          {t('app.appName')}
         </div>
         <div className="sider-content-children">
           <div className="actions-section">
@@ -64,7 +66,7 @@ const Sider = ({ FilterSection, pageSource }) => {
                     className: 'highlight-btn',
                   }}
                 >
-                  {text}
+                  {t(text)}
                 </Button>
               </Link>
             ))}

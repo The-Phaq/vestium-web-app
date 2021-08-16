@@ -120,7 +120,7 @@ const NewLookItem = ({ boutique: boutiqueFromProps }) => {
                 <div className="item-price">{`$${price}`}</div>
                 <div className="tags">
                   {features
-                    ?.map((feature) => feature.name)
+                    ?.map((feature) => feature?.name)
                     ?.toString()
                     ?.replaceAll(",", "  ·  ")}
                 </div>
