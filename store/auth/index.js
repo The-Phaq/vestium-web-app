@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { updateProfile } from './asyncActions';
 
 let initialUser = null;
 let initialToken = null;
@@ -48,6 +49,14 @@ const slice = createSlice({
             state.loading = false;
             state.user = action.payload;
             localStorage.setItem('user', JSON.stringify(action.payload));
+        },
+    },
+    extraReducers: {
+        [updateProfile.fulfilled]: (state, { payload }) => {
+            state.user = {
+                ...state.user,
+                ...payload,
+            }
         },
     },
 });

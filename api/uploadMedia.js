@@ -1,7 +1,7 @@
 import { post } from "./utils";
 
-export async function getUrl(name, type) {
-  return post("/upload/signs3", { name, type, folder: "new-looks" });
+export async function getUrl(name, type, folder = "new-looks") {
+  return post("/upload/signs3", { name, type, folder });
 }
 
 export async function uploadMedia(url, data) {

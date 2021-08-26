@@ -1,5 +1,5 @@
 import requestUtils from 'utils/request';
-import { post, get } from './utils';
+import { put, post, get } from './utils';
 
 export const forgotPasswordApi = data => post('/auth/forgotPassword', data);
 
@@ -24,6 +24,8 @@ export async function fetchRegister(data) {
 export async function fetchProfile() {
     return get('/auth/me');
 }
+
+export const updateProfileApi = data => put('/auth/me', data);
 
 export const getUserApi = id => get('/users', {
     _id: id,

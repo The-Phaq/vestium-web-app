@@ -3,6 +3,8 @@
     "appName": "VESTIUMS"
   },
   "button": {
+    "save": "Save",
+    "cancel": "Cancel",
     "newLook": "New Look",
     "boutique": "Boutique",
     "vestiumSista": "Vestium-sista",
@@ -40,7 +42,19 @@
     "termsConditions": "I read and agree to <0>Term & Conditions</0>",
     "resetPassword": "Reset password"
   },
+  "upload": {
+    "success": "Uploaded successfully",
+    "error": "Error uploading file"
+  },
   "input": {
+    "firstName": {
+      "placeholder": "First name",
+      "required": "Please input your first name!"
+    },
+    "lastName": {
+      "placeholder": "Last name",
+      "required": "Please input your last name!"
+    },
     "email": {
       "placeholder": "E-mail",
       "valid": "E-mail is not valid",

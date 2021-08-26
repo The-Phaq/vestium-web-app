@@ -149,7 +149,6 @@ export const getProfile = () => async (dispatch) => {
   }
 };
 
-
 export const loginWithGoogle = createAsyncThunk(
   'auth/loginWithGoogle',
   async (payload, thunkAPI) => {
