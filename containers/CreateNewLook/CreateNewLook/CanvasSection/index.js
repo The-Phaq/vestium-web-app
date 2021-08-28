@@ -3,12 +3,12 @@ import useImage from "use-image";
 import { Button } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Stage, Layer, Group, Text, Image } from "react-konva";
-import { useTranslation } from 'i18n';
+import { useTranslation } from "i18n";
 import SharpEdgeButton from "components/SharpEdgeButton";
 import TransformerComponent from "../Transformer";
 import CanvasSectionStyles from "./styles";
 
-const defaultWidthBg = 600;
+const defaultWidthBg = 500;
 const defaultWidthImg = 150;
 const BgImage = ({ url, ...props }) => {
   const [image] = useImage(url, "Anonymous");
@@ -173,8 +173,8 @@ class CanvasSection extends Component {
     return (
       <CanvasSectionStyles>
         <Stage
-          width={600}
-          height={600}
+          width={500}
+          height={500}
           onMouseDown={this.handleStageMouseDown}
           ref={this.newLookRef}
         >
@@ -217,27 +217,27 @@ class CanvasSection extends Component {
 }
 
 const Actions = ({ onDelete, onNext }) => {
-
   const { t } = useTranslation();
   return (
     <div className="action-section">
       <div>
-        <Button
-          type="text"
-          onClick={onDelete}
-          icon={<DeleteOutlined />}
-        >
-          {t('button.remove')}
+        <Button type="text" onClick={onDelete} icon={<DeleteOutlined />}>
+          {t("button.remove")}
         </Button>
       </div>
       <br />
       <div>
-        <SharpEdgeButton className="text-uppercase" size="large" type="primary" onClick={onNext}>
-          {t('button.create')}
+        <SharpEdgeButton
+          className="text-uppercase"
+          size="large"
+          type="primary"
+          onClick={onNext}
+        >
+          {t("button.create")}
         </SharpEdgeButton>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CanvasSection;

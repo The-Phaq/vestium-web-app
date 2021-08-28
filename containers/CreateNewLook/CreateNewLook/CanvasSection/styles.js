@@ -3,14 +3,14 @@ import styled from "styled-components";
 export default styled.div`
   border: 1px solid #ddd;
   border-radius: 18px;
-  width: 600px;
-  min-width: 600px;
-  height: 600px;
+  width: 500px;
+  min-width: 500px;
+  height: 500px;
 
   canvas {
     border-radius: 15px;
     border: 1px solid #ddd;
-  overflow: hidden;
+    overflow: hidden;
   }
 
   .action-section {
