@@ -73,6 +73,15 @@ const Sider = ({ FilterSection, pageSource }) => {
           </div>
           <Divider className="divider" />
           <FilterSection pageSource={pageSource} />
+          <div style={{ padding: '14px'}}>
+          <div style={{textAlign: 'center', fontSize: '16px'}}>
+          <Link href="/terms-conditions">
+            <a style={{ color: '#F8A71B'}}>
+              {t('button.termsConditions')}
+            </a>
+          </Link>
+          </div>
+          </div>
         </div>
       </div>
       <Divider className="divider-vertical" vertical color="#fff" />

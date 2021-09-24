@@ -3,6 +3,7 @@
     "appName": "VESTIUMS"
   },
   "button": {
+    "termsConditions": "Terms and Conditions",
     "save": "Save",
     "cancel": "Cancel",
     "newLook": "New Look",
