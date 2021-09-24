@@ -7,6 +7,7 @@ export default styled.div`
   height: 600px;
   overflow: auto;
   padding: 14px;
+  padding-top: 0;
 
   .ant-image {
     border-radius: 10px;
@@ -16,6 +17,7 @@ export default styled.div`
   .filter-boutique {
     display: flex;
     flex-wrap: wrap;
+    padding: 14px 0;
 
     .ant-btn {
       white-space: break-spaces;

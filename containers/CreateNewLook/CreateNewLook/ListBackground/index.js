@@ -24,7 +24,7 @@ const ListBackground = ({ setBackground }) => {
         options: {
           isRefresh,
         },
-      })
+      }),
     );
   };
 
@@ -40,7 +40,7 @@ const ListBackground = ({ setBackground }) => {
         perPage: 10,
         offset: 0,
       },
-      true
+      true,
     );
   }, []);
 
@@ -61,14 +61,14 @@ const ListBackground = ({ setBackground }) => {
           },
         }),
       },
-      true
+      true,
     );
   };
 
   return (
     <ListBackgroundStyles>
-      <Row gutter={[8, 8]}>
-        <Col span={24}>
+      <Row gutter={[8, 8]} style={{ position: 'relative'}}>
+        <Col span={24} style={{ position: 'sticky', top: 0, background: '#fff', zIndex: 8, width: '100%'}}>
           <div className="filter-boutique">
             {categories.map((category) => (
               <Button

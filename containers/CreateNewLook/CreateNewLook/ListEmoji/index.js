@@ -24,7 +24,7 @@ const ListEmoji = ({ setEmoji }) => {
         options: {
           isRefresh,
         },
-      })
+      }),
     );
   };
 
@@ -40,7 +40,7 @@ const ListEmoji = ({ setEmoji }) => {
         perPage: 10,
         offset: 0,
       },
-      true
+      true,
     );
   }, []);
 
@@ -66,14 +66,14 @@ const ListEmoji = ({ setEmoji }) => {
           },
         }),
       },
-      true
+      true,
     );
   };
 
   return (
     <ListEmojiStyles>
-      <Row gutter={[8, 8]}>
-        <Col span={24}>
+      <Row gutter={[8, 8]} style={{ position: 'relative'}}>
+        <Col span={24} style={{ position: 'sticky', top: 0, background: '#fff', zIndex: 8, width: '100%'}}>
           <div className="filter-boutique">
             {categories.map((category) => (
               <Button
