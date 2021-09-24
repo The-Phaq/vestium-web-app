@@ -1,7 +1,7 @@
 {
   "palette": {
     "primary": "#F8A71B",
-    "lightPrimary": "#f5f1e9",
+    "lightPrimary": "#d3d3d3",
     "secondary": "#3E68FF",
     "loadingBackgroundColor": "#2c3e51cc",
     "color": ["#e64c38", "#06AEBA", "#f8b51d"],

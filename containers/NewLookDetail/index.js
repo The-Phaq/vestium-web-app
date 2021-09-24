@@ -33,6 +33,14 @@ import {
 import styled from "styled-components";
 import { useTranslation } from 'i18n';
 
+const colStyles = {
+  flexBasis: "20%",
+  width: "20%",
+  style: {
+    maxWidth: '20%',
+  },
+};
+
 const NewLookItem = ({ newLook: newLookFromProps }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -269,7 +277,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                   ))}
                 </div>
               </div>
-              <Divider />
+              <Divider style={{ background: '#C4C4C4', height: '2px', margin: '14px', width: 'auto', minWidth: 'auto'}} />
               <div className="item-section">
                 <div className="item-title">{name}</div>
                 <div className="tags">
@@ -281,7 +289,7 @@ const NewLookItem = ({ newLook: newLookFromProps }) => {
                 {items?.length > 0 && (
                   <Row gutter={[20, 20]} className="items">
                     {items.map(({ itemId: item }) => (
-                      <Col span={8} key={item?._id}>
+                      <Col {...colStyles} key={item?._id}>
                         <div className="item-wrapper">
                           <Link href={`/boutique/${item?._id}`}>
                             <a>

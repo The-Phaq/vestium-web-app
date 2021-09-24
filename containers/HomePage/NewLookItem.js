@@ -31,6 +31,14 @@ import styled from "styled-components";
 import { useTranslation } from 'i18n';
 import { NewLookItemWrapper } from "./styles";
 
+const colStyles = {
+  flexBasis: "20%",
+  width: "20%",
+  style: {
+    maxWidth: '20%',
+  },
+};
+
 const NewLookItem = ({ newLook }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -232,7 +240,7 @@ const NewLookItem = ({ newLook }) => {
               ))}
             </div>
           </div>
-          <Divider />
+          <Divider style={{ background: '#C4C4C4', height: '2px', margin: '14px', width: 'auto', minWidth: 'auto'}} />
           <div className="item-section">
             <Button
               onClick={handleViewDetail(_id)}
@@ -255,7 +263,7 @@ const NewLookItem = ({ newLook }) => {
               <Row gutter={[20, 20]} className="items">
                 {items.map(
                   ({ id, name: itemName, brand, price, img: itemImg }) => (
-                    <Col span={8} key={id}>
+                    <Col {...colStyles} key={id}>
                       <div className="item-wrapper">
                         <Link href={`/boutique/${id}`}>
                           <a>
