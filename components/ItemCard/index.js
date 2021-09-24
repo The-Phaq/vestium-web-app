@@ -9,7 +9,7 @@ const ItemCard = ({ data }) => {
   return (
     <ItemCardWrapper>
       <Link href={`/boutique/${_id}`}>
-        <a>
+        <a style={{ width: '100%'}}>
           <div className="image-wrapper">
             <Image
               objectFit="contain"
