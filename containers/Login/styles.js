@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
 export default styled.div`
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     .main {
         width: 701px;
-        height: 710px;
-        margin: 90px auto;
+        padding: 40px;
         background: rgba(255, 255, 255, 0.6);
         border-radius: 10px;
         display: flex;
-        flex: 1;
         flex-direction: column;
         justify-content: center;
         align-items: center;

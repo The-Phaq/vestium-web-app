@@ -6,7 +6,6 @@ export default styled(Layout)`
 
   .content-wrapper {
     height: 100vh;
-    min-height: 960px;
     background-image: url("/images/bgimage.png");
     background-repeat: no-repeat;
     background-size: cover;
