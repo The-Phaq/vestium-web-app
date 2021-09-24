@@ -38,7 +38,7 @@ const CreateNewLook = ({
           setNewLookImg={setNewLookImg}
         />
       </div>
-      <Divider vertical color="#fff" />
+      <Divider className="content-divider" vertical color="#fff" />
       <div className="children-content-wrapper">
         <Tabs defaultActiveKey="1">
           <TabPane tab={<div className="text-uppercase">{t('createNewLook.tabs.background')}</div>} key="1">
@@ -58,6 +58,10 @@ const CreateNewLook = ({
 
 const CreateNewLookWrapper = styled.div`
   display: flex;
+
+  .content-divider {
+    padding-left: 20px;
+  }
 
   .canvas-wrapper {
     .title {

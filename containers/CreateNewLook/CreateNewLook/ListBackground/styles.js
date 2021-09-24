@@ -7,6 +7,10 @@ export default styled.div`
   padding: 14px;
   padding-top: 0px;
 
+  .ant-image {
+    width: 100%;
+  }
+
   .filter-boutique {
     display: flex;
     flex-wrap: wrap;

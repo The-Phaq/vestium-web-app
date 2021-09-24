@@ -30,7 +30,7 @@ const CreateNewLook = () => {
           <Step2 setNewLookData={setNewLookData} setCurrentStep={setCurrentStep} newLookImg={newLookImg} />
         )}
         {currentStep === 2 && (
-          <Step3 listBoutique={listBoutique} newLookImg={newLookImg} newLookData={newLookData} />
+          <Step3 listBoutique={listBoutique} newLookImg={newLookImg} setCurrentStep={setCurrentStep} newLookData={newLookData} />
         )}
       </CreateNewLookStyles>
     </SecurityLayout>

@@ -96,22 +96,26 @@ const ListBoutique = ({ setBoutique }) => {
             ))}
           </div>
         </Col>
-        {items?.length > 0 &&
-          items.map((boutique) => (
-            <Col span={8} key={boutique._id}>
-              {!boutique?.imageVariants && (
-                <SingleItem boutique={boutique} onSelectBg={onSelectBg} />
-              )}
-              {boutique?.imageVariants && (
-                <ListItemVariants mainItem={boutique} onSelectBg={onSelectBg} />
-              )}
+        <Col span={24}>
+        <Row gutter={[20, 20]} style={{ borderRadius: '12px', border: '1px solid #ccc', padding: '20px 10px'}}>
+            {items?.length > 0 &&
+            items.map((boutique) => (
+              <Col span={8} key={boutique._id}>
+                {!boutique?.imageVariants && (
+                  <SingleItem boutique={boutique} onSelectBg={onSelectBg} />
+                )}
+                {boutique?.imageVariants && (
+                  <ListItemVariants mainItem={boutique} onSelectBg={onSelectBg} />
+                )}
+              </Col>
+            ))}
+          {loading && (
+            <Col span={24}>
+              <Skeleton active />
             </Col>
-          ))}
-        {loading && (
-          <Col span={24}>
-            <Skeleton active />
-          </Col>
-        )}
+          )}
+          </Row>
+        </Col>
         {enabledLoadMore && <Waypoint onEnter={handleEnterWaypoint} />}
       </Row>
       {items?.length === 0 && !loading && <Empty />}
